@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include <string>
+#include "List.cpp"
 #include "string_consts.h"
 
 #ifndef DATA_STRUCTURES_PROJECT_ARRAY_H

@@ -4,8 +4,8 @@
 
 #include "LinkedList.h"
 
-template <typename T>
-class LinkedList {
+template<typename T>
+class LinkedList : public List<T> {
 
 private:
 	LinkedListElement<T> * firstElement;
@@ -56,7 +56,10 @@ public:
 			LinkedListElement<T> *newElement = new LinkedListElement<>(value);
 			if (index == 0) {
 				newElement->setNextElement(this->firstElement);
-				this->firstElement->setPreviousElement(newElement);
+				if (this->firstElement != nullptr)
+					this->firstElement->setPreviousElement(newElement);
+				else
+					this->lastElement = newElement;
 				this->firstElement = newElement;
 			}
 			else {
@@ -88,7 +91,10 @@ public:
 	
 	void add(T const value) {
 		LinkedListElement<T> *newElement = new LinkedListElement<>(value, this->lastElement, nullptr);
-		this->lastElement->setNextElement(newElement);
+		if (this->lastElement != nullptr)
+			this->lastElement->setNextElement(newElement);
+		else
+			this->firstElement = newElement;
 		this->lastElement = newElement;
 		this->size++;
 	}
@@ -111,15 +117,6 @@ public:
 				return;
 			}
 			elementPointer = elementPointer->getNextElement();
-		}
-	}
-	
-	unsigned int toStringLines(std::string ** out) {
-		delete [] out;
-		out = new std::string * [this->size + 1];
-		out[0] = new std::string("size: " + this->size);
-		for (unsigned int i = 0; i < this->size; i++) {
-		
 		}
 	}
 };

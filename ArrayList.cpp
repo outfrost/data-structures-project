@@ -5,7 +5,7 @@
 #include "ArrayList.h"
 
 template<typename T>
-class ArrayList {
+class ArrayList : public List<T> {
 
 private:
 	T *array;
@@ -17,10 +17,11 @@ public:
 		this->array = new T[size];
 	}
 	
-	ArrayList(unsigned int size) {
+	/* ArrayList(unsigned int size) {
 		this->size = size;
 		this->array = new T[size];
 	}
+	*/
 	
 	unsigned int getSize() {
 		return this->size;
@@ -61,6 +62,15 @@ public:
 			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
+	void add(T const value) {
+		T *newArray = new T[++this->size];
+		for (unsigned int i = 0; i < this->size; i++)
+			newArray[i] = this->array[i];
+		newArray[this->size - 1] = value;
+		delete [] this->array;
+		this->array = newArray;
+	}
+	
 	void remove(unsigned int index) {
 		if (index < this->size) {
 			T *newArray = new T[--this->size];
@@ -75,18 +85,5 @@ public:
 		}
 		else
 			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
-	}
-	
-	unsigned int toStringLines(std::string ** out) {
-		delete [] out;
-		out = new std::string * [this->size + 1];
-		out[0] = new std::string("size: " + this->size);
-		for (unsigned int i = 0; i < this->size; i++) {
-			out[i+1] = new std::string("[");
-			*(out[i+1]) += i;
-			*(out[i+1]) += "]: \t";
-			*(out[i+1]) += this->array[i];
-		}
-		return this->size + 1;
 	}
 };
