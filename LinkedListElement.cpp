@@ -25,5 +25,23 @@ public:
 		this->next = next;
 	}
 	
+	T getValue() {
+		return this->value;
+	}
 	
+	LinkedListElement * getPreviousElement() {
+		return this->previous;
+	}
+	
+	LinkedListElement * getNextElement() {
+		return this->next;
+	}
+	
+	void setPreviousElement(LinkedListElement * element) {
+		this->previous = element;
+	}
+	
+	void setNextElement(LinkedListElement * element) {
+		this->next = element;
+	}
 };
