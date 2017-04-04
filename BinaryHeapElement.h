@@ -1,0 +1,14 @@
+//
+// Created by outfrost on 04/04/17.
+//
+
+#ifndef DATA_STRUCTURES_PROJECT_BINARYHEAPELEMENT_H
+#define DATA_STRUCTURES_PROJECT_BINARYHEAPELEMENT_H
+
+
+class BinaryHeapElement {
+
+};
+
+
+#endif //DATA_STRUCTURES_PROJECT_BINARYHEAPELEMENT_H

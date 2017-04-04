@@ -13,7 +13,7 @@ private:
 
 public:
 	ArrayList() {
-		this->size = 0;
+		this->size = 0u;
 		this->array = new T[size];
 	}
 	
@@ -35,7 +35,7 @@ public:
 	}
 	
 	bool contains(T const value) {
-		for (unsigned int i = 0; i < this->size; i++) {
+		for (unsigned int i = 0u; i < this->size; i++) {
 			if (this->array[i] == value)
 				return true;
 		}
@@ -45,7 +45,7 @@ public:
 	void add(T const value, unsigned int index) {
 		if (index <= this->size) {
 			T *newArray = new T[++this->size];
-			for (unsigned int i = 0; i < this->size; i++) {
+			for (unsigned int i = 0u; i < this->size; i++) {
 				if (i < index)
 					newArray[i] = this->array[i];
 				else {
@@ -64,7 +64,7 @@ public:
 	
 	void add(T const value) {
 		T *newArray = new T[++this->size];
-		for (unsigned int i = 0; i < this->size; i++)
+		for (unsigned int i = 0u; i < this->size; i++)
 			newArray[i] = this->array[i];
 		newArray[this->size - 1] = value;
 		delete [] this->array;
@@ -74,7 +74,7 @@ public:
 	void remove(unsigned int index) {
 		if (index < this->size) {
 			T *newArray = new T[--this->size];
-			for (unsigned int i = 0; i < this->size; i++) {
+			for (unsigned int i = 0u; i < this->size; i++) {
 				if (i < index)
 					newArray[i] = this->array[i];
 				else

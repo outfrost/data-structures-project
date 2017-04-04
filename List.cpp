@@ -19,7 +19,7 @@ public:
 		delete [] out;
 		out = new std::string * [this->getSize() + 1];
 		out[0] = new std::string("size: " + this->getSize());
-		for (unsigned int i = 0; i < this->getSize(); i++) {
+		for (unsigned int i = 0u; i < this->getSize(); i++) {
 			out[i+1] = new std::string("[");
 			*(out[i+1]) += i;
 			*(out[i+1]) += "]: \t";
