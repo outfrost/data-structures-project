@@ -8,7 +8,7 @@ template<typename T>
 class BinaryHeap {
 
 private:
-	T *array;
+	BinaryHeapElement<T> **array;
 	unsigned int size;
 	unsigned int allocatedSize;
 	
@@ -16,26 +16,45 @@ public:
 	BinaryHeap() {
 		this->size = 0u;
 		this->allocatedSize = BINARYHEAP_TARGET_OVERHEADu;
-		this->array = new T[allocatedSize];
+		this->array = new BinaryHeapElement<T> * [allocatedSize];
 	}
 	
 	unsigned int getSize() {
 		return this->size;
 	}
 	
-	T get(unsigned int index) {
+	BinaryHeapElement<T> * get(unsigned int index) {
 		if (index < this->size)
 			return this->array[index];
 		else
 			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
-	bool contains(T const value) {
-	
+	bool contains(int key, unsigned int startingIndex = 0u) {
+		if (startingIndex < this->size) {
+			if (this->array[startingIndex]->getKey() == key)
+				return true;
+			else if (this->array[startingIndex]->getKey() > key) {
+				if (getLeftChildIndex(startingIndex) < this->size) {
+					if (contains(key, getLeftChildIndex(startingIndex)))
+						return true;
+					else if (getRightChildIndex(startingIndex) < this->size)
+						return contains(key, getRightChildIndex(startingIndex));
+					else
+						return false;
+				}
+				else
+					return false;
+			}
+			else
+				return false;
+		}
+		else
+			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
-	void add(T const value) {
-		this->array[this->size++] = value;
+	void add(BinaryHeapElement<T> * element) {
+		this->array[this->size++] = element;
 		fixFromLeaf(this->size - 1);
 		checkAllocation();
 	}
@@ -44,7 +63,7 @@ protected:
 	void checkAllocation() {
 		if (this->allocatedSize - this->size < BINARYHEAP_MIN_OVERHEADu || this->allocatedSize - this->size > BINARYHEAP_MAX_OVERHEADu) {
 			this->allocatedSize = this->size + BINARYHEAP_TARGET_OVERHEADu;
-			T *newArray = new T[allocatedSize];
+			BinaryHeapElement<T> **newArray = new BinaryHeapElement<T> * [allocatedSize];
 			for (unsigned int i = 0; i < this->size; i++)
 				newArray[i] = this->array[i];
 			delete [] this->array;
@@ -54,8 +73,8 @@ protected:
 	
 	void fixFromLeaf(unsigned int index) {
 		if (index < this->size) {
-			while (this->array[index] > this->array[getParentIndex(index)]) {
-				swapValues(index, getParentIndex(index));
+			while (this->array[index]->getKey() > this->array[getParentIndex(index)]->getKey()) {
+				swapElements(index, getParentIndex(index));
 				index = getParentIndex(index);
 			}
 		}
@@ -63,15 +82,10 @@ protected:
 			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
-	void swapValues(unsigned int index1, unsigned int index2) {
-		T nodeValue = this->array[index1];
+	void swapElements(unsigned int index1, unsigned int index2) {
+		BinaryHeapElement<T> * node = this->array[index1];
 		this->array[index1] = this->array[index2];
-		this->array[index2] = nodeValue;
-	}
-	
-	unsigned int * getIndex(T const value) {
-		unsigned int index =
-		
+		this->array[index2] = node;
 	}
 	
 	static inline unsigned int getParentIndex(unsigned int index) {
