@@ -10,16 +10,19 @@ class BinaryHeapElement {
 private:
 	int key;
 	T value;
+	unsigned int index;
 	
 public:
-	BinaryHeapElement(int const key) {
+	BinaryHeapElement(int key, unsigned int index = 0u) {
 		this->key = key;
 		this->value = nullptr;
+		this->index = index;
 	}
 	
-	BinaryHeapElement(int const key, T const value) {
+	BinaryHeapElement(int key, T const value, unsigned int index = 0u) {
 		this->key = key;
 		this->value = value;
+		this->index = index;
 	}
 	
 	int getKey() {
@@ -30,7 +33,15 @@ public:
 		return this->value;
 	}
 	
-	T setValue(T const value) {
+	void setValue(T const value) {
 		this->value = value;
+	}
+	
+	unsigned int getIndex() {
+		return this->index;
+	}
+	
+	void setIndex(unsigned int index) {
+		this->index = index;
 	}
 };
