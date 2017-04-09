@@ -13,13 +13,13 @@ private:
 	LinkedListElement * next;
 	
 public:
-	LinkedListElement(T value) {
+	LinkedListElement(T const value) {
 		this->value = value;
 		this->previous = nullptr;
 		this->next = nullptr;
 	}
 	
-	LinkedListElement(T value, LinkedListElement * previous, LinkedListElement * next) {
+	LinkedListElement(T const value, LinkedListElement * previous, LinkedListElement * next) {
 		this->value = value;
 		this->previous = previous;
 		this->next = next;

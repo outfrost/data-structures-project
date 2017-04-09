@@ -13,12 +13,6 @@ private:
 	unsigned int index;
 	
 public:
-	BinaryHeapElement(int key, unsigned int index = 0u) {
-		this->key = key;
-		this->value = nullptr;
-		this->index = index;
-	}
-	
 	BinaryHeapElement(int key, T const value, unsigned int index = 0u) {
 		this->key = key;
 		this->value = value;
@@ -31,10 +25,6 @@ public:
 	
 	T getValue() {
 		return this->value;
-	}
-	
-	void setValue(T const value) {
-		this->value = value;
 	}
 	
 	unsigned int getIndex() {

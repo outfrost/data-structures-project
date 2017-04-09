@@ -23,38 +23,45 @@ public:
 		return this->size;
 	}
 	
-	BinaryHeapElement<T> * get(unsigned int index) {
-		if (index < this->size)
-			return this->array[index];
+	bool get(int key, T * const dest) {
+		BinaryHeapElement<T> * found = find(key);
+		if (found != nullptr) {
+			*dest = found->getValue();
+			return true;
+		}
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			return false;
 	}
 	
 	bool contains(int key) {
 		return find(key) != nullptr;
 	}
 	
-	void add(BinaryHeapElement<T> * element) {
-		this->array[this->size++] = element;
+	void add(int key, T const value) {
+		BinaryHeapElement<T> * newElement = new BinaryHeapElement<T>(key, value, this->size);
+		this->array[this->size++] = newElement;
 		fixFromLeaf(this->size - 1);
 		checkAllocation();
-	}
-	
-	void removeAt(unsigned int index) {
-		if (index < this->size) {
-			swapElements(index, --this->size);
-			fixFromRoot()
-			
-			checkAllocation();
-		}
-		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
 	void remove(int key) {
 		BinaryHeapElement<T> * found = find(key);
 		if (found != nullptr)
 			removeAt(found->getIndex());
+	}
+	
+	void remove() {
+		removeAt(0u);
+	}
+	
+	T pop() {
+		if (this->size > 0u) {
+			T rootValue = this->array[0u]->getValue();
+			remove();
+			return rootValue;
+		}
+		else
+			throw new std::out_of_range(STR_EX_BINARYHEAP_EMPTY);
 	}
 	
 protected:
@@ -69,6 +76,16 @@ protected:
 					found = find(key, getRightChildIndex(startingIndex));
 			}
 			return found;
+		}
+		else
+			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+	}
+	
+	void removeAt(unsigned int index) {
+		if (index < this->size) {
+			swapElements(index, --this->size);
+			fixFromRoot(index);
+			checkAllocation();
 		}
 		else
 			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
@@ -98,11 +115,28 @@ protected:
 	
 	void fixFromRoot(unsigned int index) {
 		if (index < this->size) {
-			while (getLeftChildIndex(index) < this->size
-			       && (this->array[index]->getKey() < this->array[getLeftChildIndex(index)]
-			           || (getRightChildIndex(index) < this->size
-			               && this->array[index]->getKey() < this->array[getRightChildIndex(index)]))) {
-				swapElements(index, )
+			bool fixed = false;
+			while (!fixed) {
+				if (getLeftChildIndex(index) < this->size) {
+					if (getRightChildIndex(index) < this->size) {
+						if (this->array[index]->getKey() < this->array[getLeftChildIndex(index)]->getKey()
+						    || this->array[index]->getKey() < this->array[getRightChildIndex(index)]->getKey()) {
+							unsigned int swapIndex = this->array[getLeftChildIndex(index)]->getKey() > this->array[getRightChildIndex(index)]->getKey() ? getLeftChildIndex(index) : getRightChildIndex(index);
+							swapElements(index, swapIndex);
+							index = swapIndex;
+						}
+						else
+							fixed = true;
+					}
+					else if (this->array[index]->getKey() < this->array[getLeftChildIndex(index)]->getKey()) {
+						swapElements(index, getLeftChildIndex(index));
+						index = getLeftChildIndex(index);
+					}
+					else
+						fixed = true;
+				}
+				else
+					fixed = true;
 			}
 		}
 		else
