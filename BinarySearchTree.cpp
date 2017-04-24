@@ -30,11 +30,32 @@ public:
 	}
 	
 	void add(int key, T const value) {
-	
+		BinarySearchTreeNode<T> * newNode = new BinarySearchTreeNode<T>(key, value);
+		if (this->root == nullptr)
+			this->root = newNode;
+		else {
+			BinarySearchTreeNode<T> * parent = this->root;
+			BinarySearchTreeNode<T> * oldParent = nullptr;
+			while (parent != oldParent) {
+				oldParent = parent;
+				if (parent->getKey() >= key) {
+					if (parent->getLeftChild() == nullptr)
+						parent->setLeftChild(newNode);
+					else
+						parent = parent->getLeftChild();
+				}
+				else {
+					if (parent->getRightChild() == nullptr)
+						parent->setRightChild(newNode);
+					else
+						parent = parent->getRightChild();
+				}
+			}
+		}
 	}
 	
 	void remove(int key) {
-		
+	
 	}
 	
 protected:
