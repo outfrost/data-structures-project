@@ -63,9 +63,31 @@ public:
 		BinarySearchTreeNode<T> * nodeToRemove = find(key);
 		if (nodeToRemove != nullptr) {
 			BinarySearchTreeNode<T> * nodeToSubstitute = nullptr;
-			if (nodeToRemove->getLeftChild() == nullptr) {
+			
+			if (nodeToRemove->getLeftChild() == nullptr)
 				nodeToSubstitute = nodeToRemove->getRightChild();
-				
+			else if (nodeToRemove->getRightChild() == nullptr)
+				nodeToSubstitute = nodeToRemove->getLeftChild();
+			else {
+				nodeToSubstitute = findSuccessor(nodeToRemove);
+				if (nodeToSubstitute->getParent() != nullptr) {
+					if (nodeToSubstitute->getParent()->getLeftChild() == nodeToSubstitute)
+						nodeToSubstitute->getParent()->setLeftChild(nodeToSubstitute->getRightChild());
+					else
+						nodeToSubstitute->getParent()->setRightChild(nodeToSubstitute->getRightChild());
+					
+					if (nodeToSubstitute->getRightChild() != nullptr)
+						nodeToSubstitute->getRightChild()->setParent(nodeToSubstitute->getParent());
+				}
+			}
+			
+			if (nodeToSubstitute != nullptr)
+				nodeToSubstitute->setParent(nodeToRemove->getParent());
+			if (nodeToRemove->getParent() != nullptr) {
+				if (nodeToRemove->getParent()->getLeftChild() == nodeToRemove)
+					nodeToRemove->getParent()->setLeftChild(nodeToSubstitute);
+				else
+					nodeToRemove->getParent()->setRightChild(nodeToSubstitute);
 			}
 		}
 	}
