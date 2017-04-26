@@ -12,6 +12,7 @@ private:
 	T value;
 	BinarySearchTreeNode<T> * leftChild;
 	BinarySearchTreeNode<T> * rightChild;
+	BinarySearchTreeNode<T> * parent;
 	
 public:
 	BinarySearchTreeNode(int key, T value) {
@@ -19,13 +20,15 @@ public:
 		this->value = value;
 		this->leftChild = nullptr;
 		this->rightChild = nullptr;
+		this->parent = nullptr;
 	}
 	
-	BinarySearchTreeNode(int key, T value, BinarySearchTreeNode<T> * leftChild, BinarySearchTreeNode<T> * rightChild) {
+	BinarySearchTreeNode(int key, T value, BinarySearchTreeNode<T> * leftChild, BinarySearchTreeNode<T> * rightChild, BinarySearchTreeNode<T> * parent) {
 		this->key = key;
 		this->value = value;
 		this->leftChild = leftChild;
 		this->rightChild = rightChild;
+		this->parent = parent;
 	}
 	
 	int getKey() {
@@ -44,11 +47,19 @@ public:
 		return this->rightChild;
 	}
 	
+	BinarySearchTreeNode<T> * getParent() {
+		return this->parent;
+	}
+	
 	void setLeftChild(BinarySearchTreeNode<T> * leftChild) {
 		this->leftChild = leftChild;
 	}
 	
 	void setRightChild(BinarySearchTreeNode<T> * rightChild) {
 		this->rightChild = rightChild;
+	}
+	
+	void setParent(BinarySearchTreeNode<T> * parent) {
+		this->parent = parent;
 	}
 };

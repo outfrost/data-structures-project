@@ -35,18 +35,23 @@ public:
 			this->root = newNode;
 		else {
 			BinarySearchTreeNode<T> * parent = this->root;
-			BinarySearchTreeNode<T> * oldParent = nullptr;
-			while (parent != oldParent) {
-				oldParent = parent;
+			bool added = false;
+			while (!added) {
 				if (parent->getKey() >= key) {
-					if (parent->getLeftChild() == nullptr)
+					if (parent->getLeftChild() == nullptr) {
 						parent->setLeftChild(newNode);
+						newNode->setParent(parent);
+						added = true;
+					}
 					else
 						parent = parent->getLeftChild();
 				}
 				else {
-					if (parent->getRightChild() == nullptr)
+					if (parent->getRightChild() == nullptr) {
 						parent->setRightChild(newNode);
+						newNode->setParent(parent);
+						added = true;
+					}
 					else
 						parent = parent->getRightChild();
 				}
@@ -55,7 +60,14 @@ public:
 	}
 	
 	void remove(int key) {
-	
+		BinarySearchTreeNode<T> * nodeToRemove = find(key);
+		if (nodeToRemove != nullptr) {
+			BinarySearchTreeNode<T> * nodeToSubstitute = nullptr;
+			if (nodeToRemove->getLeftChild() == nullptr) {
+				nodeToSubstitute = nodeToRemove->getRightChild();
+				
+			}
+		}
 	}
 	
 protected:
