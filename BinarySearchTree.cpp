@@ -83,11 +83,15 @@ public:
 			
 			if (nodeToSubstitute != nullptr)
 				nodeToSubstitute->setParent(nodeToRemove->getParent());
+			
 			if (nodeToRemove->getParent() != nullptr) {
 				if (nodeToRemove->getParent()->getLeftChild() == nodeToRemove)
 					nodeToRemove->getParent()->setLeftChild(nodeToSubstitute);
 				else
 					nodeToRemove->getParent()->setRightChild(nodeToSubstitute);
+			}
+			else {
+				this->root = nodeToSubstitute;
 			}
 		}
 	}
