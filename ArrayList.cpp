@@ -71,7 +71,7 @@ public:
 		this->array = newArray;
 	}
 	
-	void remove(unsigned int index) {
+	void removeAt(unsigned int index) {
 		if (index < this->size) {
 			T *newArray = new T[--this->size];
 			for (unsigned int i = 0u; i < this->size; i++) {
@@ -85,5 +85,20 @@ public:
 		}
 		else
 			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+	}
+	
+	void remove(T const value) {
+		for (unsigned int i = 0u; i < this->size; i++) {
+			if (this->array[i] == value) {
+				remove(i);
+				return;
+			}
+		}
+	}
+	
+	void print() {
+		for (unsigned int i = 0u; i < this->size; i++)
+			std::printf("%s ", std::to_string(this->array[i]).c_str());
+		std::printf("\n");
 	}
 };

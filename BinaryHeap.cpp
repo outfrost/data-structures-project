@@ -15,7 +15,7 @@ private:
 public:
 	BinaryHeap() {
 		this->size = 0u;
-		this->allocatedSize = BINARYHEAP_TARGET_OVERHEADu;
+		this->allocatedSize = BINARYHEAP_TARGET_OVERHEAD;
 		this->array = new BinaryHeapElement<T> * [allocatedSize];
 	}
 	
@@ -64,6 +64,10 @@ public:
 			throw new std::out_of_range(STR_EX_BINARYHEAP_EMPTY);
 	}
 	
+	void print() {
+		printSubtree();
+	}
+	
 protected:
 	BinaryHeapElement<T> * find(int key, unsigned int startingIndex = 0u) {
 		if (startingIndex < this->size) {
@@ -92,8 +96,8 @@ protected:
 	}
 	
 	void checkAllocation() {
-		if (this->allocatedSize - this->size < BINARYHEAP_MIN_OVERHEADu || this->allocatedSize - this->size > BINARYHEAP_MAX_OVERHEADu) {
-			this->allocatedSize = this->size + BINARYHEAP_TARGET_OVERHEADu;
+		if (this->allocatedSize - this->size < BINARYHEAP_MIN_OVERHEAD || this->allocatedSize - this->size > BINARYHEAP_MAX_OVERHEAD) {
+			this->allocatedSize = this->size + BINARYHEAP_TARGET_OVERHEAD;
 			BinaryHeapElement<T> **newArray = new BinaryHeapElement<T> * [allocatedSize];
 			for (unsigned int i = 0; i < this->size; i++)
 				newArray[i] = this->array[i];
@@ -165,5 +169,18 @@ protected:
 	
 	static inline bool isLeftChild(unsigned int index) {
 		return index & 1u;
+	}
+	
+	void printSubtree(unsigned int index = 0u, unsigned int level = 0u) {
+		if (index < this->size) {
+			printSubtree(getLeftChildIndex(index), level+1);
+			if (level) {
+				for (unsigned int i = level - 1; i > 0u; i--)
+					std::printf("|       ");
+				std::printf("|-----• ");
+			}
+			std::printf("%d\n", this->array[index]->getKey());
+			printSubtree(getRightChildIndex(index), level+1);
+		}
 	}
 };

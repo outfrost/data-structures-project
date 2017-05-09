@@ -47,13 +47,14 @@ public:
 		for (unsigned int i = 0u; i < this->size; i++) {
 			if (elementPointer->getValue() == value)
 				return true;
+			elementPointer = elementPointer->getNextElement();
 		}
 		return false;
 	}
 	
 	void add(T const value, unsigned int index) {
 		if (index <= this->size) {
-			LinkedListElement<T> *newElement = new LinkedListElement<>(value);
+			LinkedListElement<T> *newElement = new LinkedListElement<T>(value);
 			if (index == 0u) {
 				newElement->setNextElement(this->firstElement);
 				if (this->firstElement != nullptr)
@@ -90,7 +91,7 @@ public:
 	}
 	
 	void add(T const value) {
-		LinkedListElement<T> *newElement = new LinkedListElement<>(value, this->lastElement, nullptr);
+		LinkedListElement<T> *newElement = new LinkedListElement<T>(value, this->lastElement, nullptr);
 		if (this->lastElement != nullptr)
 			this->lastElement->setNextElement(newElement);
 		else
@@ -99,24 +100,64 @@ public:
 		this->size++;
 	}
 	
+	void removeAt(unsigned int index) {
+		if (index < this->size) {
+			LinkedListElement<T> *elementPointer;
+			if (index <= this->size >> 1) {
+				elementPointer = this->firstElement;
+				for (unsigned int i = 0u; i < index; i++)
+					elementPointer = elementPointer->getNextElement();
+			}
+			else {
+				elementPointer = this->lastElement;
+				for (unsigned int i = this->size - 1; i > index; i++)
+					elementPointer = elementPointer->getPreviousElement();
+			}
+			remove(elementPointer);
+		}
+		else
+			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+	}
+	
 	void remove(T const value) {
 		LinkedListElement<T> *elementPointer = this->firstElement;
 		for (unsigned int i = 0u; i < this->size; i++) {
 			if (elementPointer->getValue() == value) {
-				LinkedListElement<T> *elementBefore = elementPointer->getPreviousElement();
-				LinkedListElement<T> *elementAfter = elementPointer->getNextElement();
-				if (elementBefore != nullptr)
-					elementBefore->setNextElement(elementAfter);
-				else
-					this->firstElement = elementAfter;
-				if (elementAfter != nullptr)
-					elementAfter->setPreviousElement(elementBefore);
-				else
-					this->lastElement = elementBefore;
-				delete elementPointer;
+				remove(elementPointer);
 				return;
 			}
 			elementPointer = elementPointer->getNextElement();
 		}
+	}
+	
+	void print() {
+		LinkedListElement<T> *element = this->firstElement;
+		for (unsigned int i = 0u; i < this->size; i++) {
+			std::printf("%s ", std::to_string(element->getValue()).c_str());
+			element = element->getNextElement();
+		}
+		std::printf("\n");
+		element = this->lastElement;
+		for (unsigned int i = 0u; i < this->size; i++) {
+			std::printf("%s ", std::to_string(element->getValue()).c_str());
+			element = element->getPreviousElement();
+		}
+		std::printf("\n");
+	}
+
+protected:
+	void remove(LinkedListElement<T> * element) {
+		LinkedListElement<T> *elementBefore = element->getPreviousElement();
+		LinkedListElement<T> *elementAfter = element->getNextElement();
+		if (elementBefore != nullptr)
+			elementBefore->setNextElement(elementAfter);
+		else
+			this->firstElement = elementAfter;
+		if (elementAfter != nullptr)
+			elementAfter->setPreviousElement(elementBefore);
+		else
+			this->lastElement = elementBefore;
+		delete element;
+		this->size--;
 	}
 };

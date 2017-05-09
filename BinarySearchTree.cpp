@@ -2,6 +2,7 @@
 // Created by outfrost on 09/04/17.
 //
 
+#include <stddef.h>
 #include "BinarySearchTree.h"
 
 template<typename T>
@@ -57,6 +58,7 @@ public:
 				}
 			}
 		}
+		balance();
 	}
 	
 	void remove(int key) {
@@ -93,7 +95,27 @@ public:
 			else {
 				this->root = nodeToSubstitute;
 			}
+			
+			nodeToSubstitute->setLeftChild(nodeToRemove->getLeftChild());
+			if (nodeToRemove->getLeftChild() != nullptr)
+				nodeToRemove->getLeftChild()->setParent(nodeToSubstitute);
+			nodeToSubstitute->setRightChild(nodeToRemove->getRightChild());
+			if (nodeToRemove->getRightChild() != nullptr)
+				nodeToRemove->getRightChild()->setParent(nodeToSubstitute);
+			
+			nodeToRemove->setLeftChild(nullptr);
+			nodeToRemove->setRightChild(nullptr);
+			nodeToRemove->setParent(nullptr);
 		}
+		balance();
+	}
+	
+	void balance() {
+		std::printf("Not implemented.\n");
+	}
+	
+	void print() {
+		printSubtree(this->root);
 	}
 	
 protected:
@@ -108,7 +130,34 @@ protected:
 		return node;
 	}
 	
-	void balance() {
+	BinarySearchTreeNode<T> * findSuccessor(BinarySearchTreeNode<T> * node) {
+		BinarySearchTreeNode<T> * successor = nullptr;
+		if (node->getRightChild() != nullptr) {
+			successor = node->getRightChild();
+			while (successor->getLeftChild() != nullptr)
+				successor = successor->getLeftChild();
+		}
+		else {
+			while (successor == nullptr && node->getParent() != nullptr) {
+				if (node->getParent()->getLeftChild() == node)
+					successor = node->getParent();
+				else
+					node = node->getParent();
+			}
+		}
+		return successor;
+	}
 	
+	void printSubtree(BinarySearchTreeNode<T> * node, unsigned int level = 0u) {
+		if (node != nullptr) {
+			printSubtree(node->getLeftChild(), level+1);
+			if (level) {
+				for (unsigned int i = level - 1; i > 0u; i--)
+					std::printf("|       ");
+				std::printf("|-----• ");
+			}
+			std::printf("%d\n", node->getKey());
+			printSubtree(node->getRightChild(), level+1);
+		}
 	}
 };
