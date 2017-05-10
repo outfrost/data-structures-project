@@ -1,7 +1,8 @@
-//
-// Created by outfrost on 02/04/17.
-//
-
+#include <cstdio>
+#include <stdexcept>
+#include <string>
+#include "string_consts.h"
+#include "List.cpp"
 #include "ArrayList.h"
 
 template<typename T>

@@ -1,7 +1,3 @@
-//
-// Created by outfrost on 03/04/17.
-//
-
 #include "LinkedListElement.h"
 
 template <typename T>

@@ -1,11 +1,8 @@
-//
-// Created by outfrost on 07/05/17.
-//
-
 #include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <random>
+#include <chrono>
 #include "string_consts.h"
 #include "ArrayList.cpp"
 #include "LinkedList.cpp"
@@ -25,6 +22,8 @@ int main(int argc, char **argv) {
 		std::printf("2. %s\n", STR_LANG_LINKEDLIST);
 		std::printf("3. %s\n", STR_LANG_BINARYHEAP);
 		std::printf("4. %s\n", STR_LANG_BINARYSEARCHTREE);
+		std::printf("---\n");
+		std::printf("F. %s\n", STR_LANG_TIME_MEASUREMENT);
 		std::printf("---\n");
 		std::printf("0. %s\n", STR_LANG_QUIT);
 		std::printf("(main) ");
@@ -350,8 +349,161 @@ int main(int argc, char **argv) {
 				}
 			}
 		}
-		
+		else if (choice == 'F' || choice == 'f') {
+			std::ofstream * resultStream = openStreamForWriting();
+			*resultStream << "structure_size,arraylist_add,arraylist_remove,arraylist_add_start,arraylist_remove_start,arraylist_add_end,arraylist_remove_end,arraylist_find,linkedlist_add,linkedlist_remove,linkedlist_add_start,linkedlist_remove_start,linkedlist_add_end,linkedlist_remove_end,linkedlist_find,binaryheap_add,binaryheap_remove,binaryheap_find,bst_add,bst_remove,bst_find\n";
+			int count = MAX_GENERATED_DATA;
+			for (int i = 0; i < 5 && count > 0; i++) {
+				for (int i = 0; i < MEASUREMENT_PASSES; i++) {
+					List<int> * arrayList = new ArrayList<int>();
+					List<int> * linkedList = new LinkedList<int>();
+					BinaryHeap<void*> * binaryHeap = new BinaryHeap<void*>();
+					BinarySearchTree<void*> * binarySearchTree = new BinarySearchTree<void*>();
+					
+					std::printf(STR_LANG_FORMAT_GENERATING, count);
+					std::random_device randomDevice;
+					std::mt19937 mt(randomDevice());
+					std::uniform_int_distribution<int> dataDistribution(std::numeric_limits<int>::min());
+					std::uniform_int_distribution<unsigned int> indexDistribution(0u, (unsigned int)(count - 1));
+					for (int i = 0; i < count; i++) {
+						int number = dataDistribution(mt);
+						arrayList->add(number);
+						linkedList->add(number);
+						binaryHeap->add(number, nullptr);
+						binarySearchTree->add(number, nullptr);
+					}
+					
+					std::printf(STR_LANG_FORMAT_MEASURING, i + 1);
+					
+					std::chrono::time_point<std::chrono::high_resolution_clock> timeBefore;
+					std::chrono::time_point<std::chrono::high_resolution_clock> timeAfter;
+					
+					int numberToAdd = dataDistribution(mt);
+					unsigned int randomIndex = indexDistribution(mt);
+					int numberToRemove = arrayList->get(randomIndex);
+					int numberToFind = arrayList->get(indexDistribution(mt));
+					
+				// structure_size
+					*resultStream << count << ",";
+					
+				// arraylist_add
+					timeBefore = std::chrono::high_resolution_clock::now();
+					arrayList->add(numberToAdd, randomIndex);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// arraylist_remove
+					timeBefore = std::chrono::high_resolution_clock::now();
+					arrayList->removeAt(randomIndex);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// arraylist_add_start
+					timeBefore = std::chrono::high_resolution_clock::now();
+					arrayList->add(numberToAdd, 0u);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// arraylist_remove_start
+					timeBefore = std::chrono::high_resolution_clock::now();
+					arrayList->removeAt(0u);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// arraylist_add_end
+					timeBefore = std::chrono::high_resolution_clock::now();
+					arrayList->add(numberToAdd, arrayList->getSize() - 1);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// arraylist_remove_end
+					timeBefore = std::chrono::high_resolution_clock::now();
+					arrayList->removeAt(arrayList->getSize() - 1);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// arraylist_find
+					timeBefore = std::chrono::high_resolution_clock::now();
+					arrayList->contains(numberToFind);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					
+				// linkedlist_add
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedList->add(numberToAdd, randomIndex);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// linkedlist_remove
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedList->removeAt(randomIndex);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// linkedlist_add_start
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedList->add(numberToAdd, 0u);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// linkedlist_remove_start
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedList->removeAt(0u);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// linkedlist_add_end
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedList->add(numberToAdd, arrayList->getSize() - 1);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// linkedlist_remove_end
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedList->removeAt(arrayList->getSize() - 1);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// linkedlist_find
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedList->contains(numberToFind);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					
+				// binaryheap_add
+					timeBefore = std::chrono::high_resolution_clock::now();
+					binaryHeap->add(numberToAdd, nullptr);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// binaryheap_remove
+					timeBefore = std::chrono::high_resolution_clock::now();
+					binaryHeap->remove(numberToRemove);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// binaryheap_find
+					timeBefore = std::chrono::high_resolution_clock::now();
+					binaryHeap->contains(numberToFind);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					
+				// bst_add
+					timeBefore = std::chrono::high_resolution_clock::now();
+					binarySearchTree->add(numberToAdd, nullptr);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// bst_remove
+					timeBefore = std::chrono::high_resolution_clock::now();
+					binarySearchTree->remove(numberToRemove);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+				// bst_find
+					timeBefore = std::chrono::high_resolution_clock::now();
+					binarySearchTree->contains(numberToFind);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << "\n";
+					
+					delete arrayList;
+					delete linkedList;
+					delete binaryHeap;
+					delete binarySearchTree;
+				}
+				count >>= 1;
+			}
+			resultStream->close();
+		}
 	}
+}
+
+inline long long int nanoseconds(std::chrono::time_point<std::chrono::high_resolution_clock> & since, std::chrono::time_point<std::chrono::high_resolution_clock> & until) {
+	return std::chrono::duration_cast<std::chrono::nanoseconds>(until - since).count();
 }
 
 void readStructureMenuChoice(char * choice, char * structureName) {
@@ -371,9 +523,19 @@ void readStructureMenuChoice(char * choice, char * structureName) {
 }
 
 std::ifstream * openStreamForReading() {
+	//std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::cin.ignore();
 	std::printf("%s: ", STR_LANG_ENTER_FILENAME);
 	std::string filename = "";
 	std::getline(std::cin, filename);
 	return new std::ifstream(filename);
+}
+
+std::ofstream * openStreamForWriting() {
+	//std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	std::cin.ignore();
+	std::printf("%s: ", STR_LANG_ENTER_FILENAME_RESULTS);
+	std::string filename = "";
+	std::getline(std::cin, filename);
+	return new std::ofstream(filename);
 }

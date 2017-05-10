@@ -1,7 +1,3 @@
-//
-// Created by outfrost on 09/04/17.
-//
-
 #include "BinarySearchTreeNode.h"
 
 template<typename T>

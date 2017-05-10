@@ -1,7 +1,7 @@
-//
-// Created by outfrost on 03/04/17.
-//
-
+#include <cstdio>
+#include <stdexcept>
+#include "string_consts.h"
+#include "BinaryHeapElement.cpp"
 #include "BinaryHeap.h"
 
 template<typename T>
@@ -39,7 +39,8 @@ public:
 	
 	void add(int key, T const value) {
 		BinaryHeapElement<T> * newElement = new BinaryHeapElement<T>(key, value, this->size);
-		this->array[this->size++] = newElement;
+		this->array[this->size] = newElement;
+		this->size++;
 		fixFromLeaf(this->size - 1);
 		checkAllocation();
 	}
@@ -87,8 +88,10 @@ protected:
 	
 	void removeAt(unsigned int index) {
 		if (index < this->size) {
-			swapElements(index, --this->size);
-			fixFromRoot(index);
+			this->size--;
+			swapElements(index, this->size);
+			if (index < this->size)
+				fixFromRoot(index);
 			checkAllocation();
 		}
 		else

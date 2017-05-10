@@ -1,13 +1,5 @@
-//
-// Created by outfrost on 03/04/17.
-//
-
-#include <stdexcept>
-#include "BinaryHeapElement.cpp"
-#include "string_consts.h"
-
 #ifndef DATA_STRUCTURES_PROJECT_BINARYHEAP_H
-#define DATA_STRUCTURES_PROJECT_BINARYHEAP_H 0
+#define DATA_STRUCTURES_PROJECT_BINARYHEAP_H
 
 #define BINARYHEAP_MIN_OVERHEAD 4u
 #define BINARYHEAP_MAX_OVERHEAD 32u

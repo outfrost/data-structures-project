@@ -1,7 +1,9 @@
-//
-// Created by outfrost on 03/04/17.
-//
-
+#include <cstdio>
+#include <stdexcept>
+#include <string>
+#include "List.cpp"
+#include "LinkedListElement.cpp"
+#include "string_consts.h"
 #include "LinkedList.h"
 
 template<typename T>
@@ -33,7 +35,7 @@ public:
 			}
 			else {
 				LinkedListElement<T> *elementPointer = this->lastElement;
-				for (unsigned int i = this->size - 1; i > index; i++)
+				for (unsigned int i = this->size - 1; i > index; i--)
 					elementPointer = elementPointer->getPreviousElement();
 				return elementPointer->getValue();
 			}
@@ -110,7 +112,7 @@ public:
 			}
 			else {
 				elementPointer = this->lastElement;
-				for (unsigned int i = this->size - 1; i > index; i++)
+				for (unsigned int i = this->size - 1; i > index; i--)
 					elementPointer = elementPointer->getPreviousElement();
 			}
 			remove(elementPointer);

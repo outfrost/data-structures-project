@@ -1,8 +1,5 @@
-//
-// Created by outfrost on 09/04/17.
-//
-
-#include <stddef.h>
+#include <cstdio>
+#include "BinarySearchTreeNode.cpp"
 #include "BinarySearchTree.h"
 
 template<typename T>
@@ -58,7 +55,7 @@ public:
 				}
 			}
 		}
-		balance();
+		// balance();
 	}
 	
 	void remove(int key) {
@@ -96,10 +93,12 @@ public:
 				this->root = nodeToSubstitute;
 			}
 			
-			nodeToSubstitute->setLeftChild(nodeToRemove->getLeftChild());
+			if (nodeToSubstitute != nullptr) {
+				nodeToSubstitute->setLeftChild(nodeToRemove->getLeftChild());
+				nodeToSubstitute->setRightChild(nodeToRemove->getRightChild());
+			}
 			if (nodeToRemove->getLeftChild() != nullptr)
 				nodeToRemove->getLeftChild()->setParent(nodeToSubstitute);
-			nodeToSubstitute->setRightChild(nodeToRemove->getRightChild());
 			if (nodeToRemove->getRightChild() != nullptr)
 				nodeToRemove->getRightChild()->setParent(nodeToSubstitute);
 			
@@ -107,7 +106,7 @@ public:
 			nodeToRemove->setRightChild(nullptr);
 			nodeToRemove->setParent(nullptr);
 		}
-		balance();
+		// balance();
 	}
 	
 	void balance() {
