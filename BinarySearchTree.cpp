@@ -102,9 +102,10 @@ public:
 			if (nodeToRemove->getRightChild() != nullptr)
 				nodeToRemove->getRightChild()->setParent(nodeToSubstitute);
 			
-			nodeToRemove->setLeftChild(nullptr);
+			delete nodeToRemove;
+			/*nodeToRemove->setLeftChild(nullptr);
 			nodeToRemove->setRightChild(nullptr);
-			nodeToRemove->setParent(nullptr);
+			nodeToRemove->setParent(nullptr);*/
 		}
 		// balance();
 	}
