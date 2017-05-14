@@ -382,6 +382,8 @@ int main(int argc, char **argv) {
 					unsigned int randomIndex = indexDistribution(mt);
 					int numberToRemove = arrayList->get(randomIndex);
 					int numberToFind = arrayList->get(indexDistribution(mt));
+					/*int numberToRemove = linkedList->get(randomIndex);
+					int numberToFind = linkedList->get(indexDistribution(mt));*/
 					
 				// structure_size
 					*resultStream << count << ",";
@@ -444,12 +446,12 @@ int main(int argc, char **argv) {
 					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
 				// linkedlist_add_end
 					timeBefore = std::chrono::high_resolution_clock::now();
-					linkedList->add(numberToAdd, arrayList->getSize() - 1);
+					linkedList->add(numberToAdd, linkedList->getSize() - 1);
 					timeAfter = std::chrono::high_resolution_clock::now();
 					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
 				// linkedlist_remove_end
 					timeBefore = std::chrono::high_resolution_clock::now();
-					linkedList->removeAt(arrayList->getSize() - 1);
+					linkedList->removeAt(linkedList->getSize() - 1);
 					timeAfter = std::chrono::high_resolution_clock::now();
 					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
 				// linkedlist_find
@@ -498,6 +500,7 @@ int main(int argc, char **argv) {
 				count >>= 1;
 			}
 			resultStream->close();
+			delete resultStream;
 		}
 	}
 }
