@@ -151,12 +151,14 @@ protected:
 	void printSubtree(BinarySearchTreeNode<T> * node, unsigned int level = 0u) {
 		if (node != nullptr) {
 			printSubtree(node->getLeftChild(), level+1);
+			std::stringstream lineStream();
 			if (level) {
 				for (unsigned int i = level - 1; i > 0u; i--)
-					std::printf("|       ");
-				std::printf("|-----• ");
+					lineStream << "|       ";
+				lineStream << "|-----o ";
 			}
-			std::printf("%d\n", node->getKey());
+			lineStream << node->getKey() << "\n";
+			std::cout << lineStream;
 			printSubtree(node->getRightChild(), level+1);
 		}
 	}
