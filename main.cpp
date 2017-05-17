@@ -78,8 +78,15 @@ int main(int argc, char **argv) {
 					std::cout << STR_LANG_ENTER_VALUE << ": ";
 					int value = 0;
 					std::scanf("%d", &value);
-					arrayList->add(value);
-					arrayList->print();
+					std::cout << STR_LANG_ENTER_INDEX << ": ";
+					unsigned int index = 0u;
+					std::scanf("%u", &index);
+					if (index <= arrayList->getSize()){
+						arrayList->add(value, index);
+						arrayList->print();
+					}
+					else
+						std::cout << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
 				}
 				else if (choice == '3') {
 					std::cout << STR_LANG_ENTER_INDEX << ": ";
@@ -158,8 +165,15 @@ int main(int argc, char **argv) {
 					std::cout << STR_LANG_ENTER_VALUE << ": ";
 					int value = 0;
 					std::scanf("%d", &value);
-					linkedList->add(value);
-					linkedList->print();
+					std::cout << STR_LANG_ENTER_INDEX << ": ";
+					unsigned int index = 0u;
+					std::scanf("%u", &index);
+					if (index <= linkedList->getSize()) {
+						linkedList->add(value, index);
+						linkedList->print();
+					}
+					else
+						std::cout << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
 				}
 				else if (choice == '3') {
 					std::cout << STR_LANG_ENTER_VALUE << ": ";
@@ -532,7 +546,9 @@ void readStructureMenuChoice(char * choice, const std::string & structureName) {
 	std::cout << "---\n";
 	std::cout << "0. " << STR_LANG_BACKTOMAIN << "\n";
 	std::cout << "(" << structureName << ") ";
-	*choice = (char)std::cin.get();
+	do {
+		*choice = (char)std::cin.get();
+	} while (*choice == '\n');
 	
 	/*std::printf("# %s #\n", structureName);
 	std::printf("---\n");
