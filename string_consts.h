@@ -33,7 +33,11 @@
 #define STR_LANG_GEN_RAND_ZERO_SIZE "Size of 0 chosen, structure unaltered."
 
 #define STR_LANG_FORMAT_GENERATING  "Generating %d random entries\n"
+#define STR_LANG_GENERATING_PRE     "Generating "
+#define STR_LANG_GENERATING_AFT     " random entries\n"
 #define STR_LANG_FORMAT_MEASURING   "Measuring operation times, pass # %d\n"
+#define STR_LANG_MEASURING_PRE      "Measuring operation times, pass # "
+#define STR_LANG_MEASUGING_AFT      "\n"
 
 #define STR_EX_INDEX_OUT_OF_BOUNDS  "Index out of bounds"
 #define STR_EX_BINARYHEAP_EMPTY     "BinaryHeap is empty"

@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <random>
@@ -16,7 +15,18 @@ int main(int argc, char **argv) {
 	char choice = '\0';
 	while (choice != '0') {
 		
-		std::printf("# %s #\n", STR_LANG_MAINMENU);
+		std::cout << "# " << STR_LANG_MAINMENU << " #\n";
+		std::cout << "---\n";
+		std::cout << "1. " << STR_LANG_ARRAYLIST << "\n";
+		std::cout << "2. " << STR_LANG_LINKEDLIST << "\n";
+		std::cout << "3. " << STR_LANG_BINARYHEAP << "\n";
+		std::cout << "4. " << STR_LANG_BINARYSEARCHTREE << "\n";
+		std::cout << "---\n";
+		std::cout << "F. " << STR_LANG_TIME_MEASUREMENT << "\n";
+		std::cout << "---\n";
+		std::cout << "0. " << STR_LANG_QUIT << "\n";
+		std::cout << "(main) ";
+		/*std::printf("# %s #\n", STR_LANG_MAINMENU);
 		std::printf("---\n");
 		std::printf("1. %s\n", STR_LANG_ARRAYLIST);
 		std::printf("2. %s\n", STR_LANG_LINKEDLIST);
@@ -26,15 +36,17 @@ int main(int argc, char **argv) {
 		std::printf("F. %s\n", STR_LANG_TIME_MEASUREMENT);
 		std::printf("---\n");
 		std::printf("0. %s\n", STR_LANG_QUIT);
-		std::printf("(main) ");
-		std::scanf(" %c", &choice);
+		std::printf("(main) ");*/
+		//std::cin.ignore(1, '\n');
+		choice = (char)std::cin.get();
+		//std::scanf(" %c", &choice);
 		
 		if (choice == '1') {
 			List<int> * arrayList = new ArrayList<int>();
 			
 			char choice = '\0';
 			while (choice != '0') {
-				readStructureMenuChoice(&choice, (char *)STR_LANG_ARRAYLIST);
+				readStructureMenuChoice(&choice, STR_LANG_ARRAYLIST);
 				if (choice == '1') {
 					unsigned int size = 0u;
 					
@@ -53,40 +65,40 @@ int main(int argc, char **argv) {
 							if (success)
 								arrayList->add(value);
 							else
-								std::printf("%s %u\n", STR_LANG_ERR_ADDING_ELEMENT, i);
+								std::cout << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
 						}
 						arrayList->print();
 					}
 					else
-						std::printf("%s\n", STR_LANG_ERR_BUILDING_FROM_FILE);
+						std::cout << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
 					
 					file->close();
 				}
 				else if (choice == '2') {
-					std::printf("%s: ", STR_LANG_ENTER_VALUE);
+					std::cout << STR_LANG_ENTER_VALUE << ": ";
 					int value = 0;
 					std::scanf("%d", &value);
 					arrayList->add(value);
 					arrayList->print();
 				}
 				else if (choice == '3') {
-					std::printf("%s: ", STR_LANG_ENTER_INDEX);
+					std::cout << STR_LANG_ENTER_INDEX << ": ";
 					unsigned int index = 0u;
 					std::scanf("%u", &index);
 					arrayList->removeAt(index);
 					arrayList->print();
 				}
 				else if (choice == '4') {
-					std::printf("%s: ", STR_LANG_ENTER_VALUE);
+					std::cout << STR_LANG_ENTER_VALUE << ": ";
 					int value = 0;
 					std::scanf("%d", &value);
 					if (arrayList->contains(value))
-						std::printf("%s\n", STR_LANG_DOES_CONTAIN);
+						std::cout << STR_LANG_DOES_CONTAIN << "\n";
 					else
-						std::printf("%s\n", STR_LANG_DOES_NOT_CONTAIN);
+						std::cout << STR_LANG_DOES_NOT_CONTAIN << "\n";
 				}
 				else if (choice == '5') {
-					std::printf("%s: ", STR_LANG_ENTER_SIZE);
+					std::cout << STR_LANG_ENTER_SIZE << ": ";
 					unsigned int size = 0u;
 					std::scanf("%u", &size);
 					if (size > 0u) {
@@ -99,13 +111,13 @@ int main(int argc, char **argv) {
 						arrayList->print();
 					}
 					else
-						std::printf("%s\n", STR_LANG_GEN_RAND_ZERO_SIZE);
+						std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
 				}
 				else if (choice == '6') {
 					arrayList->print();
 				}
 				else if (choice == '7') {
-					std::printf("%s\n", STR_LANG_CANNOT_BALANCE);
+					std::cout << STR_LANG_CANNOT_BALANCE << "\n";
 				}
 			}
 		}
@@ -114,7 +126,7 @@ int main(int argc, char **argv) {
 			
 			char choice = '\0';
 			while (choice != '0') {
-				readStructureMenuChoice(&choice, (char *)STR_LANG_LINKEDLIST);
+				readStructureMenuChoice(&choice, STR_LANG_LINKEDLIST);
 				if (choice == '1') {
 					unsigned int size = 0u;
 					
@@ -133,40 +145,40 @@ int main(int argc, char **argv) {
 							if (success)
 								linkedList->add(value);
 							else
-								std::printf("%s %u\n", STR_LANG_ERR_ADDING_ELEMENT, i);
+								std::cout << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
 						}
 						linkedList->print();
 					}
 					else
-						std::printf("%s\n", STR_LANG_ERR_BUILDING_FROM_FILE);
+						std::cout << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
 					
 					file->close();
 				}
 				else if (choice == '2') {
-					std::printf("%s: ", STR_LANG_ENTER_VALUE);
+					std::cout << STR_LANG_ENTER_VALUE << ": ";
 					int value = 0;
 					std::scanf("%d", &value);
 					linkedList->add(value);
 					linkedList->print();
 				}
 				else if (choice == '3') {
-					std::printf("%s: ", STR_LANG_ENTER_VALUE);
+					std::cout << STR_LANG_ENTER_VALUE << ": ";
 					int value = 0;
 					std::scanf("%u", &value);
 					linkedList->remove(value);
 					linkedList->print();
 				}
 				else if (choice == '4') {
-					std::printf("%s: ", STR_LANG_ENTER_VALUE);
+					std::cout << STR_LANG_ENTER_VALUE << ": ";
 					int value = 0;
 					std::scanf("%d", &value);
 					if (linkedList->contains(value))
-						std::printf("%s\n", STR_LANG_DOES_CONTAIN);
+						std::cout << STR_LANG_DOES_CONTAIN << "\n";
 					else
-						std::printf("%s\n", STR_LANG_DOES_NOT_CONTAIN);
+						std::cout << STR_LANG_DOES_NOT_CONTAIN << "\n";
 				}
 				else if (choice == '5') {
-					std::printf("%s: ", STR_LANG_ENTER_SIZE);
+					std::cout << STR_LANG_ENTER_SIZE << ": ";
 					unsigned int size = 0u;
 					std::scanf("%u", &size);
 					if (size > 0u) {
@@ -179,13 +191,13 @@ int main(int argc, char **argv) {
 						linkedList->print();
 					}
 					else
-						std::printf("%s\n", STR_LANG_GEN_RAND_ZERO_SIZE);
+						std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
 				}
 				else if (choice == '6') {
 					linkedList->print();
 				}
 				else if (choice == '7') {
-					std::printf("%s\n", STR_LANG_CANNOT_BALANCE);
+					std::cout << STR_LANG_CANNOT_BALANCE << "\n";
 				}
 			}
 		}
@@ -194,7 +206,7 @@ int main(int argc, char **argv) {
 			
 			char choice = '\0';
 			while (choice != '0') {
-				readStructureMenuChoice(&choice, (char *)STR_LANG_BINARYHEAP);
+				readStructureMenuChoice(&choice, STR_LANG_BINARYHEAP);
 				if (choice == '1') {
 					unsigned int size = 0u;
 					
@@ -213,40 +225,40 @@ int main(int argc, char **argv) {
 							if (success)
 								binaryHeap->add(key, nullptr);
 							else
-								std::printf("%s %u\n", STR_LANG_ERR_ADDING_ELEMENT, i);
+								std::cout << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
 						}
 						binaryHeap->print();
 					}
 					else
-						std::printf("%s\n", STR_LANG_ERR_BUILDING_FROM_FILE);
+						std::cout << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
 					
 					file->close();
 				}
 				else if (choice == '2') {
-					std::printf("%s: ", STR_LANG_ENTER_KEY);
+					std::cout << STR_LANG_ENTER_KEY << ": ";
 					int key = 0;
 					std::scanf("%d", &key);
 					binaryHeap->add(key, nullptr);
 					binaryHeap->print();
 				}
 				else if (choice == '3') {
-					std::printf("%s: ", STR_LANG_ENTER_KEY);
+					std::cout << STR_LANG_ENTER_KEY << ": ";
 					int key = 0;
 					std::scanf("%u", &key);
 					binaryHeap->remove(key);
 					binaryHeap->print();
 				}
 				else if (choice == '4') {
-					std::printf("%s: ", STR_LANG_ENTER_KEY);
+					std::cout << STR_LANG_ENTER_KEY << ": ";
 					int key = 0;
 					std::scanf("%d", &key);
 					if (binaryHeap->contains(key))
-						std::printf("%s\n", STR_LANG_DOES_CONTAIN);
+						std::cout << STR_LANG_DOES_CONTAIN << "\n";
 					else
-						std::printf("%s\n", STR_LANG_DOES_NOT_CONTAIN);
+						std::cout << STR_LANG_DOES_NOT_CONTAIN << "\n";
 				}
 				else if (choice == '5') {
-					std::printf("%s: ", STR_LANG_ENTER_SIZE);
+					std::cout << STR_LANG_ENTER_SIZE << ": ";
 					unsigned int size = 0u;
 					std::scanf("%u", &size);
 					if (size > 0u) {
@@ -259,13 +271,13 @@ int main(int argc, char **argv) {
 						binaryHeap->print();
 					}
 					else
-						std::printf("%s\n", STR_LANG_GEN_RAND_ZERO_SIZE);
+						std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
 				}
 				else if (choice == '6') {
 					binaryHeap->print();
 				}
 				else if (choice == '7') {
-					std::printf("%s\n", STR_LANG_CANNOT_BALANCE);
+					std::cout << STR_LANG_CANNOT_BALANCE << "\n";
 				}
 			}
 		}
@@ -274,7 +286,7 @@ int main(int argc, char **argv) {
 			
 			char choice = '\0';
 			while (choice != '0') {
-				readStructureMenuChoice(&choice, (char *)STR_LANG_BINARYSEARCHTREE);
+				readStructureMenuChoice(&choice, STR_LANG_BINARYSEARCHTREE);
 				if (choice == '1') {
 					unsigned int size = 0u;
 					
@@ -293,40 +305,40 @@ int main(int argc, char **argv) {
 							if (success)
 								binarySearchTree->add(key, nullptr);
 							else
-								std::printf("%s %u\n", STR_LANG_ERR_ADDING_ELEMENT, i);
+								std::cout << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
 						}
 						binarySearchTree->print();
 					}
 					else
-						std::printf("%s\n", STR_LANG_ERR_BUILDING_FROM_FILE);
+						std::cout << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
 					
 					file->close();
 				}
 				else if (choice == '2') {
-					std::printf("%s: ", STR_LANG_ENTER_KEY);
+					std::cout << STR_LANG_ENTER_KEY << ": ";
 					int key = 0;
 					std::scanf("%d", &key);
 					binarySearchTree->add(key, nullptr);
 					binarySearchTree->print();
 				}
 				else if (choice == '3') {
-					std::printf("%s: ", STR_LANG_ENTER_KEY);
+					std::cout << STR_LANG_ENTER_KEY << ": ";
 					int key = 0;
 					std::scanf("%u", &key);
 					binarySearchTree->remove(key);
 					binarySearchTree->print();
 				}
 				else if (choice == '4') {
-					std::printf("%s: ", STR_LANG_ENTER_KEY);
+					std::cout << STR_LANG_ENTER_KEY << ": ";
 					int key = 0;
 					std::scanf("%d", &key);
 					if (binarySearchTree->contains(key))
-						std::printf("%s\n", STR_LANG_DOES_CONTAIN);
+						std::cout << STR_LANG_DOES_CONTAIN << "\n";
 					else
-						std::printf("%s\n", STR_LANG_DOES_NOT_CONTAIN);
+						std::cout << STR_LANG_DOES_NOT_CONTAIN << "\n";
 				}
 				else if (choice == '5') {
-					std::printf("%s: ", STR_LANG_ENTER_SIZE);
+					std::cout << STR_LANG_ENTER_SIZE << ": ";
 					unsigned int size = 0u;
 					std::scanf("%u", &size);
 					if (size > 0u) {
@@ -339,7 +351,7 @@ int main(int argc, char **argv) {
 						binarySearchTree->print();
 					}
 					else
-						std::printf("%s\n", STR_LANG_GEN_RAND_ZERO_SIZE);
+						std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
 				}
 				else if (choice == '6') {
 					binarySearchTree->print();
@@ -360,7 +372,7 @@ int main(int argc, char **argv) {
 					BinaryHeap<void*> * binaryHeap = new BinaryHeap<void*>();
 					BinarySearchTree<void*> * binarySearchTree = new BinarySearchTree<void*>();
 					
-					std::printf(STR_LANG_FORMAT_GENERATING, count);
+					std::cout << STR_LANG_GENERATING_PRE << count << STR_LANG_GENERATING_AFT;
 					std::random_device randomDevice;
 					std::mt19937 mt(randomDevice());
 					std::uniform_int_distribution<int> dataDistribution(std::numeric_limits<int>::min());
@@ -373,7 +385,7 @@ int main(int argc, char **argv) {
 						binarySearchTree->add(number, nullptr);
 					}
 					
-					std::printf(STR_LANG_FORMAT_MEASURING, i + 1);
+					std::cout << STR_LANG_MEASURING_PRE << i + 1 << STR_LANG_MEASUGING_AFT;
 					
 					std::chrono::time_point<std::chrono::high_resolution_clock> timeBefore;
 					std::chrono::time_point<std::chrono::high_resolution_clock> timeAfter;
@@ -382,8 +394,6 @@ int main(int argc, char **argv) {
 					unsigned int randomIndex = indexDistribution(mt);
 					int numberToRemove = arrayList->get(randomIndex);
 					int numberToFind = arrayList->get(indexDistribution(mt));
-					/*int numberToRemove = linkedList->get(randomIndex);
-					int numberToFind = linkedList->get(indexDistribution(mt));*/
 					
 				// structure_size
 					*resultStream << count << ",";
@@ -509,8 +519,22 @@ inline long long int nanoseconds(std::chrono::time_point<std::chrono::high_resol
 	return std::chrono::duration_cast<std::chrono::nanoseconds>(until - since).count();
 }
 
-void readStructureMenuChoice(char * choice, char * structureName) {
-	std::printf("# %s #\n", structureName);
+void readStructureMenuChoice(char * choice, const std::string & structureName) {
+	std::cout << "# " << structureName << " #\n";
+	std::cout << "---\n";
+	std::cout << "1. " << STR_LANG_STRUCTURE_FROM_FILE << "\n";
+	std::cout << "2. " << STR_LANG_ADD_ELEMENT << "\n";
+	std::cout << "3. " << STR_LANG_REMOVE_ELEMENT << "\n";
+	std::cout << "4. " << STR_LANG_FIND_ELEMENT << "\n";
+	std::cout << "5. " << STR_LANG_GEN_RAND_STRUCTURE << "\n";
+	std::cout << "6. " << STR_LANG_PRINT_STRUCTURE << "\n";
+	std::cout << "7. " << STR_LANG_BALANCE_TREE << "\n";
+	std::cout << "---\n";
+	std::cout << "0. " << STR_LANG_BACKTOMAIN << "\n";
+	std::cout << "(" << structureName << ") ";
+	*choice = (char)std::cin.get();
+	
+	/*std::printf("# %s #\n", structureName);
 	std::printf("---\n");
 	std::printf("1. %s\n", STR_LANG_STRUCTURE_FROM_FILE);
 	std::printf("2. %s\n", STR_LANG_ADD_ELEMENT);
@@ -522,13 +546,13 @@ void readStructureMenuChoice(char * choice, char * structureName) {
 	std::printf("---\n");
 	std::printf("0. %s\n", STR_LANG_BACKTOMAIN);
 	std::printf("(%s) ", structureName);
-	std::scanf(" %c", choice);
+	std::scanf(" %c", choice);*/
 }
 
 std::ifstream * openStreamForReading() {
 	//std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::cin.ignore();
-	std::printf("%s: ", STR_LANG_ENTER_FILENAME);
+	std::cout << STR_LANG_ENTER_FILENAME << ": ";
 	std::string filename = "";
 	std::getline(std::cin, filename);
 	return new std::ifstream(filename);
@@ -537,7 +561,7 @@ std::ifstream * openStreamForReading() {
 std::ofstream * openStreamForWriting() {
 	//std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::cin.ignore();
-	std::printf("%s: ", STR_LANG_ENTER_FILENAME_RESULTS);
+	std::cout << STR_LANG_ENTER_FILENAME_RESULTS << ": ";
 	std::string filename = "";
 	std::getline(std::cin, filename);
 	return new std::ofstream(filename);
