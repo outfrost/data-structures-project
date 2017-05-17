@@ -10,5 +10,4 @@ set(CMAKE_CXX_STANDARD 11)
 #ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 set(SOURCE_FILES main.cpp)
-#set(SOURCE_FILES BinarySearchTree.cpp)
 add_executable(data-structures-project ${SOURCE_FILES})

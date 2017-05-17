@@ -1,3 +1,5 @@
+#include <iostream>
+#include <sstream>
 #include <cstdio>
 #include "BinarySearchTreeNode.cpp"
 #include "BinarySearchTree.h"
@@ -59,53 +61,55 @@ public:
 	}
 	
 	void remove(int key) {
-		BinarySearchTreeNode<T> * nodeToRemove = find(key);
-		if (nodeToRemove != nullptr) {
+		BinarySearchTreeNode<T> * nodeToRemove = find(key);         // Find node with the requested key
+		if (nodeToRemove != nullptr) {                              // if we found something (it's not null):
 			BinarySearchTreeNode<T> * nodeToSubstitute = nullptr;
 			
-			if (nodeToRemove->getLeftChild() == nullptr)
-				nodeToSubstitute = nodeToRemove->getRightChild();
-			else if (nodeToRemove->getRightChild() == nullptr)
-				nodeToSubstitute = nodeToRemove->getLeftChild();
-			else {
-				nodeToSubstitute = findSuccessor(nodeToRemove);
-				if (nodeToSubstitute->getParent() != nullptr) {
-					if (nodeToSubstitute->getParent()->getLeftChild() == nodeToSubstitute)
-						nodeToSubstitute->getParent()->setLeftChild(nodeToSubstitute->getRightChild());
-					else
-						nodeToSubstitute->getParent()->setRightChild(nodeToSubstitute->getRightChild());
+			if (nodeToRemove->getLeftChild() == nullptr)            // if nodeToRemove doesn't have a left child:
+				nodeToSubstitute = nodeToRemove->getRightChild();      // use the right child as nodeToSubstitute
+			else if (nodeToRemove->getRightChild() == nullptr)      // if nodeToRemove doesn't have a right child:
+				nodeToSubstitute = nodeToRemove->getLeftChild();        // use the left child as nodeToSubstitute
+			else {                                                  // Otherwise (nodeToRemove has both children):
+				nodeToSubstitute = findSuccessor(nodeToRemove);         // Find nodeToRemove's successor in the tree and use it as nodeToSubstitute
+				// nullcheck not necessary, because a successor is guaranteed to be present and guaranteed to be in nodeToRemove's right child's subtree
+				if (nodeToSubstitute == nodeToRemove->getRightChild()) {
+					nodeToSubstitute->setLeftChild(nodeToRemove->getLeftChild());
+					// nullcheck not necessary, because we've determined that nodeToRemove has a left child
+					nodeToRemove->getLeftChild()->setParent(nodeToSubstitute);
+				}
+				else {
+					if (nodeToSubstitute->getParent()->getLeftChild() == nodeToSubstitute)              // if the successor is the left child of its parent:
+						nodeToSubstitute->getParent()->setLeftChild(nodeToSubstitute->getRightChild());     // Replace the successor with the successor's right child in parent node (as left child)
+					else                                                                                // Otherwise (the successor is the right child of its parent):
+						nodeToSubstitute->getParent()->setRightChild(nodeToSubstitute->getRightChild());    // Replace the successor with the successor's right child in parent node (as right child)
 					
-					if (nodeToSubstitute->getRightChild() != nullptr)
-						nodeToSubstitute->getRightChild()->setParent(nodeToSubstitute->getParent());
+					if (nodeToSubstitute->getRightChild() != nullptr)                                   // if the successor has a right child:
+						nodeToSubstitute->getRightChild()->setParent(nodeToSubstitute->getParent());        // Replace the successor with the successor's parent in that right child
+					
+					nodeToSubstitute->setLeftChild(nodeToRemove->getLeftChild());   // Replace its left child with nodeToRemove's left child
+					nodeToSubstitute->setRightChild(nodeToRemove->getRightChild()); // Replace its right child with nodeToRemove's right child
+					
+					if (nodeToRemove->getLeftChild() != nullptr)                    // if nodeToRemove has a left child (it's not null):
+						nodeToRemove->getLeftChild()->setParent(nodeToSubstitute);      // Replace nodeToRemove with nodeToSubstitute in left child (as parent node)
+					if (nodeToRemove->getRightChild() != nullptr)                   // if nodeToRemove has a right child (it's not null):
+						nodeToRemove->getRightChild()->setParent(nodeToSubstitute);     // Replace nodeToRemove with nodeToSubstitute in right child (as parent node)
 				}
 			}
 			
 			if (nodeToSubstitute != nullptr)
 				nodeToSubstitute->setParent(nodeToRemove->getParent());
 			
-			if (nodeToRemove->getParent() != nullptr) {
-				if (nodeToRemove->getParent()->getLeftChild() == nodeToRemove)
-					nodeToRemove->getParent()->setLeftChild(nodeToSubstitute);
-				else
-					nodeToRemove->getParent()->setRightChild(nodeToSubstitute);
+			if (nodeToRemove->getParent() != nullptr) {                     // if nodeToRemove has a parent (it's not null):
+				if (nodeToRemove->getParent()->getLeftChild() == nodeToRemove)  // if nodeToRemove is the left child of its parent:
+					nodeToRemove->getParent()->setLeftChild(nodeToSubstitute);      // Replace nodeToRemove with nodeToSubstitute in parent node (as left child)
+				else                                                            // Otherwise (nodeToRemove is the right child of its parent):
+					nodeToRemove->getParent()->setRightChild(nodeToSubstitute);     // Replace nodeToRemove with nodeToSubstitute in parent node (as right child)
 			}
-			else {
-				this->root = nodeToSubstitute;
+			else {                                                          // Otherwise (nodeToRemove is the root of the tree):
+				this->root = nodeToSubstitute;                                  // Replace nodeToRemove with nodeToSubstitute as root of the tree
 			}
-			
-			if (nodeToSubstitute != nullptr) {
-				nodeToSubstitute->setLeftChild(nodeToRemove->getLeftChild());
-				nodeToSubstitute->setRightChild(nodeToRemove->getRightChild());
-			}
-			if (nodeToRemove->getLeftChild() != nullptr)
-				nodeToRemove->getLeftChild()->setParent(nodeToSubstitute);
-			if (nodeToRemove->getRightChild() != nullptr)
-				nodeToRemove->getRightChild()->setParent(nodeToSubstitute);
 			
 			delete nodeToRemove;
-			/*nodeToRemove->setLeftChild(nullptr);
-			nodeToRemove->setRightChild(nullptr);
-			nodeToRemove->setParent(nullptr);*/
 		}
 		// balance();
 	}
@@ -151,14 +155,14 @@ protected:
 	void printSubtree(BinarySearchTreeNode<T> * node, unsigned int level = 0u) {
 		if (node != nullptr) {
 			printSubtree(node->getLeftChild(), level+1);
-			std::stringstream lineStream();
+			std::stringstream lineStream/*(std::ios_base::in | std::ios_base::out | std::ios_base::app)*/;
 			if (level) {
 				for (unsigned int i = level - 1; i > 0u; i--)
 					lineStream << "|       ";
 				lineStream << "|-----o ";
 			}
 			lineStream << node->getKey() << "\n";
-			std::cout << lineStream;
+			std::cout << lineStream.rdbuf();
 			printSubtree(node->getRightChild(), level+1);
 		}
 	}
