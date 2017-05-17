@@ -67,6 +67,9 @@ public:
 	
 	void print() {
 		printSubtree();
+		for (unsigned int i = 0u; i < this->size; i++)
+			std::cout << this->array[i]->getKey() << " ";
+		std::cout << "\n";
 	}
 	
 protected:
