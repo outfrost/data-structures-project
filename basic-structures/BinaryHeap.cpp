@@ -1,6 +1,6 @@
-#include <cstdio>
+#include <iostream>
 #include <stdexcept>
-#include "string_consts.h"
+#include "../common/string_consts.h"
 #include "BinaryHeapElement.cpp"
 #include "BinaryHeap.h"
 

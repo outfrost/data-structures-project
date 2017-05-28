@@ -1,0 +1,60 @@
+#include <string>
+#include <sstream>
+#include <limits>
+#include <stdexcept>
+#include "MatrixGraph.h"
+
+MatrixGraph::MatrixGraph() {
+	MatrixGraph(0);
+}
+
+MatrixGraph::MatrixGraph(int nodeCount) {
+	if (nodeCount < 0)
+		throw new std::invalid_argument("Cannot create MatrixGraph with negative nodeCount");
+	else {
+		this->nodeCount = nodeCount;
+		this->neighbourMatrix = new int*[this->nodeCount];
+		for (int i = 0; i < this->nodeCount; i++) {
+			this->neighbourMatrix[i] = new int[this->nodeCount];
+			for (int j = 0; j < this->nodeCount; j++)
+				this->neighbourMatrix[i][j] = nullEdge;
+		}
+	}
+}
+
+int MatrixGraph::getEdgeMetric(int fromNode, int toNode) {
+	return this->neighbourMatrix[fromNode][toNode];
+}
+
+void MatrixGraph::setEdgeMetric(int fromNode, int toNode, int metric, bool bidirectional) {
+	this->neighbourMatrix[fromNode][toNode] = metric;
+	if (bidirectional)
+		this->neighbourMatrix[toNode][fromNode] = metric;
+}
+
+void MatrixGraph::removeEdge(int fromNode, int toNode, bool bidirectional) {
+	this->neighbourMatrix[fromNode][toNode] = nullEdge;
+	if (bidirectional)
+		this->neighbourMatrix[toNode][fromNode] = nullEdge;
+}
+
+void MatrixGraph::addNodes(int count) {
+	int **newNeighbourMatrix = new int*[this->nodeCount + count];
+	for (int i = 0; i < this->nodeCount + count; i++) {
+		newNeighbourMatrix[i] = new int[nodeCount + count];
+		for (int j = 0; j < this->nodeCount + count; j++) {
+			if (i < this->nodeCount && j < this->nodeCount)
+				newNeighbourMatrix[i][j] = this->neighbourMatrix[i][j];
+			else
+				newNeighbourMatrix[i][j] = nullEdge;
+		}
+	}
+}
+
+void MatrixGraph::clear() {
+
+}
+
+void MatrixGraph::print() {
+
+}

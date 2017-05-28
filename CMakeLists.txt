@@ -9,5 +9,14 @@ set(CMAKE_CXX_STANDARD 11)
 #	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 #ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
-set(SOURCE_FILES main.cpp)
+#file(GLOB SOURCE_FILES
+#		"*.cpp"
+#		"common/*.cpp")
+
+set(SOURCE_FILES main.cpp
+		common/getValueFromString.cpp
+		common/time_measurement.cpp
+		graphs/MatrixGraph.cpp)
+
 add_executable(data-structures-project ${SOURCE_FILES})
+#add_executable(data-structures-project main.cpp ${common} ${basic-structures})

@@ -1,0 +1,7 @@
+#ifndef DATA_STRUCTURES_PROJECT_GETVALUEFROMSTRING_H
+#define DATA_STRUCTURES_PROJECT_GETVALUEFROMSTRING_H
+
+template <typename T>
+bool getValueFromString(const std::string & value, T & result);
+
+#endif //DATA_STRUCTURES_PROJECT_GETVALUEFROMSTRING_H

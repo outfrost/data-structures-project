@@ -3,7 +3,7 @@
 #include <string>
 #include "List.cpp"
 #include "LinkedListElement.cpp"
-#include "string_consts.h"
+#include "../common/string_consts.h"
 #include "LinkedList.h"
 
 template<typename T>
