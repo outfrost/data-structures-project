@@ -16,7 +16,10 @@ set(CMAKE_CXX_STANDARD 11)
 set(SOURCE_FILES main.cpp
 		common/getValueFromString.cpp
 		common/time_measurement.cpp
-		graphs/MatrixGraph.cpp)
+		graphs/MatrixGraph.cpp
+		graphs/LinkedGraph.cpp
+		graphs/LinkedGraphNode.cpp
+		graphs/LinkedGraphEdge.cpp)
 
 add_executable(data-structures-project ${SOURCE_FILES})
 #add_executable(data-structures-project main.cpp ${common} ${basic-structures})
