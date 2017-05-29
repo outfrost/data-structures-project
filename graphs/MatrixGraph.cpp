@@ -2,6 +2,7 @@
 #include <sstream>
 #include <limits>
 #include <stdexcept>
+#include <iostream>
 #include "MatrixGraph.h"
 
 MatrixGraph::MatrixGraph() {
@@ -20,6 +21,12 @@ MatrixGraph::MatrixGraph(int nodeCount) {
 				this->neighbourMatrix[i][j] = nullEdge;
 		}
 	}
+}
+
+MatrixGraph::~MatrixGraph() {
+	for (int i = 0; i < this->nodeCount; i++)
+		delete [] this->neighbourMatrix[i];
+	delete [] this->neighbourMatrix;
 }
 
 int MatrixGraph::getEdgeMetric(int fromNode, int toNode) {
@@ -48,13 +55,31 @@ void MatrixGraph::addNodes(int count) {
 			else
 				newNeighbourMatrix[i][j] = nullEdge;
 		}
+		if (i < this->nodeCount)
+			delete [] this->neighbourMatrix[i];
 	}
+	delete [] this->neighbourMatrix;
+	this->nodeCount += count;
+	this->neighbourMatrix = newNeighbourMatrix;
 }
 
 void MatrixGraph::clear() {
-
+	for (int i = 0; i < this->nodeCount; i++)
+		delete [] this->neighbourMatrix[i];
+	delete [] this->neighbourMatrix;
+	this->nodeCount = 0;
+	this->neighbourMatrix = new int*[0];
 }
 
 void MatrixGraph::print() {
-
+	std::cout << "\t";
+	for (int i = 0; i < this->nodeCount; i++)
+		std::cout << i << "\t";
+	std::cout << "\n";
+	for (int i = 0; i < this->nodeCount; i++) {
+		std::cout << i << "\t";
+		for (int j = 0; j < this->nodeCount; j++)
+			std::cout << this->neighbourMatrix[i][j] << "\t";
+		std::cout << "\n";
+	}
 }

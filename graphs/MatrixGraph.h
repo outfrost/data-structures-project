@@ -12,6 +12,7 @@ private:
 public:
 	MatrixGraph();
 	MatrixGraph(int nodeCount);
+	~MatrixGraph();
 	
 	int getEdgeMetric(int fromNode, int toNode);
 	void setEdgeMetric(int fromNode, int toNode, int metric, bool bidirectional);
