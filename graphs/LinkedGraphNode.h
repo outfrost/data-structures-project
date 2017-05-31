@@ -6,7 +6,7 @@ class LinkedGraphNode {
 
 private:
 	int index;
-	
+	LinkedList<LinkedGraphEdge> *
 };
 
 

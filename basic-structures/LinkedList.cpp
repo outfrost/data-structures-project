@@ -163,3 +163,12 @@ protected:
 		this->size--;
 	}
 };
+
+void LinkedList<LinkedGraphEdge>::print() {
+	LinkedListElement<LinkedGraphEdge> *element = this->firstElement;
+	for (unsigned int i = 0u; i < this->size; i++) {
+		std::cout << element->toString() << " ";
+		element = element->getNextElement();
+	}
+	std::cout << "\n";
+}
