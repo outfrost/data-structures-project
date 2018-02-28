@@ -9,17 +9,21 @@ set(CMAKE_CXX_STANDARD 11)
 #	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 #ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
-#file(GLOB SOURCE_FILES
-#		"*.cpp"
-#		"common/*.cpp")
+file(GLOB common
+		"common/*.c"
+		"common/*.cpp")
 
-set(SOURCE_FILES main.cpp
-		common/getValueFromString.cpp
-		common/time_measurement.cpp
-		graphs/MatrixGraph.cpp
-		graphs/LinkedGraph.cpp
-		graphs/LinkedGraphNode.cpp
-		graphs/LinkedGraphEdge.cpp)
+file(GLOB basic-structures
+		"basic-structures/*.c"
+		"basic-structures/*.cpp")
+
+file(GLOB graphs
+		"graphs/*.c"
+		"graphs/*.cpp")
+
+set(SOURCE_FILES
+		"basic-structures/main.cpp"
+		${basic-structures}
+		${common})
 
 add_executable(data-structures-project ${SOURCE_FILES})
-#add_executable(data-structures-project main.cpp ${common} ${basic-structures})
