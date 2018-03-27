@@ -2,7 +2,6 @@
 #include "ArrayList.cpp"
 #include "LinkedList.cpp"
 #include "BinaryHeap.cpp"
-#include "BinarySearchTree.cpp"
 #include "../common/getValueFromString.h"
 #include "../common/time_measurement.h"
 #include "basic_structures.h"
@@ -17,7 +16,6 @@ int basic_structures() {
 		std::cout << "1. " << STR_LANG_ARRAYLIST << "\n";
 		std::cout << "2. " << STR_LANG_LINKEDLIST << "\n";
 		std::cout << "3. " << STR_LANG_BINARYHEAP << "\n";
-		std::cout << "4. " << STR_LANG_BINARYSEARCHTREE << "\n";
 		std::cout << "---\n";
 		std::cout << "F. " << STR_LANG_TIME_MEASUREMENT << "\n";
 		std::cout << "---\n";
@@ -292,86 +290,6 @@ int basic_structures() {
 				}
 			}
 		}
-		else if (choice == '4') {
-			BinarySearchTree<void*> * binarySearchTree = new BinarySearchTree<void*>();
-			
-			char choice = '\0';
-			while (choice != '0') {
-				readStructureMenuChoice(&choice, STR_LANG_BINARYSEARCHTREE);
-				if (choice == '1') {
-					unsigned int size = 0u;
-					
-					std::ifstream * file = openStreamForReading();
-					std::string word;
-					
-					bool success = true;
-					*file >> word;
-					success = success && getValueFromString<unsigned int>(word, size);
-					if (success) {
-						binarySearchTree = new BinarySearchTree<void*>();
-						for (unsigned int i = 0u; i < size; i++) {
-							int key = 0;
-							*file >> word;
-							success = success && getValueFromString<int>(word, key);
-							if (success)
-								binarySearchTree->add(key, nullptr);
-							else
-								std::cout << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
-						}
-						binarySearchTree->print();
-					}
-					else
-						std::cout << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
-					
-					file->close();
-				}
-				else if (choice == '2') {
-					std::cout << STR_LANG_ENTER_KEY << ": ";
-					int key = 0;
-					std::scanf("%d", &key);
-					binarySearchTree->add(key, nullptr);
-					binarySearchTree->print();
-				}
-				else if (choice == '3') {
-					std::cout << STR_LANG_ENTER_KEY << ": ";
-					int key = 0;
-					std::scanf("%u", &key);
-					binarySearchTree->remove(key);
-					binarySearchTree->print();
-				}
-				else if (choice == '4') {
-					std::cout << STR_LANG_ENTER_KEY << ": ";
-					int key = 0;
-					std::scanf("%d", &key);
-					if (binarySearchTree->contains(key))
-						std::cout << STR_LANG_DOES_CONTAIN << "\n";
-					else
-						std::cout << STR_LANG_DOES_NOT_CONTAIN << "\n";
-				}
-				else if (choice == '5') {
-					std::cout << STR_LANG_ENTER_SIZE << ": ";
-					unsigned int size = 0u;
-					std::scanf("%u", &size);
-					if (size > 0u) {
-						binarySearchTree = new BinarySearchTree<void*>();
-						std::random_device randomDevice;
-						std::mt19937 mt(randomDevice());
-						std::uniform_int_distribution<int> distribution(std::numeric_limits<int>::min());
-						for (unsigned int i = 0u; i < size; i++)
-							binarySearchTree->add(distribution(mt), nullptr);
-						binarySearchTree->print();
-					}
-					else
-						std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
-				}
-				else if (choice == '6') {
-					binarySearchTree->print();
-				}
-				else if (choice == '7') {
-					binarySearchTree->balance();
-				}
-			}
-		}
 		else if (choice == 'F' || choice == 'f') {
 			std::ofstream * resultStream = openStreamForWriting();
 			*resultStream << "structure_size,arraylist_add,arraylist_remove,arraylist_add_start,arraylist_remove_start,arraylist_add_end,arraylist_remove_end,arraylist_find,linkedlist_add,linkedlist_remove,linkedlist_add_start,linkedlist_remove_start,linkedlist_add_end,linkedlist_remove_end,linkedlist_find,binaryheap_add,binaryheap_remove,binaryheap_find,bst_add,bst_remove,bst_find\n";
@@ -381,7 +299,6 @@ int basic_structures() {
 					List<int> * arrayList = new ArrayList<int>();
 					List<int> * linkedList = new LinkedList<int>();
 					BinaryHeap<void*> * binaryHeap = new BinaryHeap<void*>();
-					BinarySearchTree<void*> * binarySearchTree = new BinarySearchTree<void*>();
 					
 					std::cout << STR_LANG_GENERATING_PRE << count << STR_LANG_GENERATING_AFT;
 					std::random_device randomDevice;
@@ -393,7 +310,6 @@ int basic_structures() {
 						arrayList->add(number);
 						linkedList->add(number);
 						binaryHeap->add(number, nullptr);
-						binarySearchTree->add(number, nullptr);
 					}
 					
 					std::cout << STR_LANG_MEASURING_PRE << i + 1 << STR_LANG_MEASUGING_AFT;
@@ -497,26 +413,9 @@ int basic_structures() {
 					timeAfter = std::chrono::high_resolution_clock::now();
 					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
 					
-					// bst_add
-					timeBefore = std::chrono::high_resolution_clock::now();
-					binarySearchTree->add(numberToAdd, nullptr);
-					timeAfter = std::chrono::high_resolution_clock::now();
-					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
-					// bst_remove
-					timeBefore = std::chrono::high_resolution_clock::now();
-					binarySearchTree->remove(numberToRemove);
-					timeAfter = std::chrono::high_resolution_clock::now();
-					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
-					// bst_find
-					timeBefore = std::chrono::high_resolution_clock::now();
-					binarySearchTree->contains(numberToFind);
-					timeAfter = std::chrono::high_resolution_clock::now();
-					*resultStream << nanoseconds(timeBefore, timeAfter) << "\n";
-					
 					delete arrayList;
 					delete linkedList;
 					delete binaryHeap;
-					delete binarySearchTree;
 				}
 				count >>= 1;
 			}
@@ -537,7 +436,6 @@ void readStructureMenuChoice(char * choice, const std::string & structureName) {
 	std::cout << "4. " << STR_LANG_FIND_ELEMENT << "\n";
 	std::cout << "5. " << STR_LANG_GEN_RAND_STRUCTURE << "\n";
 	std::cout << "6. " << STR_LANG_PRINT_STRUCTURE << "\n";
-	std::cout << "7. " << STR_LANG_BALANCE_TREE << "\n";
 	std::cout << "---\n";
 	std::cout << "0. " << STR_LANG_BACKTOMAIN << "\n";
 	std::cout << "(" << structureName << ") ";
