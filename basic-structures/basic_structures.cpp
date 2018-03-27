@@ -292,7 +292,7 @@ int basic_structures() {
 		}
 		else if (choice == 'F' || choice == 'f') {
 			std::ofstream * resultStream = openStreamForWriting();
-			*resultStream << "structure_size,arraylist_add,arraylist_remove,arraylist_add_start,arraylist_remove_start,arraylist_add_end,arraylist_remove_end,arraylist_find,linkedlist_add,linkedlist_remove,linkedlist_add_start,linkedlist_remove_start,linkedlist_add_end,linkedlist_remove_end,linkedlist_find,binaryheap_add,binaryheap_remove,binaryheap_find,bst_add,bst_remove,bst_find\n";
+			*resultStream << "structure_size,arraylist_add,arraylist_remove,arraylist_add_start,arraylist_remove_start,arraylist_add_end,arraylist_remove_end,arraylist_find,linkedlist_add,linkedlist_remove,linkedlist_add_start,linkedlist_remove_start,linkedlist_add_end,linkedlist_remove_end,linkedlist_find,binaryheap_add,binaryheap_remove,binaryheap_find\n";
 			int count = MAX_GENERATED_DATA;
 			for (int i = 0; i < 5 && count > 0; i++) {
 				for (int i = 0; i < MEASUREMENT_PASSES; i++) {
@@ -411,7 +411,7 @@ int basic_structures() {
 					timeBefore = std::chrono::high_resolution_clock::now();
 					binaryHeap->contains(numberToFind);
 					timeAfter = std::chrono::high_resolution_clock::now();
-					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					*resultStream << nanoseconds(timeBefore, timeAfter) << "\n";
 					
 					delete arrayList;
 					delete linkedList;
