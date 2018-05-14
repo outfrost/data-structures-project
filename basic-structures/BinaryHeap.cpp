@@ -52,7 +52,10 @@ public:
 	}
 	
 	void remove() {
-		removeAt(0u);
+		if (getSize() > 0u)
+			removeAt(0u);
+		else
+			throw new std::out_of_range(STR_EX_BINARYHEAP_EMPTY);
 	}
 	
 	T pop() {

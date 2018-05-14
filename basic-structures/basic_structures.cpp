@@ -60,12 +60,12 @@ int basic_structures() {
 							if (success)
 								arrayList->add(value);
 							else
-								std::cout << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
+								std::cerr << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
 						}
 						arrayList->print();
 					}
 					else
-						std::cout << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
+						std::cerr << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
 					
 					file->close();
 				}
@@ -81,14 +81,18 @@ int basic_structures() {
 						arrayList->print();
 					}
 					else
-						std::cout << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
+						std::cerr << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
 				}
 				else if (choice == '3') {
 					std::cout << STR_LANG_ENTER_INDEX << ": ";
 					unsigned int index = 0u;
 					std::scanf("%u", &index);
-					arrayList->removeAt(index);
-					arrayList->print();
+					if (index < arrayList->getSize()) {
+						arrayList->removeAt(index);
+						arrayList->print();
+					}
+					else
+						std::cerr << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
 				}
 				else if (choice == '4') {
 					std::cout << STR_LANG_ENTER_VALUE << ": ";
@@ -147,12 +151,12 @@ int basic_structures() {
 							if (success)
 								linkedList->add(value);
 							else
-								std::cout << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
+								std::cerr << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
 						}
 						linkedList->print();
 					}
 					else
-						std::cout << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
+						std::cerr << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
 					
 					file->close();
 				}
@@ -168,7 +172,7 @@ int basic_structures() {
 						linkedList->print();
 					}
 					else
-						std::cout << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
+						std::cerr << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
 				}
 				else if (choice == '3') {
 					std::cout << STR_LANG_ENTER_VALUE << ": ";
@@ -234,12 +238,12 @@ int basic_structures() {
 							if (success)
 								binaryHeap->add(key, nullptr);
 							else
-								std::cout << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
+								std::cerr << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
 						}
 						binaryHeap->print();
 					}
 					else
-						std::cout << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
+						std::cerr << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
 					
 					file->close();
 				}
@@ -254,7 +258,11 @@ int basic_structures() {
 					std::cout << STR_LANG_ENTER_KEY << ": ";
 					int key = 0;
 					std::scanf("%u", &key);
-					binaryHeap->remove(key);
+					try {
+						binaryHeap->remove(key);
+					} catch(std::out_of_range& e) {
+						std::cerr << e.what() << "\n";
+					}
 					binaryHeap->print();
 				}
 				else if (choice == '4') {
