@@ -55,7 +55,7 @@ public:
 		if (getSize() > 0u)
 			removeAt(0u);
 		else
-			throw new std::out_of_range(STR_EX_BINARYHEAP_EMPTY);
+			throw std::out_of_range(STR_EX_BINARYHEAP_EMPTY);
 	}
 	
 	T pop() {
@@ -65,7 +65,7 @@ public:
 			return rootValue;
 		}
 		else
-			throw new std::out_of_range(STR_EX_BINARYHEAP_EMPTY);
+			throw std::out_of_range(STR_EX_BINARYHEAP_EMPTY);
 	}
 	
 	void print() {
@@ -89,7 +89,7 @@ protected:
 			return found;
 		}
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
 	void removeAt(unsigned int index) {
@@ -101,7 +101,7 @@ protected:
 			checkAllocation();
 		}
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
 	void checkAllocation() {
@@ -123,7 +123,7 @@ protected:
 			}
 		}
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
 	void fixFromRoot(unsigned int index) {
@@ -153,7 +153,7 @@ protected:
 			}
 		}
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
 	void swapElements(unsigned int index1, unsigned int index2) {

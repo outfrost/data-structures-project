@@ -40,6 +40,8 @@
 #define STR_LANG_MEASUGING_AFT      "\n"
 
 #define STR_EX_INDEX_OUT_OF_BOUNDS  "Index out of bounds"
+#define STR_EX_ARRAYLIST_EMPTY      "ArrayList is empty"
+#define STR_EX_LINKEDLIST_EMPTY     "LinkedList is empty"
 #define STR_EX_BINARYHEAP_EMPTY     "BinaryHeap is empty"
 
 #endif //DATA_STRUCTURES_PROJECT_STRING_CONSTS_H

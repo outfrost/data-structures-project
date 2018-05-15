@@ -21,11 +21,11 @@ public:
 		this->lastElement = nullptr;
 	}
 	
-	unsigned int getSize() {
+	unsigned int getSize() override {
 		return this->size;
 	}
 	
-	T get(unsigned int index) {
+	T get(unsigned int index) override {
 		if (index < this->size) {
 			if (index <= this->size >> 1) {
 				LinkedListElement<T> *elementPointer = this->firstElement;
@@ -41,10 +41,10 @@ public:
 			}
 		}
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
-	bool contains(T const value) {
+	bool contains(T const value) override {
 		LinkedListElement<T> *elementPointer = firstElement;
 		for (unsigned int i = 0u; i < this->size; i++) {
 			if (elementPointer->getValue() == value)
@@ -54,7 +54,7 @@ public:
 		return false;
 	}
 	
-	void add(T const value, unsigned int index) {
+	void add(T const value, unsigned int index) override {
 		if (index <= this->size) {
 			LinkedListElement<T> *newElement = new LinkedListElement<T>(value);
 			if (index == 0u) {
@@ -89,10 +89,10 @@ public:
 			this->size++;
 		}
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
-	void add(T const value) {
+	void add(T const value) override {
 		LinkedListElement<T> *newElement = new LinkedListElement<T>(value, this->lastElement, nullptr);
 		if (this->lastElement != nullptr)
 			this->lastElement->setNextElement(newElement);
@@ -102,7 +102,7 @@ public:
 		this->size++;
 	}
 	
-	void removeAt(unsigned int index) {
+	void removeAt(unsigned int index) override {
 		if (index < this->size) {
 			LinkedListElement<T> *elementPointer;
 			if (index <= this->size >> 1) {
@@ -118,10 +118,24 @@ public:
 			remove(elementPointer);
 		}
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
-	void remove(T const value) {
+	void removeFirst() override {
+		if (getSize() > 0)
+			remove(this->firstElement);
+		else
+			throw std::out_of_range(STR_EX_LINKEDLIST_EMPTY);
+	}
+	
+	void removeLast() override {
+		if (getSize() > 0)
+			remove(this->lastElement);
+		else
+			throw std::out_of_range(STR_EX_LINKEDLIST_EMPTY);
+	}
+	
+	void remove(T const value) override {
 		LinkedListElement<T> *elementPointer = this->firstElement;
 		for (unsigned int i = 0u; i < this->size; i++) {
 			if (elementPointer->getValue() == value) {
@@ -132,7 +146,7 @@ public:
 		}
 	}
 	
-	void print() {
+	void print() override {
 		LinkedListElement<T> *element = this->firstElement;
 		for (unsigned int i = 0u; i < this->size; i++) {
 			std::printf("%s ", std::to_string(element->getValue()).c_str());

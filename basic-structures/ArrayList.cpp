@@ -24,18 +24,18 @@ public:
 	}
 	*/
 	
-	unsigned int getSize() {
+	unsigned int getSize() override {
 		return this->size;
 	}
 	
-	T get(unsigned int index) {
+	T get(unsigned int index) override {
 		if (index < this->size)
 			return this->array[index];
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
-	bool contains(T const value) {
+	bool contains(T const value) override {
 		for (unsigned int i = 0u; i < this->size; i++) {
 			if (this->array[i] == value)
 				return true;
@@ -43,7 +43,7 @@ public:
 		return false;
 	}
 	
-	void add(T const value, unsigned int index) {
+	void add(T const value, unsigned int index) override {
 		if (index <= this->size) {
 			T *newArray = new T[++this->size];
 			for (unsigned int i = 0u; i < this->size; i++) {
@@ -60,10 +60,10 @@ public:
 			this->array = newArray;
 		}
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
-	void add(T const value) {
+	void add(T const value) override {
 		T *newArray = new T[++this->size];
 		for (unsigned int i = 0u; i < this->size; i++)
 			newArray[i] = this->array[i];
@@ -72,7 +72,7 @@ public:
 		this->array = newArray;
 	}
 	
-	void removeAt(unsigned int index) {
+	void removeAt(unsigned int index) override {
 		if (index < this->size) {
 			T *newArray = new T[--this->size];
 			for (unsigned int i = 0u; i < this->size; i++) {
@@ -85,10 +85,18 @@ public:
 			this->array = newArray;
 		}
 		else
-			throw new std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
 	}
 	
-	void remove(T const value) {
+	void removeFirst() override {
+		removeAt(0u);
+	}
+	
+	void removeLast() override {
+		removeAt(getSize() - 1);
+	}
+	
+	void remove(T const value) override {
 		for (unsigned int i = 0u; i < this->size; i++) {
 			if (this->array[i] == value) {
 				remove(i);
@@ -97,7 +105,7 @@ public:
 		}
 	}
 	
-	void print() {
+	void print() override {
 		for (unsigned int i = 0u; i < this->size; i++)
 			std::printf("%s ", std::to_string(this->array[i]).c_str());
 		std::printf("\n");
