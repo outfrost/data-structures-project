@@ -11,7 +11,7 @@ MatrixGraph::MatrixGraph() {
 
 MatrixGraph::MatrixGraph(int nodeCount) {
 	if (nodeCount < 0)
-		throw new std::invalid_argument("Cannot create MatrixGraph with negative nodeCount");
+		throw std::invalid_argument("Cannot create MatrixGraph with negative nodeCount");
 	else {
 		this->nodeCount = nodeCount;
 		this->neighbourMatrix = new int*[this->nodeCount];
