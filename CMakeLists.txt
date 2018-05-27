@@ -23,7 +23,7 @@ file(GLOB graphs
 
 set(SOURCE_FILES
 		"basic-structures/main.cpp"
-		${basic-structures}
+		${graphs}
 		${common})
 
 add_executable(data-structures-project ${SOURCE_FILES})
