@@ -155,7 +155,7 @@ public:
 	}
 	
 	void print() override {
-		LinkedListElement<T> *element = this->firstElement;
+/*		LinkedListElement<T> *element = this->firstElement;
 		for (unsigned int i = 0u; i < this->size; i++) {
 			std::printf("%s ", std::to_string(element->getValue()).c_str());
 			element = element->getNextElement();
@@ -167,7 +167,7 @@ public:
 			element = element->getPreviousElement();
 		}
 		std::printf("\n");
-	}
+*/	}
 
 protected:
 	void remove(LinkedListElement<T> * element) {

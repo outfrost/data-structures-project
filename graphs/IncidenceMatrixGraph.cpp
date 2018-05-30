@@ -87,7 +87,48 @@ std::string IncidenceMatrixGraph::toString() {
 }
 
 bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {
-	return false;
+	if (startingNode < nodeCount && destinationNode < nodeCount
+	    && startingNode >= 0 && destinationNode >= 0) {
+		bool visited[nodeCount] = {false};
+		int tentativeDistance[nodeCount] = {std::numeric_limits<int>::max()};
+		int previousHop[nodeCount] = {-1};
+		tentativeDistance[startingNode] = 0;
+		int currentNode = startingNode;
+		
+		while (currentNode != destinationNode && !visited[destinationNode] && currentNode != -1) {
+			for (int i = 0; i < edgeCount; i++) {
+				if (incidenceMatrix[index(currentNode, i)] > 0) {
+					int currentNeighbor = 0;
+					for (int k = 0; k < nodeCount; k++) {
+						if (incidenceMatrix[index(k, i)] < 0) {
+							currentNeighbor = k;
+							break;
+						}
+					}
+					if (tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)] < tentativeDistance[currentNeighbor]) {
+						tentativeDistance[currentNeighbor] = tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)];
+						previousHop[currentNeighbor] = currentNode;
+					}
+				}
+			}
+			visited[currentNode] = true;
+			
+			int smallestTentativeDistance = std::numeric_limits<int>::max();
+			int nodeWithSmallestDistance = -1;
+			for (int i = 0; i < nodeCount; i++) {
+				if (!visited[i] && tentativeDistance[i] < smallestTentativeDistance) {
+					smallestTentativeDistance = tentativeDistance[i];
+					nodeWithSmallestDistance = i;
+				}
+			}
+			currentNode = nodeWithSmallestDistance;
+		}
+		
+		distance = tentativeDistance[destinationNode];
+		if (currentNode != -1) {
+			path.
+		}
+	}
 }
 
 inline int IncidenceMatrixGraph::index(int node, int edge) {
