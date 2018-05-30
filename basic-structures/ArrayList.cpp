@@ -99,7 +99,7 @@ public:
 	void remove(T const value) override {
 		for (unsigned int i = 0u; i < this->size; i++) {
 			if (this->array[i] == value) {
-				remove(i);
+				removeAt(i);
 				return;
 			}
 		}
