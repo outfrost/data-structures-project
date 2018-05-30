@@ -11,6 +11,8 @@ public:
 	virtual bool contains(T const value) = 0;
 	virtual void add(T const value, unsigned int index) = 0;
 	virtual void add(T const value) = 0;
+	virtual void addStart(T const value) = 0;
+	virtual void addEnd(T const value) = 0;
 	virtual void removeAt(unsigned int index) = 0;
 	virtual void removeFirst() = 0;
 	virtual void removeLast() = 0;

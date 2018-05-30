@@ -94,7 +94,32 @@ int basic_structures() {
 					else
 						std::cerr << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
 				}
-				else if (choice == '4') {
+				else if (choice == '4' || choice == '6') {
+					std::cout << STR_LANG_ENTER_VALUE << ": ";
+					int value = 0;
+					std::scanf("%d", &value);
+					if (choice == '4') {
+						arrayList->addStart(value);
+					}
+					else {
+						arrayList->addEnd(value);
+					}
+					arrayList->print();
+				}
+				else if (choice == '5' || choice == '7') {
+					if (arrayList->getSize() > 0) {
+						if (choice == '5') {
+							arrayList->removeFirst();
+						}
+						else {
+							arrayList->removeLast();
+						}
+						arrayList->print();
+					}
+					else
+						std::cerr << STR_EX_ARRAYLIST_EMPTY << "\n";
+				}
+				else if (choice == '8') {
 					std::cout << STR_LANG_ENTER_VALUE << ": ";
 					int value = 0;
 					std::scanf("%d", &value);
@@ -103,7 +128,7 @@ int basic_structures() {
 					else
 						std::cout << STR_LANG_DOES_NOT_CONTAIN << "\n";
 				}
-				else if (choice == '5') {
+				else if (choice == '9') {
 					std::cout << STR_LANG_ENTER_SIZE << ": ";
 					unsigned int size = 0u;
 					std::scanf("%u", &size);
@@ -119,12 +144,12 @@ int basic_structures() {
 					else
 						std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
 				}
-				else if (choice == '6') {
+				else if (choice == 'A' || choice == 'a') {
 					arrayList->print();
 				}
-				else if (choice == '7') {
+				/*else if (choice == '7') {
 					std::cout << STR_LANG_CANNOT_BALANCE << "\n";
-				}
+				}*/
 			}
 		}
 		else if (choice == '2') {
@@ -175,13 +200,42 @@ int basic_structures() {
 						std::cerr << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
 				}
 				else if (choice == '3') {
+					std::cout << STR_LANG_ENTER_INDEX << ": ";
+					unsigned int index = 0u;
+					std::scanf("%u", &index);
+					if (index < linkedList->getSize()) {
+						linkedList->removeAt(index);
+						linkedList->print();
+					}
+					else
+						std::cerr << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
+				}
+				else if (choice == '4' || choice == '6') {
 					std::cout << STR_LANG_ENTER_VALUE << ": ";
 					int value = 0;
-					std::scanf("%u", &value);
-					linkedList->remove(value);
+					std::scanf("%d", &value);
+					if (choice == '4') {
+						linkedList->addStart(value);
+					}
+					else {
+						linkedList->addEnd(value);
+					}
 					linkedList->print();
 				}
-				else if (choice == '4') {
+				else if (choice == '5' || choice == '7') {
+					if (linkedList->getSize() > 0) {
+						if (choice == '5') {
+							linkedList->removeFirst();
+						}
+						else {
+							linkedList->removeLast();
+						}
+						linkedList->print();
+					}
+					else
+						std::cerr << STR_EX_LINKEDLIST_EMPTY << "\n";
+				}
+				else if (choice == '8') {
 					std::cout << STR_LANG_ENTER_VALUE << ": ";
 					int value = 0;
 					std::scanf("%d", &value);
@@ -190,7 +244,7 @@ int basic_structures() {
 					else
 						std::cout << STR_LANG_DOES_NOT_CONTAIN << "\n";
 				}
-				else if (choice == '5') {
+				else if (choice == '9') {
 					std::cout << STR_LANG_ENTER_SIZE << ": ";
 					unsigned int size = 0u;
 					std::scanf("%u", &size);
@@ -206,12 +260,12 @@ int basic_structures() {
 					else
 						std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
 				}
-				else if (choice == '6') {
+				else if (choice == 'A' || choice == 'a') {
 					linkedList->print();
 				}
-				else if (choice == '7') {
+				/*else if (choice == '7') {
 					std::cout << STR_LANG_CANNOT_BALANCE << "\n";
-				}
+				}*/
 			}
 		}
 		else if (choice == '3') {
@@ -265,7 +319,10 @@ int basic_structures() {
 					}
 					binaryHeap->print();
 				}
-				else if (choice == '4') {
+				else if (choice == '4' || choice == '5' || choice == '6' || choice == '7') {
+					std::cout << STR_LANG_NOT_APPLICABLE << "\n";
+				}
+				else if (choice == '8') {
 					std::cout << STR_LANG_ENTER_KEY << ": ";
 					int key = 0;
 					std::scanf("%d", &key);
@@ -274,7 +331,7 @@ int basic_structures() {
 					else
 						std::cout << STR_LANG_DOES_NOT_CONTAIN << "\n";
 				}
-				else if (choice == '5') {
+				else if (choice == '9') {
 					std::cout << STR_LANG_ENTER_SIZE << ": ";
 					unsigned int size = 0u;
 					std::scanf("%u", &size);
@@ -290,12 +347,12 @@ int basic_structures() {
 					else
 						std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
 				}
-				else if (choice == '6') {
+				else if (choice == 'A' || choice == 'a') {
 					binaryHeap->print();
 				}
-				else if (choice == '7') {
+				/*else if (choice == '7') {
 					std::cout << STR_LANG_CANNOT_BALANCE << "\n";
-				}
+				}*/
 			}
 		}
 		else if (choice == 'F' || choice == 'f') {
@@ -441,9 +498,13 @@ void readStructureMenuChoice(char * choice, const std::string & structureName) {
 	std::cout << "1. " << STR_LANG_STRUCTURE_FROM_FILE << "\n";
 	std::cout << "2. " << STR_LANG_ADD_ELEMENT << "\n";
 	std::cout << "3. " << STR_LANG_REMOVE_ELEMENT << "\n";
-	std::cout << "4. " << STR_LANG_FIND_ELEMENT << "\n";
-	std::cout << "5. " << STR_LANG_GEN_RAND_STRUCTURE << "\n";
-	std::cout << "6. " << STR_LANG_PRINT_STRUCTURE << "\n";
+	std::cout << "4. " << STR_LANG_ADD_ELEMENT_START << "\n";
+	std::cout << "5. " << STR_LANG_REMOVE_FIRST_ELEMENT << "\n";
+	std::cout << "6. " << STR_LANG_ADD_ELEMENT_END << "\n";
+	std::cout << "7. " << STR_LANG_REMOVE_LAST_ELEMENT << "\n";
+	std::cout << "8. " << STR_LANG_FIND_ELEMENT << "\n";
+	std::cout << "9. " << STR_LANG_GEN_RAND_STRUCTURE << "\n";
+	std::cout << "A. " << STR_LANG_PRINT_STRUCTURE << "\n";
 	std::cout << "---\n";
 	std::cout << "0. " << STR_LANG_BACKTOMAIN << "\n";
 	std::cout << "(" << structureName << ") ";
