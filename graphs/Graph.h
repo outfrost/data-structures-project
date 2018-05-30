@@ -2,12 +2,19 @@
 #define DATA_STRUCTURES_PROJECT_GRAPH_H
 
 
-virtual class Graph {
+#include <string>
+
+class Graph {
 
 public:
 	virtual ~Graph() = default;
 	
+	virtual void addNodes(int count) = 0;
+	virtual void addEdge(int origin, int destination, int metric) = 0;
+	virtual void clear() = 0;
 	virtual std::string toString() = 0;
+	
+	virtual bool findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) = 0;
 	
 };
 

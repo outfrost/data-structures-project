@@ -24,7 +24,15 @@ public:
 	IncidenceMatrixGraph(int nodeCount);
 	~IncidenceMatrixGraph() override;
 	
+	void addNodes(int count) override;
+	void addEdge(int origin, int destination, int metric) override;
+	void clear() override;
 	std::string toString() override;
+	
+	bool findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) override;
+
+protected:
+	inline int index(int node, int edge);
 	
 };
 

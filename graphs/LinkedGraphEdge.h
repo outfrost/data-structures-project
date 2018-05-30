@@ -1,21 +1,18 @@
 #ifndef DATA_STRUCTURES_PROJECT_LINKEDGRAPHEDGE_H
 #define DATA_STRUCTURES_PROJECT_LINKEDGRAPHEDGE_H
-#include "LinkedGraphNode.h"
+
 
 class LinkedGraphEdge {
 
-private:
-	LinkedGraphNode * connectedNode;
+public:
+	int originNode;
+	int destinationNode;
 	int metric;
 	
-public:
-	LinkedGraphEdge(LinkedGraphNode * connectedNode, int metric);
-	~LinkedGraphEdge();
+	LinkedGraphEdge() = default;
+	LinkedGraphEdge(int origin, int destination, int metric);
+	~LinkedGraphEdge() = default;
 	
-	LinkedGraphNode * getConnectedNode();
-	void setConnectedNode(LinkedGraphNode * node);
-	int getMetric();
-	void setMetric(int metric);
 };
 
 
