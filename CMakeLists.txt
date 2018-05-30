@@ -23,9 +23,9 @@ file(GLOB graphs
 
 set(SOURCE_FILES
 		"graphs/main.cpp"
-		"graphs/graphs.cpp"
-		"graphs/IncidenceMatrixGraph.cpp"
-		#${graphs}
+		#"graphs/graphs.cpp"
+		#"graphs/IncidenceMatrixGraph.cpp"
+		${graphs}
 		${common})
 
 add_executable(data-structures-project ${SOURCE_FILES})
