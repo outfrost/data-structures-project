@@ -22,7 +22,7 @@
 #define STR_LANG_MST_PRIM           "Find minimum spanning tree - DJP algorithm"
 #define STR_LANG_MST_KRUSKAL        "Find minimum spanning tree - Kruskal's algorithm"
 #define STR_LANG_PATH_DIJKSTRA      "Find shortest path - Dijkstra's algorithm"
-#define STR_LANG_PATH_SBFM          "Find shortest path - SBFM algorithm"
+#define STR_LANG_PATH_BELLMAN       "Find shortest path - SBFM algorithm"
 
 #define STR_LANG_CANNOT_BALANCE     "Balancing is not applicable to this structure."
 #define STR_LANG_ENTER_FILENAME     "Enter a filename"
@@ -33,6 +33,8 @@
 #define STR_LANG_ENTER_INDEX        "Enter an index"
 #define STR_LANG_ENTER_KEY          "Enter a key"
 #define STR_LANG_ENTER_SIZE         "Enter a size for the structure"
+#define STR_LANG_ENTER_NODE_CT      "Enter number of nodes"
+#define STR_LANG_ENTER_DENSITY      "Enter density [%]"
 #define STR_LANG_DOES_CONTAIN       "The given item is present in the structure."
 #define STR_LANG_DOES_NOT_CONTAIN   "The given item does not exist in the structure."
 #define STR_LANG_GEN_RAND_ZERO_SIZE "Size of 0 chosen, structure unaltered."
