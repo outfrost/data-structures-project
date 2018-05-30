@@ -9,6 +9,7 @@
 #define STR_LANG_LINKEDLIST         "LinkedList"
 #define STR_LANG_BINARYHEAP         "BinaryHeap"
 #define STR_LANG_BINARYSEARCHTREE   "BinarySearchTree"
+#define STR_LANG_GRAPH              "Graph"
 #define STR_LANG_TIME_MEASUREMENT   "Time measurement"
 
 #define STR_LANG_STRUCTURE_FROM_FILE    "Build from file"
@@ -18,6 +19,10 @@
 #define STR_LANG_GEN_RAND_STRUCTURE "Generate random structure contents"
 #define STR_LANG_PRINT_STRUCTURE    "Print structure"
 #define STR_LANG_BALANCE_TREE       "Perform tree balancing"
+#define STR_LANG_MST_PRIM           "Find minimum spanning tree - DJP algorithm"
+#define STR_LANG_MST_KRUSKAL        "Find minimum spanning tree - Kruskal's algorithm"
+#define STR_LANG_PATH_DIJKSTRA      "Find shortest path - Dijkstra's algorithm"
+#define STR_LANG_PATH_SBFM          "Find shortest path - SBFM algorithm"
 
 #define STR_LANG_CANNOT_BALANCE     "Balancing is not applicable to this structure."
 #define STR_LANG_ENTER_FILENAME     "Enter a filename"
