@@ -72,6 +72,14 @@ public:
 		this->array = newArray;
 	}
 	
+	void addStart(T const value) override {
+		add(value, 0u);
+	}
+	
+	void addEnd(T const value) override {
+		add(value);
+	}
+	
 	void removeAt(unsigned int index) override {
 		if (index < this->size) {
 			T *newArray = new T[--this->size];

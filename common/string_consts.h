@@ -15,6 +15,10 @@
 #define STR_LANG_STRUCTURE_FROM_FILE    "Build from file"
 #define STR_LANG_ADD_ELEMENT        "Add element"
 #define STR_LANG_REMOVE_ELEMENT     "Remove element"
+#define STR_LANG_ADD_ELEMENT_START  "Add element at start"
+#define STR_LANG_REMOVE_FIRST_ELEMENT   "Remove first element"
+#define STR_LANG_ADD_ELEMENT_END    "Add element at end"
+#define STR_LANG_REMOVE_LAST_ELEMENT    "Remove last element"
 #define STR_LANG_FIND_ELEMENT       "Find element"
 #define STR_LANG_GEN_RAND_STRUCTURE "Generate random structure contents"
 #define STR_LANG_PRINT_STRUCTURE    "Print structure"
@@ -24,6 +28,7 @@
 #define STR_LANG_PATH_DIJKSTRA      "Find shortest path - Dijkstra's algorithm"
 #define STR_LANG_PATH_BELLMAN       "Find shortest path - SBFM algorithm"
 
+#define STR_LANG_NOT_APPLICABLE     "This operation is not applicable to this structure."
 #define STR_LANG_CANNOT_BALANCE     "Balancing is not applicable to this structure."
 #define STR_LANG_ENTER_FILENAME     "Enter a filename"
 #define STR_LANG_ENTER_FILENAME_RESULTS "Enter a name for the results file"
