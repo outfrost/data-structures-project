@@ -88,26 +88,31 @@ std::string IncidenceMatrixGraph::toString() {
 
 bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {
 	if (startingNode < nodeCount && destinationNode < nodeCount
-	    && startingNode >= 0 && destinationNode >= 0) {
-		bool visited[nodeCount] = {false};
-		int tentativeDistance[nodeCount] = {std::numeric_limits<int>::max()};
-		int previousHop[nodeCount] = {-1};
+	        && startingNode >= 0 && destinationNode >= 0) {
+		bool visited[nodeCount]; // { false ... }
+		int tentativeDistance[nodeCount];
+		std::fill_n(tentativeDistance, nodeCount, std::numeric_limits<int>::max());
+		int previousHop[nodeCount];
+		std::fill_n(previousHop, nodeCount, -1);
+		
 		tentativeDistance[startingNode] = 0;
 		int currentNode = startingNode;
 		
-		while (currentNode != destinationNode && !visited[destinationNode] && currentNode != -1) {
+		while (currentNode != destinationNode && !visited[destinationNode]
+		       && currentNode != -1) {
 			for (int i = 0; i < edgeCount; i++) {
 				if (incidenceMatrix[index(currentNode, i)] > 0) {
-					int currentNeighbor = 0;
-					for (int k = 0; k < nodeCount; k++) {
+					int currentNeighbor = -1;
+					for (int k = 0; k < nodeCount && currentNeighbor == -1; k++) {
 						if (incidenceMatrix[index(k, i)] < 0) {
 							currentNeighbor = k;
-							break;
 						}
 					}
-					if (tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)] < tentativeDistance[currentNeighbor]) {
+					if (tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)]
+					        < tentativeDistance[currentNeighbor]) {
 						tentativeDistance[currentNeighbor] = tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)];
 						previousHop[currentNeighbor] = currentNode;
+						// TODO This somehow creates infinite loops NOT ANY MORE
 					}
 				}
 			}
@@ -126,8 +131,14 @@ bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNod
 		
 		distance = tentativeDistance[destinationNode];
 		if (currentNode != -1) {
-			path.
+			currentNode = destinationNode;
+			while (currentNode != -1) {
+				path.addStart(currentNode);
+				currentNode = previousHop[currentNode];
+			}
+			return true;
 		}
+		return false;
 	}
 }
 
