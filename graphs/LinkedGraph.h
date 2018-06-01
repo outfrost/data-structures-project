@@ -22,6 +22,8 @@ public:
 	void clear() override;
 	std::string toString() override;
 	
+	bool findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) override;
+	
 };
 
 

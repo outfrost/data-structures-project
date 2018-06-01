@@ -45,3 +45,7 @@ std::string LinkedGraph::toString() {
 	stringStream.flush();
 	return stringStream.str();
 }
+
+bool LinkedGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {
+	return false;
+}
