@@ -189,7 +189,21 @@ void findMstKruskal(Graph& graph1, Graph& graph2) {
 }
 
 void findPathDijkstra(Graph& graph1, Graph& graph2) {
-
+	std::cout << STR_LANG_ENTER_START_NODE << "\n";
+	int startingNode = 0;
+	std::scanf("%d", &startingNode);
+	std::cout << STR_LANG_ENTER_DEST_NODE << "\n";
+	int destinationNode = 0;
+	std::scanf("%d", &destinationNode);
+	
+	int distance;
+	LinkedList<int> path = LinkedList<int>();
+	std::cout << graph1.findPathDijkstra(startingNode, destinationNode, distance, path) << "\n";
+	std::cout << "Distance: " << std::to_string(distance) << "\n";
+	for (int i = 0; i < path.getSize(); i++) {
+		std::cout << path.get(i) << ", ";
+	}
+	std::cout << "\n";
 }
 
 void findPathBellman(Graph& graph1, Graph& graph2) {
@@ -204,17 +218,7 @@ void benchmark() {
 }
 
 void debugTest() {
-	LinkedGraph graph = LinkedGraph();
-	graph.addNodes(5);
-	graph.addEdge(0, 1, 50);
-	graph.addEdge(1, 4, 25);
-	graph.addEdge(3, 2, 9000000);
-	graph.clear();
-	graph.addNodes(5);
-	graph.addEdge(0, 1, 50);
-	graph.addEdge(1, 4, 25);
-	graph.addEdge(3, 2, 9000000);
-	std::cout << graph.toString() << "\n";
+
 }
 
 std::ifstream* openStreamForReading() {
