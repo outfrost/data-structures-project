@@ -178,7 +178,7 @@ int basic_structures() {
 							else
 								std::cerr << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
 						}
-						linkedList->print();
+						((LinkedList<int>*)linkedList)->print(true);
 					}
 					else
 						std::cerr << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
@@ -194,7 +194,7 @@ int basic_structures() {
 					std::scanf("%u", &index);
 					if (index <= linkedList->getSize()) {
 						linkedList->add(value, index);
-						linkedList->print();
+						((LinkedList<int>*)linkedList)->print(true);
 					}
 					else
 						std::cerr << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
@@ -205,7 +205,7 @@ int basic_structures() {
 					std::scanf("%u", &index);
 					if (index < linkedList->getSize()) {
 						linkedList->removeAt(index);
-						linkedList->print();
+						((LinkedList<int>*)linkedList)->print(true);
 					}
 					else
 						std::cerr << STR_EX_INDEX_OUT_OF_BOUNDS << "\n";
@@ -220,7 +220,7 @@ int basic_structures() {
 					else {
 						linkedList->addEnd(value);
 					}
-					linkedList->print();
+					((LinkedList<int>*)linkedList)->print(true);
 				}
 				else if (choice == '5' || choice == '7') {
 					if (linkedList->getSize() > 0) {
@@ -230,7 +230,7 @@ int basic_structures() {
 						else {
 							linkedList->removeLast();
 						}
-						linkedList->print();
+						((LinkedList<int>*)linkedList)->print(true);
 					}
 					else
 						std::cerr << STR_EX_LINKEDLIST_EMPTY << "\n";
@@ -255,13 +255,13 @@ int basic_structures() {
 						std::uniform_int_distribution<int> distribution(std::numeric_limits<int>::min());
 						for (unsigned int i = 0u; i < size; i++)
 							linkedList->add(distribution(mt));
-						linkedList->print();
+						((LinkedList<int>*)linkedList)->print(true);
 					}
 					else
 						std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
 				}
 				else if (choice == 'A' || choice == 'a') {
-					linkedList->print();
+					((LinkedList<int>*)linkedList)->print(true);
 				}
 				/*else if (choice == '7') {
 					std::cout << STR_LANG_CANNOT_BALANCE << "\n";

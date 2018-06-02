@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include "List.cpp"
@@ -155,19 +155,25 @@ public:
 	}
 	
 	void print() override {
-/*		LinkedListElement<T> *element = this->firstElement;
-		for (unsigned int i = 0u; i < this->size; i++) {
-			std::printf("%s ", std::to_string(element->getValue()).c_str());
+		print(false);
+	}
+	
+	void print(bool biDirectional) {
+		LinkedListElement<T> *element = this->firstElement;
+		while (element != nullptr) {
+			std::cout << element->getValue() << " ";
 			element = element->getNextElement();
 		}
-		std::printf("\n");
-		element = this->lastElement;
-		for (unsigned int i = 0u; i < this->size; i++) {
-			std::printf("%s ", std::to_string(element->getValue()).c_str());
-			element = element->getPreviousElement();
+		std::cout << "\n";
+		if (biDirectional) {
+			element = this->lastElement;
+			while (element != nullptr) {
+				std::cout << element->getValue() << " ";
+				element = element->getPreviousElement();
+			}
+			std::cout << "\n";
 		}
-		std::printf("\n");
-*/	}
+	}
 
 protected:
 	void remove(LinkedListElement<T> * element) {
@@ -185,13 +191,3 @@ protected:
 		this->size--;
 	}
 };
-/*
-void LinkedList<LinkedGraphEdge>::print() {
-	LinkedListElement<LinkedGraphEdge> *element = this->firstElement;
-	for (unsigned int i = 0u; i < this->size; i++) {
-		std::cout << element->toString() << " ";
-		element = element->getNextElement();
-	}
-	std::cout << "\n";
-}
-*/

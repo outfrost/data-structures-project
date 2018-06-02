@@ -200,9 +200,7 @@ void findPathDijkstra(Graph& graph1, Graph& graph2) {
 	LinkedList<int> path = LinkedList<int>();
 	std::cout << graph1.findPathDijkstra(startingNode, destinationNode, distance, path) << "\n";
 	std::cout << "Distance: " << std::to_string(distance) << "\n";
-	for (int i = 0; i < path.getSize(); i++) {
-		std::cout << path.get(i) << ", ";
-	}
+	path.print();
 	std::cout << "\n";
 }
 

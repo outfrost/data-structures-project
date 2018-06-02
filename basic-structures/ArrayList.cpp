@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include "../common/string_consts.h"
@@ -114,8 +114,9 @@ public:
 	}
 	
 	void print() override {
-/*		for (unsigned int i = 0u; i < this->size; i++)
-			std::printf("%s ", std::to_string(this->array[i]).c_str());
-		std::printf("\n");
-*/	}
+		for (unsigned int i = 0u; i < this->size; i++) {
+			std::cout << array[i] << " ";
+		}
+		std::cout << "\n";
+	}
 };
