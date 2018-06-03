@@ -108,11 +108,14 @@ bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNod
 							currentNeighbor = k;
 						}
 					}
-					if (tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)]
-					        < tentativeDistance[currentNeighbor]) {
-						tentativeDistance[currentNeighbor] = tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)];
-						previousHop[currentNeighbor] = currentNode;
-						// TODO This somehow creates infinite loops NOT ANY MORE
+					if (!visited[currentNeighbor]) {
+						if (tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)]
+							    < tentativeDistance[currentNeighbor]) {
+							tentativeDistance[currentNeighbor] =
+									tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)];
+							previousHop[currentNeighbor] = currentNode;
+							// TODO This somehow creates infinite loops NOT ANY MORE
+						}
 					}
 				}
 			}
