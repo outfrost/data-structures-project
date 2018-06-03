@@ -235,6 +235,15 @@ void findPathBellman(Graph& graph1, Graph& graph2) {
 	else {
 		std::cout << "graph1: " << STR_LANG_PATH_NOT_FOUND << "\n";
 	}
+	path = LinkedList<int>();
+	if (graph2.findPathBellman(startingNode, destinationNode, distance, path)) {
+		std::cout << "graph2: " << STR_LANG_PATH_FOUND_PRE << distance << STR_LANG_PATH_FOUND_AFT;
+		std::cout << "graph2: ";
+		path.print();
+	}
+	else {
+		std::cout << "graph2: " << STR_LANG_PATH_NOT_FOUND << "\n";
+	}
 }
 
 void benchmark() {

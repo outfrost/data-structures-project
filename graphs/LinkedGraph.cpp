@@ -99,5 +99,56 @@ bool LinkedGraph::findPathDijkstra(int startingNode, int destinationNode, int& d
 }
 
 bool LinkedGraph::findPathBellman(int startingNode, int destinationNode, int& distance, List<int>& path) {
+	if (startingNode < nodes->getSize() && destinationNode < nodes->getSize()
+	        && startingNode >= 0 && destinationNode >= 0) {
+		int tentativeDistance[nodes->getSize()];
+		std::fill_n(tentativeDistance, nodes->getSize(), std::numeric_limits<int>::max());
+		int previousHop[nodes->getSize()];
+		std::fill_n(previousHop, nodes->getSize(), -1);
+		
+		tentativeDistance[startingNode] = 0;
+		
+		for (int i = 0; i < nodes->getSize() - 1; i++) {
+			for (int k = 0; k < nodes->getSize(); k++) {
+				for (int l = 0; l < nodes->get((unsigned int)k)->getSize(); l++) {
+					LinkedGraphEdge* edge = nodes->get((unsigned int)k)->get((unsigned int)l);
+					if (k == edge->originNode) {
+						if (tentativeDistance[edge->originNode] < std::numeric_limits<int>::max()) {
+							if (tentativeDistance[edge->originNode] + edge->metric
+									< tentativeDistance[edge->destinationNode]) {
+								tentativeDistance[edge->destinationNode]
+										= tentativeDistance[edge->originNode] + edge->metric;
+								previousHop[edge->destinationNode] = edge->originNode;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		for (int k = 0; k < nodes->getSize(); k++) {
+			for (int l = 0; l < nodes->get((unsigned int)k)->getSize(); l++) {
+				LinkedGraphEdge* edge = nodes->get((unsigned int)k)->get((unsigned int)l);
+				if (k == edge->originNode) {
+					if (tentativeDistance[edge->originNode] < std::numeric_limits<int>::max()) {
+						if (tentativeDistance[edge->originNode] + edge->metric
+						        < tentativeDistance[edge->destinationNode]) {
+							return false; // TODO Handle problems better maybe™?
+						}
+					}
+				}
+			}
+		}
+		
+		distance = tentativeDistance[destinationNode];
+		if (tentativeDistance[destinationNode] < std::numeric_limits<int>::max()) {
+			int currentNode = destinationNode;
+			while (currentNode != -1) {
+				path.addStart(currentNode);
+				currentNode = previousHop[currentNode];
+			}
+			return true;
+		}
+	}
 	return false;
 }
