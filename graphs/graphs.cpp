@@ -139,7 +139,7 @@ void buildGraphsFromFile(Graph& graph1, Graph& graph2) {
 }
 
 void generateRandomGraphs(Graph& graph1, Graph& graph2) {
-	std::cout << STR_LANG_ENTER_NODE_CT << "\n";
+	std::cout << STR_LANG_ENTER_NODE_CT << ": ";
 	int nodeCount = 0;
 	std::scanf("%d", &nodeCount);
 	if(nodeCount > 0) {
@@ -148,7 +148,7 @@ void generateRandomGraphs(Graph& graph1, Graph& graph2) {
 		graph1.addNodes(nodeCount);
 		graph2.addNodes(nodeCount);
 		
-		std::cout << STR_LANG_ENTER_DENSITY << "\n";
+		std::cout << STR_LANG_ENTER_DENSITY << ": ";
 		int densityPercentage = 0;
 		std::scanf("%d", &densityPercentage);
 		
