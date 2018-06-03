@@ -189,19 +189,32 @@ void findMstKruskal(Graph& graph1, Graph& graph2) {
 }
 
 void findPathDijkstra(Graph& graph1, Graph& graph2) {
-	std::cout << STR_LANG_ENTER_START_NODE << "\n";
+	std::cout << STR_LANG_ENTER_START_NODE << ": ";
 	int startingNode = 0;
 	std::scanf("%d", &startingNode);
-	std::cout << STR_LANG_ENTER_DEST_NODE << "\n";
+	std::cout << STR_LANG_ENTER_DEST_NODE << ": ";
 	int destinationNode = 0;
 	std::scanf("%d", &destinationNode);
 	
 	int distance;
 	LinkedList<int> path = LinkedList<int>();
-	std::cout << graph1.findPathDijkstra(startingNode, destinationNode, distance, path) << "\n";
-	std::cout << "Distance: " << std::to_string(distance) << "\n";
-	path.print();
-	std::cout << "\n";
+	if (graph1.findPathDijkstra(startingNode, destinationNode, distance, path)) {
+		std::cout << "graph1: " << STR_LANG_PATH_FOUND_PRE << distance << STR_LANG_PATH_FOUND_AFT;
+		std::cout << "graph1: ";
+		path.print();
+	}
+	else {
+		std::cout << "graph1: " << STR_LANG_PATH_NOT_FOUND << "\n";
+	}
+	path = LinkedList<int>();
+	if (graph2.findPathDijkstra(startingNode, destinationNode, distance, path)) {
+		std::cout << "graph2: " << STR_LANG_PATH_FOUND_PRE << distance << STR_LANG_PATH_FOUND_AFT;
+		std::cout << "graph2: ";
+		path.print();
+	}
+	else {
+		std::cout << "graph2: " << STR_LANG_PATH_NOT_FOUND << "\n";
+	}
 }
 
 void findPathBellman(Graph& graph1, Graph& graph2) {

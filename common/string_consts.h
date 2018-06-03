@@ -45,6 +45,9 @@
 #define STR_LANG_DOES_CONTAIN       "The given item is present in the structure."
 #define STR_LANG_DOES_NOT_CONTAIN   "The given item does not exist in the structure."
 #define STR_LANG_GEN_RAND_ZERO_SIZE "Size of 0 chosen, structure unaltered."
+#define STR_LANG_PATH_FOUND_PRE     "Found path over a total distance of "
+#define STR_LANG_PATH_FOUND_AFT     ".\n"
+#define STR_LANG_PATH_NOT_FOUND     "Could not find a path between the selected starting and destination nodes."
 
 #define STR_LANG_FORMAT_GENERATING  "Generating %d random entries\n"
 #define STR_LANG_GENERATING_PRE     "Generating "
