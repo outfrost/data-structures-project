@@ -141,10 +141,72 @@ bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNod
 			}
 			return true;
 		}
-		return false;
 	}
+	return false;
+}
+
+bool IncidenceMatrixGraph::findPathBellman(int startingNode, int destinationNode, int& distance, List<int>& path) {
+	if (startingNode < nodeCount && destinationNode < nodeCount
+		    && startingNode >= 0 && destinationNode >= 0) {
+		int tentativeDistance[nodeCount];
+		std::fill_n(tentativeDistance, nodeCount, std::numeric_limits<int>::max());
+		int previousHop[nodeCount];
+		std::fill_n(previousHop, nodeCount, -1);
+		
+		tentativeDistance[startingNode] = 0;
+		
+		for (int i = 0; i < nodeCount - 1; i++) {
+			for (int k = 0; k < edgeCount; k++) {
+				int origin = -1;
+				int destination = -1;
+				int metric = 0;
+				getEdgeProperties(k, origin, destination, metric);
+				if (tentativeDistance[origin] < std::numeric_limits<int>::max()) {
+					if (tentativeDistance[origin] + metric < tentativeDistance[destination]) {
+						tentativeDistance[destination] = tentativeDistance[origin] + metric;
+						previousHop[destination] = origin;
+					}
+				}
+			}
+		}
+		
+		for (int k = 0; k < edgeCount; k++) {
+			int origin = -1;
+			int destination = -1;
+			int metric = 0;
+			getEdgeProperties(k, origin, destination, metric);
+			if (tentativeDistance[origin] < std::numeric_limits<int>::max()) {
+				if (tentativeDistance[origin] + metric < tentativeDistance[destination]) {
+					return false; // TODO Handle problems better maybe™?
+				}
+			}
+		}
+		
+		distance = tentativeDistance[destinationNode];
+		if (tentativeDistance[destinationNode] < std::numeric_limits<int>::max()) {
+			int currentNode = destinationNode;
+			while (currentNode != -1) {
+				path.addStart(currentNode);
+				currentNode = previousHop[currentNode];
+			}
+			return true;
+		}
+	}
+	return false;
 }
 
 inline int IncidenceMatrixGraph::index(int node, int edge) {
 	return node * edgeCount + edge;
+}
+
+void IncidenceMatrixGraph::getEdgeProperties(int edge, int& originNode, int& destinationNode, int& metric) {
+	for (int i = 0; i < nodeCount; i++) {
+		if (incidenceMatrix[index(i, edge)] > 0) {
+			originNode = i;
+			metric = incidenceMatrix[index(i, edge)];
+		}
+		else if (incidenceMatrix[index(i, edge)] < 0) {
+			destinationNode = i;
+		}
+	}
 }

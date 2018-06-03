@@ -30,9 +30,11 @@ public:
 	std::string toString() override;
 	
 	bool findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) override;
+	bool findPathBellman(int startingNode, int destinationNode, int& distance, List<int>& path) override;
 
 protected:
 	inline int index(int node, int edge);
+	void getEdgeProperties(int edge, int& originNode, int& destinationNode, int& metric);
 	
 };
 

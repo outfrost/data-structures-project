@@ -218,7 +218,23 @@ void findPathDijkstra(Graph& graph1, Graph& graph2) {
 }
 
 void findPathBellman(Graph& graph1, Graph& graph2) {
-
+	std::cout << STR_LANG_ENTER_START_NODE << ": ";
+	int startingNode = 0;
+	std::scanf("%d", &startingNode);
+	std::cout << STR_LANG_ENTER_DEST_NODE << ": ";
+	int destinationNode = 0;
+	std::scanf("%d", &destinationNode);
+	
+	int distance;
+	LinkedList<int> path = LinkedList<int>();
+	if (graph1.findPathBellman(startingNode, destinationNode, distance, path)) {
+		std::cout << "graph1: " << STR_LANG_PATH_FOUND_PRE << distance << STR_LANG_PATH_FOUND_AFT;
+		std::cout << "graph1: ";
+		path.print();
+	}
+	else {
+		std::cout << "graph1: " << STR_LANG_PATH_NOT_FOUND << "\n";
+	}
 }
 
 void benchmark() {

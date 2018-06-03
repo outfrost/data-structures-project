@@ -16,6 +16,7 @@ public:
 	virtual std::string toString() = 0;
 	
 	virtual bool findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) = 0;
+	virtual bool findPathBellman(int startingNode, int destinationNode, int& distance, List<int>& path) = 0;
 	
 };
 

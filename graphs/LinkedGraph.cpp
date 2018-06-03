@@ -94,6 +94,10 @@ bool LinkedGraph::findPathDijkstra(int startingNode, int destinationNode, int& d
 			}
 			return true;
 		}
-		return false;
 	}
+	return false;
+}
+
+bool LinkedGraph::findPathBellman(int startingNode, int destinationNode, int& distance, List<int>& path) {
+	return false;
 }

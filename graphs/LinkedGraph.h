@@ -23,6 +23,7 @@ public:
 	std::string toString() override;
 	
 	bool findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) override;
+	bool findPathBellman(int startingNode, int destinationNode, int& distance, List<int>& path) override;
 	
 };
 
