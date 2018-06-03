@@ -50,7 +50,7 @@ std::string LinkedGraph::toString() {
 bool LinkedGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {
 	if (startingNode < nodes->getSize() && destinationNode < nodes->getSize()
 	        && startingNode >= 0 && destinationNode >= 0) {
-		bool visited[nodes->getSize()]; // { false ... }
+		bool visited[nodes->getSize()] = {}; // { false ... }
 		int tentativeDistance[nodes->getSize()];
 		std::fill_n(tentativeDistance, nodes->getSize(), std::numeric_limits<int>::max());
 		int previousHop[nodes->getSize()];

@@ -89,7 +89,7 @@ std::string IncidenceMatrixGraph::toString() {
 bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {
 	if (startingNode < nodeCount && destinationNode < nodeCount
 	        && startingNode >= 0 && destinationNode >= 0) {
-		bool visited[nodeCount]; // { false ... }
+		bool visited[nodeCount] = {}; // { false ... }
 		int tentativeDistance[nodeCount];
 		std::fill_n(tentativeDistance, nodeCount, std::numeric_limits<int>::max());
 		int previousHop[nodeCount];
