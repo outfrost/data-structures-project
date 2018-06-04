@@ -173,8 +173,9 @@ Graph* IncidenceMatrixGraph::findMstKruskal() {
 			edgeConsidered[lowestMetricEdge] = true;
 			if (treeId[lowestMetricEdgeOrigin] != treeId[lowestMetricEdgeDestination]) {
 				result->addEdge(lowestMetricEdgeOrigin, lowestMetricEdgeDestination, lowestMetric);
+				int mergedTreeId = treeId[lowestMetricEdgeDestination];
 				for (int i = 0; i < nodeCount; i++) {
-					if (treeId[i] == treeId[lowestMetricEdgeDestination]) {
+					if (treeId[i] == mergedTreeId) {
 						treeId[i] = treeId[lowestMetricEdgeOrigin];
 					}
 				}

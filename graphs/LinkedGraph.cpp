@@ -127,8 +127,9 @@ Graph* LinkedGraph::findMstKruskal() {
 			remainingEdges.remove(lowestMetricEdge);
 			if (treeId[lowestMetricEdge->originNode] != treeId[lowestMetricEdge->destinationNode]) {
 				result->addEdge(lowestMetricEdge->originNode, lowestMetricEdge->destinationNode, lowestMetricEdge->metric);
+				int mergedTreeId = treeId[lowestMetricEdge->destinationNode];
 				for (int i = 0; i < nodes->getSize(); i++) {
-					if (treeId[i] == treeId[lowestMetricEdge->destinationNode]) {
+					if (treeId[i] == mergedTreeId) {
 						treeId[i] = treeId[lowestMetricEdge->originNode];
 					}
 				}
