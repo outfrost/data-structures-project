@@ -22,9 +22,8 @@ file(GLOB graphs
 		"graphs/*.cpp")
 
 set(SOURCE_FILES
-		"graphs/main.cpp"
-		#"graphs/graphs.cpp"
-		#"graphs/IncidenceMatrixGraph.cpp"
+		"main.cpp"
+		${basic-structures}
 		${graphs}
 		${common})
 

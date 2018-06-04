@@ -2,121 +2,120 @@
 #include <stdexcept>
 #include <string>
 #include "../common/string_consts.h"
-#include "List.cpp"
+#include "List.h"
 #include "ArrayList.h"
 
+
 template<typename T>
-class ArrayList : public List<T> {
+ArrayList<T>::ArrayList() {
+	this->size = 0u;
+	this->array = new T[size];
+}
 
-private:
-	T *array;
-	unsigned int size;
+template<typename T>
+unsigned int ArrayList<T>::getSize() {
+	return this->size;
+}
 
-public:
-	ArrayList() {
-		this->size = 0u;
-		this->array = new T[size];
+template<typename T>
+T ArrayList<T>::get(unsigned int index) {
+	if (index < this->size)
+		return this->array[index];
+	else
+		throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+}
+
+template<typename T>
+bool ArrayList<T>::contains(const T value) {
+	for (unsigned int i = 0u; i < this->size; i++) {
+		if (this->array[i] == value)
+			return true;
 	}
-	
-	/* ArrayList(unsigned int size) {
-		this->size = size;
-		this->array = new T[size];
-	}
-	*/
-	
-	unsigned int getSize() override {
-		return this->size;
-	}
-	
-	T get(unsigned int index) override {
-		if (index < this->size)
-			return this->array[index];
-		else
-			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
-	}
-	
-	bool contains(T const value) override {
-		for (unsigned int i = 0u; i < this->size; i++) {
-			if (this->array[i] == value)
-				return true;
-		}
-		return false;
-	}
-	
-	void add(T const value, unsigned int index) override {
-		if (index <= this->size) {
-			T *newArray = new T[++this->size];
-			for (unsigned int i = 0u; i < this->size; i++) {
-				if (i < index)
-					newArray[i] = this->array[i];
-				else {
-					if (i == index)
-						newArray[i] = value;
-					else
-						newArray[i] = this->array[i - 1];
-				}
-			}
-			delete[] this->array;
-			this->array = newArray;
-		}
-		else
-			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
-	}
-	
-	void add(T const value) override {
+	return false;
+}
+
+template<typename T>
+void ArrayList<T>::add(const T value, unsigned int index) {
+	if (index <= this->size) {
 		T *newArray = new T[++this->size];
-		for (unsigned int i = 0u; i < this->size; i++)
-			newArray[i] = this->array[i];
-		newArray[this->size - 1] = value;
-		delete [] this->array;
+		for (unsigned int i = 0u; i < this->size; i++) {
+			if (i < index)
+				newArray[i] = this->array[i];
+			else {
+				if (i == index)
+					newArray[i] = value;
+				else
+					newArray[i] = this->array[i - 1];
+			}
+		}
+		delete[] this->array;
 		this->array = newArray;
 	}
-	
-	void addStart(T const value) override {
-		add(value, 0u);
-	}
-	
-	void addEnd(T const value) override {
-		add(value);
-	}
-	
-	void removeAt(unsigned int index) override {
-		if (index < this->size) {
-			T *newArray = new T[--this->size];
-			for (unsigned int i = 0u; i < this->size; i++) {
-				if (i < index)
-					newArray[i] = this->array[i];
-				else
-					newArray[i] = this->array[i + 1];
-			}
-			delete[] this->array;
-			this->array = newArray;
-		}
-		else
-			throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
-	}
-	
-	void removeFirst() override {
-		removeAt(0u);
-	}
-	
-	void removeLast() override {
-		removeAt(getSize() - 1);
-	}
-	
-	void remove(T const value) override {
+	else
+		throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+}
+
+template<typename T>
+void ArrayList<T>::add(const T value) {
+	T *newArray = new T[++this->size];
+	for (unsigned int i = 0u; i < this->size; i++)
+		newArray[i] = this->array[i];
+	newArray[this->size - 1] = value;
+	delete [] this->array;
+	this->array = newArray;
+}
+
+template<typename T>
+void ArrayList<T>::addStart(const T value) {
+	add(value, 0u);
+}
+
+template<typename T>
+void ArrayList<T>::addEnd(const T value) {
+	add(value);
+}
+
+template<typename T>
+void ArrayList<T>::removeAt(unsigned int index) {
+	if (index < this->size) {
+		T *newArray = new T[--this->size];
 		for (unsigned int i = 0u; i < this->size; i++) {
-			if (this->array[i] == value) {
-				removeAt(i);
-				return;
-			}
+			if (i < index)
+				newArray[i] = this->array[i];
+			else
+				newArray[i] = this->array[i + 1];
+		}
+		delete[] this->array;
+		this->array = newArray;
+	}
+	else
+		throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+}
+
+template<typename T>
+void ArrayList<T>::removeFirst() {
+	removeAt(0u);
+}
+
+template<typename T>
+void ArrayList<T>::removeLast() {
+	removeAt(getSize() - 1);
+}
+
+template<typename T>
+void ArrayList<T>::remove(const T value) {
+	for (unsigned int i = 0u; i < this->size; i++) {
+		if (this->array[i] == value) {
+			removeAt(i);
+			return;
 		}
 	}
-	
-	void print() override {
-		for (unsigned int i = 0u; i < this->size; i++) {
-			std::cout << array[i] << " ";
-		}
-		std::cout << "\n";
+}
+
+template<typename T>
+void ArrayList<T>::print() {
+	for (unsigned int i = 0u; i < this->size; i++) {
+		std::cout << array[i] << " ";
 	}
-};
+	std::cout << "\n";
+}

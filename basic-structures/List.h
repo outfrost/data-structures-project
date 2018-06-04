@@ -5,7 +5,6 @@ template<typename T>
 class List {
 
 public:
-	
 	virtual unsigned int getSize() = 0;
 	virtual T get(unsigned int index) = 0;
 	virtual bool contains(T const value) = 0;

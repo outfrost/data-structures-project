@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include "../basic-structures/List.cpp"
+#include "../basic-structures/List.h"
 
 class Graph {
 
