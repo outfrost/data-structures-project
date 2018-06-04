@@ -107,7 +107,9 @@ Graph* LinkedGraph::findMstKruskal() {
 	LinkedList<LinkedGraphEdge*> remainingEdges = LinkedList<LinkedGraphEdge*>();
 	for (int i = 0; i < nodes->getSize(); i++) {
 		for (int k = 0; k < nodes->get((unsigned int)i)->getSize(); k++) {
-			remainingEdges.add(nodes->get((unsigned int)i)->get((unsigned int)k));
+			if (!remainingEdges.contains(nodes->get((unsigned int)i)->get((unsigned int)k))) {
+				remainingEdges.add(nodes->get((unsigned int) i)->get((unsigned int) k));
+			}
 		}
 	}
 	
