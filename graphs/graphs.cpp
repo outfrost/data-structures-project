@@ -190,7 +190,12 @@ void findMstPrim(Graph& graph1, Graph& graph2) {
 }
 
 void findMstKruskal(Graph& graph1, Graph& graph2) {
-
+	Graph* mst = graph1.findMstKruskal();
+	std::cout << mst->toString() << "\n";
+	delete mst;
+	mst = graph2.findMstKruskal();
+	std::cout << mst->toString() << "\n";
+	delete mst;
 }
 
 void findPathDijkstra(Graph& graph1, Graph& graph2) {

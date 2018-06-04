@@ -139,7 +139,53 @@ Graph* IncidenceMatrixGraph::findMstPrim() {
 }
 
 Graph* IncidenceMatrixGraph::findMstKruskal() {
-	return nullptr;
+	Graph* result = new IncidenceMatrixGraph(nodeCount);
+	int treeId[nodeCount];
+	for (int i = 0; i < nodeCount; i++) {
+		treeId[i] = i;
+	}
+	int trees = nodeCount;
+	bool edgeConsidered[edgeCount] = {}; // { false ... }
+	bool edgesRemain = true;
+	
+	while (trees > 1 && edgesRemain) {
+		int lowestMetric = std::numeric_limits<int>::max();
+		int lowestMetricEdge = -1;
+		int lowestMetricEdgeOrigin = -1;
+		int lowestMetricEdgeDestination = -1;
+		
+		for (int i = 0; i < edgeCount; i++) {
+			if (!edgeConsidered[i]) {
+				int origin = -1;
+				int destination = -1;
+				int metric = 0;
+				getEdgeProperties(i, origin, destination, metric);
+				if (metric < lowestMetric) {
+					lowestMetric = metric;
+					lowestMetricEdge = i;
+					lowestMetricEdgeOrigin = origin;
+					lowestMetricEdgeDestination = destination;
+				}
+			}
+		}
+		
+		if (lowestMetricEdge != -1) {
+			edgeConsidered[lowestMetricEdge] = true;
+			if (treeId[lowestMetricEdgeOrigin] != treeId[lowestMetricEdgeDestination]) {
+				result->addEdge(lowestMetricEdgeOrigin, lowestMetricEdgeDestination, lowestMetric);
+				for (int i = 0; i < nodeCount; i++) {
+					if (treeId[i] == treeId[lowestMetricEdgeDestination]) {
+						treeId[i] = treeId[lowestMetricEdgeOrigin];
+					}
+				}
+				--trees;
+			}
+		}
+		else {
+			edgesRemain = false;
+		}
+	}
+	return result;
 }
 
 bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {

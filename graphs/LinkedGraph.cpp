@@ -98,7 +98,45 @@ Graph* LinkedGraph::findMstPrim() {
 }
 
 Graph* LinkedGraph::findMstKruskal() {
-	return nullptr;
+	Graph* result = new LinkedGraph(nodes->getSize());
+	int treeId[nodes->getSize()];
+	for (int i = 0; i < nodes->getSize(); i++) {
+		treeId[i] = i;
+	}
+	int trees = nodes->getSize();
+	LinkedList<LinkedGraphEdge*> remainingEdges = LinkedList<LinkedGraphEdge*>();
+	for (int i = 0; i < nodes->getSize(); i++) {
+		for (int k = 0; k < nodes->get((unsigned int)i)->getSize(); k++) {
+			remainingEdges.add(nodes->get((unsigned int)i)->get((unsigned int)k));
+		}
+	}
+	
+	while (trees > 1 && remainingEdges.getSize() > 0) {
+		int lowestMetric = std::numeric_limits<int>::max();
+		LinkedGraphEdge* lowestMetricEdge = nullptr;
+		
+		for (int i = 0; i < remainingEdges.getSize(); i++) {
+			LinkedGraphEdge* edge = remainingEdges.get((unsigned int)i);
+			if (edge->metric < lowestMetric) {
+				lowestMetric = edge->metric;
+				lowestMetricEdge = edge;
+			}
+		}
+		
+		if (lowestMetricEdge != nullptr) {
+			remainingEdges.remove(lowestMetricEdge);
+			if (treeId[lowestMetricEdge->originNode] != treeId[lowestMetricEdge->destinationNode]) {
+				result->addEdge(lowestMetricEdge->originNode, lowestMetricEdge->destinationNode, lowestMetricEdge->metric);
+				for (int i = 0; i < nodes->getSize(); i++) {
+					if (treeId[i] == treeId[lowestMetricEdge->destinationNode]) {
+						treeId[i] = treeId[lowestMetricEdge->originNode];
+					}
+				}
+				--trees;
+			}
+		}
+	}
+	return result;
 }
 
 bool LinkedGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {
