@@ -86,6 +86,20 @@ std::string IncidenceMatrixGraph::toString() {
 	return stringStream.str();
 }
 
+int IncidenceMatrixGraph::totalEdgeMetric() {
+	int result = 0;
+	for (int i = 0; i < edgeCount; i++) {
+		int metric = -1;
+		for (int k = 0; k < nodeCount && metric == -1; k++) {
+			if (incidenceMatrix[index(k, i)] != 0) {
+				metric = std::abs(incidenceMatrix[index(k, i)]);
+			}
+		}
+		result += metric;
+	}
+	return result;
+}
+
 Graph* IncidenceMatrixGraph::findMstPrim() {
 	Graph* result = new IncidenceMatrixGraph(nodeCount);
 	bool nodeIncluded[nodeCount] = {}; // { false ... }

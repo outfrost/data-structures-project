@@ -22,6 +22,7 @@ public:
 	void addEdge(int origin, int destination, int metric) override;
 	void clear() override;
 	std::string toString() override;
+	int totalEdgeMetric() override;
 	
 	Graph* findMstPrim() override;
 	Graph* findMstKruskal() override;

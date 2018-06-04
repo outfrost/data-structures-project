@@ -51,6 +51,17 @@ std::string LinkedGraph::toString() {
 	return stringStream.str();
 }
 
+int LinkedGraph::totalEdgeMetric() {
+	int result = 0;
+	for (unsigned int i = 0; i < nodes->getSize(); i++) {
+		for (unsigned int k = 0; k < nodes->get(i)->getSize(); k++) {
+			result += nodes->get(i)->get(k)->metric;
+		}
+	}
+	result >>= 1;
+	return result;
+}
+
 Graph* LinkedGraph::findMstPrim() {
 	Graph* result = new LinkedGraph(nodes->getSize());
 	bool nodeIncluded[nodes->getSize()] = {}; // { false ... }

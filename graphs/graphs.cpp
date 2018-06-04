@@ -182,19 +182,23 @@ void printGraphs(Graph& graph1, Graph& graph2) {
 
 void findMstPrim(Graph& graph1, Graph& graph2) {
 	Graph* mst = graph1.findMstPrim();
-	std::cout << mst->toString() << "\n";
+	std::cout << mst->toString();
+	std::cout << "Total edge metric: " << mst->totalEdgeMetric() << "\n\n";
 	delete mst;
 	mst = graph2.findMstPrim();
-	std::cout << mst->toString() << "\n";
+	std::cout << mst->toString();
+	std::cout << "Total edge metric: " << mst->totalEdgeMetric() << "\n\n";
 	delete mst;
 }
 
 void findMstKruskal(Graph& graph1, Graph& graph2) {
 	Graph* mst = graph1.findMstKruskal();
-	std::cout << mst->toString() << "\n";
+	std::cout << mst->toString();
+	std::cout << "Total edge metric: " << mst->totalEdgeMetric() << "\n\n";
 	delete mst;
 	mst = graph2.findMstKruskal();
-	std::cout << mst->toString() << "\n";
+	std::cout << mst->toString();
+	std::cout << "Total edge metric: " << mst->totalEdgeMetric() << "\n\n";
 	delete mst;
 }
 
