@@ -86,6 +86,62 @@ std::string IncidenceMatrixGraph::toString() {
 	return stringStream.str();
 }
 
+Graph* IncidenceMatrixGraph::findMstPrim() {
+	Graph* result = new IncidenceMatrixGraph(nodeCount);
+	bool nodeIncluded[nodeCount] = {}; // { false ... }
+	
+	int cheapestConnectionMetric[nodeCount];
+	std::fill_n(cheapestConnectionMetric, nodeCount, std::numeric_limits<int>::max());
+	int cheapestConnectionEdge[nodeCount];
+	std::fill_n(cheapestConnectionEdge, nodeCount, -1);
+	
+	int currentNode = 0;
+	for (int nodesRemaining = nodeCount; nodesRemaining > 0 && currentNode != -1; nodesRemaining--) {
+		nodeIncluded[currentNode] = true;
+		if (cheapestConnectionEdge[currentNode] != -1) {
+			int origin = -1;
+			int destination = -1;
+			int metric = 0;
+			getEdgeProperties(cheapestConnectionEdge[currentNode], origin, destination, metric);
+			result->addEdge(origin, destination, metric);
+		}
+		
+		for (int i = 0; i < edgeCount; i++) {
+			int origin = -1;
+			int destination = -1;
+			int metric = 0;
+			getEdgeProperties(i, origin, destination, metric);
+			if (origin == currentNode
+					&& !nodeIncluded[destination]
+					&& metric < cheapestConnectionMetric[destination]) {
+				cheapestConnectionMetric[destination] = metric;
+				cheapestConnectionEdge[destination] = i;
+			}
+			else if (destination == currentNode
+					&& !nodeIncluded[origin]
+					&& metric < cheapestConnectionMetric[origin]) {
+				cheapestConnectionMetric[origin] = metric;
+				cheapestConnectionEdge[origin] = i;
+			}
+		}
+		
+		int lowestMetric = std::numeric_limits<int>::max();
+		int lowestMetricNode = -1;
+		for (int i = 0; i < nodeCount; i++) {
+			if (!nodeIncluded[i] && cheapestConnectionMetric[i] < lowestMetric) {
+				lowestMetric = cheapestConnectionMetric[i];
+				lowestMetricNode = i;
+			}
+		}
+		currentNode = lowestMetricNode;
+	}
+	return result;
+}
+
+Graph* IncidenceMatrixGraph::findMstKruskal() {
+	return nullptr;
+}
+
 bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {
 	if (startingNode < nodeCount && destinationNode < nodeCount
 	        && startingNode >= 0 && destinationNode >= 0) {

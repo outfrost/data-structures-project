@@ -181,7 +181,12 @@ void printGraphs(Graph& graph1, Graph& graph2) {
 }
 
 void findMstPrim(Graph& graph1, Graph& graph2) {
-
+	Graph* mst = graph1.findMstPrim();
+	std::cout << mst->toString() << "\n";
+	delete mst;
+	mst = graph2.findMstPrim();
+	std::cout << mst->toString() << "\n";
+	delete mst;
 }
 
 void findMstKruskal(Graph& graph1, Graph& graph2) {

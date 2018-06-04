@@ -15,6 +15,8 @@ public:
 	virtual void clear() = 0;
 	virtual std::string toString() = 0;
 	
+	virtual Graph* findMstPrim() = 0;
+	virtual Graph* findMstKruskal() = 0;
 	virtual bool findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) = 0;
 	virtual bool findPathBellman(int startingNode, int destinationNode, int& distance, List<int>& path) = 0;
 	

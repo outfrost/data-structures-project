@@ -2,6 +2,10 @@
 #include <limits>
 #include "LinkedGraph.h"
 
+LinkedGraph::LinkedGraph(int nodeCount) {
+	addNodes(nodeCount);
+}
+
 void LinkedGraph::addNodes(int count) {
 	for (int i = 0; i < count; i++) {
 		nodes->add(new LinkedList<LinkedGraphEdge*>());
@@ -45,6 +49,56 @@ std::string LinkedGraph::toString() {
 	}
 	stringStream.flush();
 	return stringStream.str();
+}
+
+Graph* LinkedGraph::findMstPrim() {
+	Graph* result = new LinkedGraph(nodes->getSize());
+	bool nodeIncluded[nodes->getSize()] = {}; // { false ... }
+	
+	int cheapestConnectionMetric[nodes->getSize()];
+	std::fill_n(cheapestConnectionMetric, nodes->getSize(), std::numeric_limits<int>::max());
+	LinkedGraphEdge* cheapestConnectionEdge[nodes->getSize()];
+	std::fill_n(cheapestConnectionEdge, nodes->getSize(), nullptr);
+	
+	int currentNode = 0;
+	for (int nodesRemaining = nodes->getSize(); nodesRemaining > 0 && currentNode != -1; nodesRemaining--) {
+		nodeIncluded[currentNode] = true;
+		if (cheapestConnectionEdge[currentNode] != nullptr) {
+			LinkedGraphEdge* edge = cheapestConnectionEdge[currentNode];
+			result->addEdge(edge->originNode, edge->destinationNode, edge->metric);
+		}
+		
+		for (int i = 0; i < nodes->get((unsigned int)currentNode)->getSize(); i++) {
+			LinkedGraphEdge* edge = nodes->get((unsigned int)currentNode)->get((unsigned int)i);
+			if (edge->originNode == currentNode
+					&& !nodeIncluded[edge->destinationNode]
+					&& edge->metric < cheapestConnectionMetric[edge->destinationNode]) {
+				cheapestConnectionMetric[edge->destinationNode] = edge->metric;
+				cheapestConnectionEdge[edge->destinationNode] = edge;
+			}
+			else if (edge->destinationNode == currentNode
+					&& !nodeIncluded[edge->originNode]
+					&& edge->metric < cheapestConnectionMetric[edge->originNode]) {
+				cheapestConnectionMetric[edge->originNode] = edge->metric;
+				cheapestConnectionEdge[edge->originNode] = edge;
+			}
+		}
+		
+		int lowestMetric = std::numeric_limits<int>::max();
+		int lowestMetricNode = -1;
+		for (int i = 0; i < nodes->getSize(); i++) {
+			if (!nodeIncluded[i] && cheapestConnectionMetric[i] < lowestMetric) {
+				lowestMetric = cheapestConnectionMetric[i];
+				lowestMetricNode = i;
+			}
+		}
+		currentNode = lowestMetricNode;
+	}
+	return result;
+}
+
+Graph* LinkedGraph::findMstKruskal() {
+	return nullptr;
 }
 
 bool LinkedGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {

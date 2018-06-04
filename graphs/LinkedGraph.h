@@ -15,6 +15,7 @@ private:
 
 public:
 	LinkedGraph() = default;
+	LinkedGraph(int nodeCount);
 	~LinkedGraph() override = default;
 	
 	void addNodes(int count) override;
@@ -22,6 +23,8 @@ public:
 	void clear() override;
 	std::string toString() override;
 	
+	Graph* findMstPrim() override;
+	Graph* findMstKruskal() override;
 	bool findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) override;
 	bool findPathBellman(int startingNode, int destinationNode, int& distance, List<int>& path) override;
 	
