@@ -62,6 +62,21 @@ int LinkedGraph::totalEdgeMetric() {
 	return result;
 }
 
+bool LinkedGraph::containsEdge(int from, int to) {
+	if (from < nodes->getSize() && to < nodes->getSize()
+			&& from >= 0 && to >= 0
+			&& from != to) {
+		List<LinkedGraphEdge*>* adjacencyList = nodes->get((unsigned int)from);
+		for (int i = 0; i < adjacencyList->getSize(); i++) {
+			if (adjacencyList->get((unsigned int)i)->originNode == to
+					|| adjacencyList->get((unsigned int)i)->destinationNode == to) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 Graph* LinkedGraph::findMstPrim() {
 	Graph* result = new LinkedGraph(nodes->getSize());
 	bool nodeIncluded[nodes->getSize()] = {}; // { false ... }

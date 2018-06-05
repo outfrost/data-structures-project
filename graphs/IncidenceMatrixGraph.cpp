@@ -100,6 +100,25 @@ int IncidenceMatrixGraph::totalEdgeMetric() {
 	return result;
 }
 
+bool IncidenceMatrixGraph::containsEdge(int from, int to) {
+	if (from < nodeCount && to < nodeCount
+			&& from >= 0 && to >= 0
+			&& from != to) {
+		for (int i = 0; i < edgeCount; i++) {
+			if (incidenceMatrix[index(from, i)] != 0) {
+				int origin = -1;
+				int destination = -1;
+				int metric = 0;
+				getEdgeProperties(i, origin, destination, metric);
+				if (origin == to || destination == to) {
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 Graph* IncidenceMatrixGraph::findMstPrim() {
 	Graph* result = new IncidenceMatrixGraph(nodeCount);
 	bool nodeIncluded[nodeCount] = {}; // { false ... }

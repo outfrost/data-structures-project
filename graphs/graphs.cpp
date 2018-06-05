@@ -5,9 +5,10 @@
 #include "../common/string_consts.h"
 #include "../common/getValueFromString.h"
 #include "../common/time_measurement.h"
-#include "graphs.h"
 #include "IncidenceMatrixGraph.h"
 #include "LinkedGraph.h"
+#include "../basic-structures/DummyList.cpp"
+#include "graphs.h"
 
 namespace graphs {
 	
@@ -25,7 +26,7 @@ namespace graphs {
 					if (choice == '1') {
 						buildGraphsFromFile(incidenceMatrixGraph, linkedGraph);
 					} else if (choice == '2') {
-						generateRandomGraphs(incidenceMatrixGraph, linkedGraph);
+						promptGraphGenerationParams(incidenceMatrixGraph, linkedGraph);
 					} else if (choice == '3') {
 						printGraphs(incidenceMatrixGraph, linkedGraph);
 					} else if (choice == '4') {
@@ -132,45 +133,81 @@ namespace graphs {
 		}
 	}
 	
-	void generateRandomGraphs(Graph& graph1, Graph& graph2) {
+	void promptGraphGenerationParams(Graph& graph1, Graph& graph2) {
 		std::cout << STR_LANG_ENTER_NODE_CT << ": ";
 		int nodeCount = 0;
 		std::scanf("%d", &nodeCount);
 		if (nodeCount > 0) {
-			graph1.clear();
-			graph2.clear();
-			graph1.addNodes(nodeCount);
-			graph2.addNodes(nodeCount);
-			
 			std::cout << STR_LANG_ENTER_DENSITY << ": ";
 			int densityPercentage = 0;
 			std::scanf("%d", &densityPercentage);
-			
-			if (densityPercentage > 0) {
-				std::random_device randomDevice;
-				std::mt19937 mt = std::mt19937(randomDevice());
-				std::bernoulli_distribution boolDist = std::bernoulli_distribution((double) densityPercentage / 100.0);
-				std::uniform_int_distribution<int> metricDist = std::uniform_int_distribution<int>(1,
-				                                                                                   MAX_RANDOM_METRIC);
-				
-				for (int i = 0; i < nodeCount; i++) {
-					for (int k = 0; k < nodeCount; k++) {
-						if (k != i) {
-							if (boolDist(mt)) {
-								int metric = metricDist(mt);
-								graph1.addEdge(i, k, metric);
-								graph2.addEdge(i, k, metric);
-							}
-						}
-					}
-				}
+			if (densityPercentage >= 0 && densityPercentage <= 100) {
+				generateRandomGraphs(graph1, graph2, nodeCount, densityPercentage);
+			}
+			else {
+				std::cerr << STR_EX_INVALID_PERCENTAGE << "\n";
 			}
 		} else
 			std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
 	}
 	
+	void generateRandomGraphs(Graph& graph1, Graph& graph2, int nodeCount, int densityPercentage) {
+		if (nodeCount > 0 && densityPercentage >= 0 && densityPercentage <= 100) {
+			graph1.clear();
+			graph2.clear();
+			graph1.addNodes(nodeCount);
+			graph2.addNodes(nodeCount);
+			
+			std::random_device randomDevice;
+			std::mt19937 mt = std::mt19937(randomDevice());
+			std::uniform_int_distribution<int> nodeDist = std::uniform_int_distribution<int>(0, nodeCount - 1);
+			std::bernoulli_distribution directionDist = std::bernoulli_distribution();
+			std::uniform_int_distribution<int> metricDist = std::uniform_int_distribution<int>(1, MAX_RANDOM_METRIC);
+			/*
+			 * This part guarantees that we generate a connected graph
+			 */
+			bool nodeIncluded[nodeCount] = {}; // { false ... }
+			nodeIncluded[nodeDist(mt)] = true;
+			
+			for (int i = 1; i < nodeCount; i++) {
+				int node = nodeDist(mt);
+				while (nodeIncluded[node]) {
+					node = nodeDist(mt);
+				}
+				int connectionNode = nodeDist(mt);
+				while (!nodeIncluded[connectionNode]) {
+					connectionNode = nodeDist(mt);
+				}
+				nodeIncluded[node] = true;
+				if (directionDist(mt)) {
+					std::swap(node, connectionNode);
+				}
+				int metric = metricDist(mt);
+				graph1.addEdge(node, connectionNode, metric);
+				graph2.addEdge(node, connectionNode, metric);
+			}
+			/***/
+			double initialDensity = ((double)nodeCount - 1.0) / (((double)nodeCount - 1.0) * (double)nodeCount);
+			double probability = (((double) densityPercentage / 100.0) - initialDensity) / (1.0 - initialDensity);
+			if (densityPercentage > 0) {
+				std::bernoulli_distribution boolDist = std::bernoulli_distribution(probability);
+				
+				for (int i = 0; i < nodeCount; i++) {
+					for (int k = 0; k < nodeCount; k++) {
+						if (k != i
+								&& !graph2.containsEdge(i, k)
+								&& boolDist(mt)) {
+							int metric = metricDist(mt);
+							graph1.addEdge(i, k, metric);
+							graph2.addEdge(i, k, metric);
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	void printGraphs(Graph& graph1, Graph& graph2) {
-		
 		std::cout << graph1.toString() << "\n" << graph2.toString() << "\n";
 	}
 	
@@ -252,15 +289,95 @@ namespace graphs {
 	
 	void benchmark() {
 		std::ofstream* resultStream = openStreamForWriting();
-		
+		*resultStream << "node_count,"
+				<< "density,"
+				<< "im_prim,"
+				<< "im_kruskal,"
+				<< "im_dijkstra,"
+				<< "im_bellman,"
+				<< "al_prim,"
+				<< "al_kruskal,"
+				<< "al_dijkstra,"
+				<< "al_bellman"
+				<< "\n";
+		resultStream->flush();
 		
 		int count = MAX_GENERATED_NODES;
-		for (int i = 0; i < MEASUREMENT_PASSES; i++) {
-			IncidenceMatrixGraph incidenceMatrixGraph = IncidenceMatrixGraph();
-			LinkedGraph linkedGraph = LinkedGraph();
+		
+		for (int i = 0; i < 5 && count > 0; i++, count >>= 1) {
+			for (int i = 0; i < MEASUREMENT_PASSES; i++) {
+				IncidenceMatrixGraph incidenceMatrixGraph = IncidenceMatrixGraph();
+				LinkedGraph linkedGraph = LinkedGraph();
+				
+				std::random_device randomDevice;
+				std::mt19937 mt(randomDevice());
+				std::uniform_int_distribution<int> nodeDist(0, count - 1);
+				
+				std::chrono::time_point<std::chrono::high_resolution_clock> timeBefore;
+				std::chrono::time_point<std::chrono::high_resolution_clock> timeAfter;
+				
+				int density[4] = {25, 50, 75, 99};
+				for (int k = 0; k < 4; k++) {
+					std::cout << STR_LANG_GEN_GRAPH_PRE << count << STR_LANG_GEN_GRAPH_AFT;
+					std::cout << STR_LANG_GRAPH_DENSITY_PRE << density[k] << STR_LANG_GRAPH_DENSITY_AFT;
+					generateRandomGraphs(incidenceMatrixGraph, linkedGraph, count, density[k]);
+					
+					std::cout << STR_LANG_MEASURING_PRE << i + 1 << STR_LANG_MEASUGING_AFT;
+					
+					int pathStartingNode = nodeDist(mt);
+					int pathDestinationNode = pathStartingNode;
+					while (pathDestinationNode == pathStartingNode) {
+						pathDestinationNode = nodeDist(mt);
+					}
+					int pathDistance;
+					DummyList<int> path = DummyList<int>();
+					
+					*resultStream << count << "," << density[k] << ",";
+					
+					timeBefore = std::chrono::high_resolution_clock::now();
+					incidenceMatrixGraph.findMstPrim();
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					
+					timeBefore = std::chrono::high_resolution_clock::now();
+					incidenceMatrixGraph.findMstKruskal();
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					
+					timeBefore = std::chrono::high_resolution_clock::now();
+					incidenceMatrixGraph.findPathDijkstra(pathStartingNode, pathDestinationNode, pathDistance, path);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					
+					timeBefore = std::chrono::high_resolution_clock::now();
+					incidenceMatrixGraph.findPathBellman(pathStartingNode, pathDestinationNode, pathDistance, path);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedGraph.findMstPrim();
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedGraph.findMstKruskal();
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedGraph.findPathDijkstra(pathStartingNode, pathDestinationNode, pathDistance, path);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+					
+					timeBefore = std::chrono::high_resolution_clock::now();
+					linkedGraph.findPathBellman(pathStartingNode, pathDestinationNode, pathDistance, path);
+					timeAfter = std::chrono::high_resolution_clock::now();
+					*resultStream << nanoseconds(timeBefore, timeAfter) << "\n";
+					
+					resultStream->flush();
+				}
+			}
 		}
-		
-		
 		resultStream->close();
 		delete resultStream;
 	}

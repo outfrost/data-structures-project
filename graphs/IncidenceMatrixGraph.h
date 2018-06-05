@@ -29,6 +29,7 @@ public:
 	void clear() override;
 	std::string toString() override;
 	int totalEdgeMetric() override;
+	bool containsEdge(int from, int to) override;
 	
 	Graph* findMstPrim() override;
 	Graph* findMstKruskal() override;

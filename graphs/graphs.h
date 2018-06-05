@@ -3,9 +3,9 @@
 
 #include "Graph.h"
 
-#define MAX_RANDOM_METRIC 1<<9
-#define MAX_GENERATED_NODES 1<<7
-#define MEASUREMENT_PASSES 128
+#define MAX_RANDOM_METRIC 1<<10
+#define MAX_GENERATED_NODES 1<<6
+#define MEASUREMENT_PASSES 100
 
 namespace graphs {
 	
@@ -13,7 +13,8 @@ namespace graphs {
 	void readMainMenuChoice(char* choice);
 	void readStructureMenuChoice(char* choice, const std::string& structureName);
 	void buildGraphsFromFile(Graph& graph1, Graph& graph2);
-	void generateRandomGraphs(Graph& graph1, Graph& graph2);
+	void promptGraphGenerationParams(Graph& graph1, Graph& graph2);
+	void generateRandomGraphs(Graph& graph1, Graph& graph2, int nodeCount, int densityPercentage);
 	void printGraphs(Graph& graph1, Graph& graph2);
 	void findMstPrim(Graph& graph1, Graph& graph2);
 	void findMstKruskal(Graph& graph1, Graph& graph2);

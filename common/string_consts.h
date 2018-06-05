@@ -52,6 +52,10 @@
 #define STR_LANG_FORMAT_GENERATING  "Generating %d random entries\n"
 #define STR_LANG_GENERATING_PRE     "Generating "
 #define STR_LANG_GENERATING_AFT     " random entries\n"
+#define STR_LANG_GEN_GRAPH_PRE      "Generating a random graph with "
+#define STR_LANG_GEN_GRAPH_AFT      " nodes\n"
+#define STR_LANG_GRAPH_DENSITY_PRE  "Density: "
+#define STR_LANG_GRAPH_DENSITY_AFT  "%\n"
 #define STR_LANG_FORMAT_MEASURING   "Measuring operation times, pass # %d\n"
 #define STR_LANG_MEASURING_PRE      "Measuring operation times, pass # "
 #define STR_LANG_MEASUGING_AFT      "\n"
@@ -60,5 +64,6 @@
 #define STR_EX_ARRAYLIST_EMPTY      "ArrayList is empty"
 #define STR_EX_LINKEDLIST_EMPTY     "LinkedList is empty"
 #define STR_EX_BINARYHEAP_EMPTY     "BinaryHeap is empty"
+#define STR_EX_INVALID_PERCENTAGE   "Invalid percentage"
 
 #endif //DATA_STRUCTURES_PROJECT_STRING_CONSTS_H
