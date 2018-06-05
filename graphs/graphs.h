@@ -4,6 +4,8 @@
 #include "Graph.h"
 
 #define MAX_RANDOM_METRIC 1<<9
+#define MAX_GENERATED_NODES 1<<7
+#define MEASUREMENT_PASSES 128
 
 namespace graphs {
 	

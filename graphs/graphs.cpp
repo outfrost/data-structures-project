@@ -253,6 +253,14 @@ namespace graphs {
 	void benchmark() {
 		std::ofstream* resultStream = openStreamForWriting();
 		
+		
+		int count = MAX_GENERATED_NODES;
+		for (int i = 0; i < MEASUREMENT_PASSES; i++) {
+			IncidenceMatrixGraph incidenceMatrixGraph = IncidenceMatrixGraph();
+			LinkedGraph linkedGraph = LinkedGraph();
+		}
+		
+		
 		resultStream->close();
 		delete resultStream;
 	}
