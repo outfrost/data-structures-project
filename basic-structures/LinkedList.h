@@ -12,6 +12,7 @@ private:
 
 public:
 	LinkedList();
+	~LinkedList() override;
 	
 	unsigned int getSize() override;
 	T get(unsigned int index) override;

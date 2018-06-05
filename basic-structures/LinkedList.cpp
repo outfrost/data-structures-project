@@ -15,6 +15,17 @@ LinkedList<T>::LinkedList() {
 }
 
 template<typename T>
+LinkedList<T>::~LinkedList() {
+	LinkedListElement<T>* element = firstElement;
+	LinkedListElement<T>* nextElement = nullptr;
+	while (element != nullptr) {
+		nextElement = element->getNextElement();
+		delete element;
+		element = nextElement;
+	}
+}
+
+template<typename T>
 unsigned int LinkedList<T>::getSize() {
 	return this->size;
 }

@@ -21,6 +21,8 @@ public:
 		this->next = next;
 	}
 	
+	~LinkedListElement() = default;
+	
 	T getValue() {
 		return this->value;
 	}

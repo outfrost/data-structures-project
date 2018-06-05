@@ -11,6 +11,7 @@ private:
 
 public:
 	ArrayList();
+	~ArrayList() override;
 	
 	unsigned int getSize() override;
 	T get(unsigned int index) override;

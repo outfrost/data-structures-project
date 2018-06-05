@@ -13,6 +13,11 @@ ArrayList<T>::ArrayList() {
 }
 
 template<typename T>
+ArrayList<T>::~ArrayList() {
+	delete[] array;
+}
+
+template<typename T>
 unsigned int ArrayList<T>::getSize() {
 	return this->size;
 }
