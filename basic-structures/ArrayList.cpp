@@ -13,6 +13,19 @@ ArrayList<T>::ArrayList() {
 }
 
 template<typename T>
+ArrayList<T>::ArrayList(unsigned int count) {
+	this->size = count;
+	this->array = new T[size];
+}
+
+template<typename T>
+ArrayList<T>::ArrayList(unsigned int count, const T& value) {
+	this->size = count;
+	this->array = new T[size];
+	std::fill_n(array, count, value);
+}
+
+template<typename T>
 ArrayList<T>::~ArrayList() {
 	delete[] array;
 }
@@ -24,10 +37,16 @@ unsigned int ArrayList<T>::getSize() {
 
 template<typename T>
 T ArrayList<T>::get(unsigned int index) {
-	if (index < this->size)
-		return this->array[index];
-	else
+	if (index >= this->size)
 		throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+	return this->array[index];
+}
+
+template<typename T>
+void ArrayList<T>::set(unsigned int index, const T& value) {
+	if (index >= size)
+		throw std::out_of_range(STR_EX_INDEX_OUT_OF_BOUNDS);
+	array[index] = value;
 }
 
 template<typename T>

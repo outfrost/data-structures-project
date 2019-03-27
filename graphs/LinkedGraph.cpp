@@ -79,42 +79,40 @@ bool LinkedGraph::containsEdge(int from, int to) {
 
 Graph* LinkedGraph::findMstPrim() {
 	Graph* result = new LinkedGraph(nodes->getSize());
-	bool nodeIncluded[nodes->getSize()] = {}; // { false ... }
+	ArrayList<bool> nodeIncluded(nodes->getSize(), false);
 	
-	int cheapestConnectionMetric[nodes->getSize()];
-	std::fill_n(cheapestConnectionMetric, nodes->getSize(), std::numeric_limits<int>::max());
-	LinkedGraphEdge* cheapestConnectionEdge[nodes->getSize()];
-	std::fill_n(cheapestConnectionEdge, nodes->getSize(), nullptr);
+	ArrayList<int> cheapestConnectionMetric(nodes->getSize(), std::numeric_limits<int>::max());
+	ArrayList<LinkedGraphEdge*> cheapestConnectionEdge(nodes->getSize(), nullptr);
 	
 	int currentNode = 0;
 	for (int nodesRemaining = nodes->getSize(); nodesRemaining > 0 && currentNode != -1; nodesRemaining--) {
-		nodeIncluded[currentNode] = true;
-		if (cheapestConnectionEdge[currentNode] != nullptr) {
-			LinkedGraphEdge* edge = cheapestConnectionEdge[currentNode];
+		nodeIncluded.set(currentNode, true);
+		if (cheapestConnectionEdge.get(currentNode) != nullptr) {
+			LinkedGraphEdge* edge = cheapestConnectionEdge.get(currentNode);
 			result->addEdge(edge->originNode, edge->destinationNode, edge->metric);
 		}
 		
 		for (int i = 0; i < nodes->get((unsigned int)currentNode)->getSize(); i++) {
 			LinkedGraphEdge* edge = nodes->get((unsigned int)currentNode)->get((unsigned int)i);
 			if (edge->originNode == currentNode
-					&& !nodeIncluded[edge->destinationNode]
-					&& edge->metric < cheapestConnectionMetric[edge->destinationNode]) {
-				cheapestConnectionMetric[edge->destinationNode] = edge->metric;
-				cheapestConnectionEdge[edge->destinationNode] = edge;
+					&& !nodeIncluded.get(edge->destinationNode)
+					&& edge->metric < cheapestConnectionMetric.get(edge->destinationNode)) {
+				cheapestConnectionMetric.set(edge->destinationNode, edge->metric);
+				cheapestConnectionEdge.set(edge->destinationNode, edge);
 			}
 			else if (edge->destinationNode == currentNode
-					&& !nodeIncluded[edge->originNode]
-					&& edge->metric < cheapestConnectionMetric[edge->originNode]) {
-				cheapestConnectionMetric[edge->originNode] = edge->metric;
-				cheapestConnectionEdge[edge->originNode] = edge;
+					&& !nodeIncluded.get(edge->originNode)
+					&& edge->metric < cheapestConnectionMetric.get(edge->originNode)) {
+				cheapestConnectionMetric.set(edge->originNode, edge->metric);
+				cheapestConnectionEdge.set(edge->originNode, edge);
 			}
 		}
 		
 		int lowestMetric = std::numeric_limits<int>::max();
 		int lowestMetricNode = -1;
 		for (int i = 0; i < nodes->getSize(); i++) {
-			if (!nodeIncluded[i] && cheapestConnectionMetric[i] < lowestMetric) {
-				lowestMetric = cheapestConnectionMetric[i];
+			if (!nodeIncluded.get(i) && cheapestConnectionMetric.get(i) < lowestMetric) {
+				lowestMetric = cheapestConnectionMetric.get(i);
 				lowestMetricNode = i;
 			}
 		}
@@ -125,9 +123,9 @@ Graph* LinkedGraph::findMstPrim() {
 
 Graph* LinkedGraph::findMstKruskal() {
 	Graph* result = new LinkedGraph(nodes->getSize());
-	int treeId[nodes->getSize()];
-	for (int i = 0; i < nodes->getSize(); i++) {
-		treeId[i] = i;
+	ArrayList<int> treeId(nodes->getSize());
+	for (int i = 0; i < treeId.getSize(); i++) {
+		treeId.set(i, i);
 	}
 	int trees = nodes->getSize();
 	LinkedList<LinkedGraphEdge*> remainingEdges = LinkedList<LinkedGraphEdge*>();
@@ -153,12 +151,12 @@ Graph* LinkedGraph::findMstKruskal() {
 		
 		if (lowestMetricEdge != nullptr) {
 			remainingEdges.remove(lowestMetricEdge);
-			if (treeId[lowestMetricEdge->originNode] != treeId[lowestMetricEdge->destinationNode]) {
+			if (treeId.get(lowestMetricEdge->originNode) != treeId.get(lowestMetricEdge->destinationNode)) {
 				result->addEdge(lowestMetricEdge->originNode, lowestMetricEdge->destinationNode, lowestMetricEdge->metric);
-				int mergedTreeId = treeId[lowestMetricEdge->destinationNode];
-				for (int i = 0; i < nodes->getSize(); i++) {
-					if (treeId[i] == mergedTreeId) {
-						treeId[i] = treeId[lowestMetricEdge->originNode];
+				int mergedTreeId = treeId.get(lowestMetricEdge->destinationNode);
+				for (int i = 0; i < treeId.getSize(); i++) {
+					if (treeId.get(i) == mergedTreeId) {
+						treeId.set(i, treeId.get(lowestMetricEdge->originNode));
 					}
 				}
 				--trees;
@@ -171,47 +169,45 @@ Graph* LinkedGraph::findMstKruskal() {
 bool LinkedGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {
 	if (startingNode < nodes->getSize() && destinationNode < nodes->getSize()
 	        && startingNode >= 0 && destinationNode >= 0) {
-		bool visited[nodes->getSize()] = {}; // { false ... }
-		int tentativeDistance[nodes->getSize()];
-		std::fill_n(tentativeDistance, nodes->getSize(), std::numeric_limits<int>::max());
-		int previousHop[nodes->getSize()];
-		std::fill_n(previousHop, nodes->getSize(), -1);
+		ArrayList<bool> visited(nodes->getSize(), false);
+		ArrayList<int> tentativeDistance(nodes->getSize(), std::numeric_limits<int>::max());
+		ArrayList<int> previousHop(nodes->getSize(), -1);
 		
-		tentativeDistance[startingNode] = 0;
+		tentativeDistance.set(startingNode, 0);
 		int currentNode = startingNode;
 		
-		while (currentNode != destinationNode && !visited[destinationNode]
+		while (currentNode != destinationNode && !visited.get(destinationNode)
 		       && currentNode != -1) {
 			for (int i = 0; i < nodes->get((unsigned int)currentNode)->getSize(); i++) {
 				LinkedGraphEdge* currentEdge = nodes->get((unsigned int)currentNode)->get((unsigned int)i);
-				if (!visited[currentEdge->destinationNode]) {
-					if (tentativeDistance[currentNode] + currentEdge->metric
-						    < tentativeDistance[currentEdge->destinationNode]) {
-						tentativeDistance[currentEdge->destinationNode] =
-								tentativeDistance[currentNode] + currentEdge->metric;
-						previousHop[currentEdge->destinationNode] = currentNode;
+				if (!visited.get(currentEdge->destinationNode)) {
+					if (tentativeDistance.get(currentNode) + currentEdge->metric
+						    < tentativeDistance.get(currentEdge->destinationNode)) {
+						tentativeDistance.set(currentEdge->destinationNode,
+								tentativeDistance.get(currentNode) + currentEdge->metric);
+						previousHop.set(currentEdge->destinationNode, currentNode);
 					}
 				}
 			}
-			visited[currentNode] = true;
+			visited.set(currentNode, true);
 			
 			int smallestTentativeDistance = std::numeric_limits<int>::max();
 			int nodeWithSmallestDistance = -1;
 			for (int i = 0; i < nodes->getSize(); i++) {
-				if (!visited[i] && tentativeDistance[i] < smallestTentativeDistance) {
-					smallestTentativeDistance = tentativeDistance[i];
+				if (!visited.get(i) && tentativeDistance.get(i) < smallestTentativeDistance) {
+					smallestTentativeDistance = tentativeDistance.get(i);
 					nodeWithSmallestDistance = i;
 				}
 			}
 			currentNode = nodeWithSmallestDistance;
 		}
 		
-		distance = tentativeDistance[destinationNode];
+		distance = tentativeDistance.get(destinationNode);
 		if (currentNode != -1) {
 			currentNode = destinationNode;
 			while (currentNode != -1) {
 				path.addStart(currentNode);
-				currentNode = previousHop[currentNode];
+				currentNode = previousHop.get(currentNode);
 			}
 			return true;
 		}
@@ -222,24 +218,22 @@ bool LinkedGraph::findPathDijkstra(int startingNode, int destinationNode, int& d
 bool LinkedGraph::findPathBellman(int startingNode, int destinationNode, int& distance, List<int>& path) {
 	if (startingNode < nodes->getSize() && destinationNode < nodes->getSize()
 	        && startingNode >= 0 && destinationNode >= 0) {
-		int tentativeDistance[nodes->getSize()];
-		std::fill_n(tentativeDistance, nodes->getSize(), std::numeric_limits<int>::max());
-		int previousHop[nodes->getSize()];
-		std::fill_n(previousHop, nodes->getSize(), -1);
+		ArrayList<int> tentativeDistance(nodes->getSize(), std::numeric_limits<int>::max());
+		ArrayList<int> previousHop(nodes->getSize(), -1);
 		
-		tentativeDistance[startingNode] = 0;
+		tentativeDistance.set(startingNode, 0);
 		
 		for (int i = 0; i < nodes->getSize() - 1; i++) {
 			for (int k = 0; k < nodes->getSize(); k++) {
 				for (int l = 0; l < nodes->get((unsigned int)k)->getSize(); l++) {
 					LinkedGraphEdge* edge = nodes->get((unsigned int)k)->get((unsigned int)l);
 					if (k == edge->originNode) {
-						if (tentativeDistance[edge->originNode] < std::numeric_limits<int>::max()) {
-							if (tentativeDistance[edge->originNode] + edge->metric
-									< tentativeDistance[edge->destinationNode]) {
-								tentativeDistance[edge->destinationNode]
-										= tentativeDistance[edge->originNode] + edge->metric;
-								previousHop[edge->destinationNode] = edge->originNode;
+						if (tentativeDistance.get(edge->originNode) < std::numeric_limits<int>::max()) {
+							if (tentativeDistance.get(edge->originNode) + edge->metric
+									< tentativeDistance.get(edge->destinationNode)) {
+								tentativeDistance.set(edge->destinationNode,
+										tentativeDistance.get(edge->originNode) + edge->metric);
+								previousHop.set(edge->destinationNode, edge->originNode);
 							}
 						}
 					}
@@ -251,9 +245,9 @@ bool LinkedGraph::findPathBellman(int startingNode, int destinationNode, int& di
 			for (int l = 0; l < nodes->get((unsigned int)k)->getSize(); l++) {
 				LinkedGraphEdge* edge = nodes->get((unsigned int)k)->get((unsigned int)l);
 				if (k == edge->originNode) {
-					if (tentativeDistance[edge->originNode] < std::numeric_limits<int>::max()) {
-						if (tentativeDistance[edge->originNode] + edge->metric
-						        < tentativeDistance[edge->destinationNode]) {
+					if (tentativeDistance.get(edge->originNode) < std::numeric_limits<int>::max()) {
+						if (tentativeDistance.get(edge->originNode) + edge->metric
+						        < tentativeDistance.get(edge->destinationNode)) {
 							return false; // TODO Handle problems better maybe™?
 						}
 					}
@@ -261,12 +255,12 @@ bool LinkedGraph::findPathBellman(int startingNode, int destinationNode, int& di
 			}
 		}
 		
-		distance = tentativeDistance[destinationNode];
-		if (tentativeDistance[destinationNode] < std::numeric_limits<int>::max()) {
+		distance = tentativeDistance.get(destinationNode);
+		if (tentativeDistance.get(destinationNode) < std::numeric_limits<int>::max()) {
 			int currentNode = destinationNode;
 			while (currentNode != -1) {
 				path.addStart(currentNode);
-				currentNode = previousHop[currentNode];
+				currentNode = previousHop.get(currentNode);
 			}
 			return true;
 		}

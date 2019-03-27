@@ -166,19 +166,19 @@ namespace graphs {
 			/*
 			 * This part guarantees that we generate a connected graph
 			 */
-			bool nodeIncluded[nodeCount] = {}; // { false ... }
-			nodeIncluded[nodeDist(mt)] = true;
+			ArrayList<bool> nodeIncluded(nodeCount, false);
+			nodeIncluded.set(nodeDist(mt), true);
 			
 			for (int i = 1; i < nodeCount; i++) {
 				int node = nodeDist(mt);
-				while (nodeIncluded[node]) {
+				while (nodeIncluded.get(node)) {
 					node = nodeDist(mt);
 				}
 				int connectionNode = nodeDist(mt);
-				while (!nodeIncluded[connectionNode]) {
+				while (!nodeIncluded.get(connectionNode)) {
 					connectionNode = nodeDist(mt);
 				}
-				nodeIncluded[node] = true;
+				nodeIncluded.set(node, true);
 				if (directionDist(mt)) {
 					std::swap(node, connectionNode);
 				}

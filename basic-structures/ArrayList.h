@@ -11,10 +11,13 @@ private:
 
 public:
 	ArrayList();
+	ArrayList(unsigned int count);
+	ArrayList(unsigned int count, T const& value);
 	~ArrayList() override;
 	
 	unsigned int getSize() override;
 	T get(unsigned int index) override;
+	void set(unsigned int index, T const& value);
 	bool contains(T const value) override;
 	void add(T const value, unsigned int index) override;
 	void add(T const value) override;

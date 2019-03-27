@@ -12,6 +12,7 @@
 #include "../common/padString.h"
 #include "../basic-structures/LinkedList.cpp"
 #include "IncidenceMatrixGraph.h"
+#include "../basic-structures/ArrayList.cpp"
 
 
 IncidenceMatrixGraph::IncidenceMatrixGraph() {
@@ -121,21 +122,19 @@ bool IncidenceMatrixGraph::containsEdge(int from, int to) {
 
 Graph* IncidenceMatrixGraph::findMstPrim() {
 	Graph* result = new IncidenceMatrixGraph(nodeCount);
-	bool nodeIncluded[nodeCount] = {}; // { false ... }
+	ArrayList<bool> nodeIncluded(nodeCount, false);
 	
-	int cheapestConnectionMetric[nodeCount];
-	std::fill_n(cheapestConnectionMetric, nodeCount, std::numeric_limits<int>::max());
-	int cheapestConnectionEdge[nodeCount];
-	std::fill_n(cheapestConnectionEdge, nodeCount, -1);
+	ArrayList<int> cheapestConnectionMetric(nodeCount, std::numeric_limits<int>::max());
+	ArrayList<int> cheapestConnectionEdge(nodeCount, -1);
 	
 	int currentNode = 0;
 	for (int nodesRemaining = nodeCount; nodesRemaining > 0 && currentNode != -1; nodesRemaining--) {
-		nodeIncluded[currentNode] = true;
-		if (cheapestConnectionEdge[currentNode] != -1) {
+		nodeIncluded.set(currentNode, true);
+		if (cheapestConnectionEdge.get(currentNode) != -1) {
 			int origin = -1;
 			int destination = -1;
 			int metric = 0;
-			getEdgeProperties(cheapestConnectionEdge[currentNode], origin, destination, metric);
+			getEdgeProperties(cheapestConnectionEdge.get(currentNode), origin, destination, metric);
 			result->addEdge(origin, destination, metric);
 		}
 		
@@ -145,24 +144,24 @@ Graph* IncidenceMatrixGraph::findMstPrim() {
 			int metric = 0;
 			getEdgeProperties(i, origin, destination, metric);
 			if (origin == currentNode
-					&& !nodeIncluded[destination]
-					&& metric < cheapestConnectionMetric[destination]) {
-				cheapestConnectionMetric[destination] = metric;
-				cheapestConnectionEdge[destination] = i;
+					&& !nodeIncluded.get(destination)
+					&& metric < cheapestConnectionMetric.get(destination)) {
+				cheapestConnectionMetric.set(destination, metric);
+				cheapestConnectionEdge.set(destination, i);
 			}
 			else if (destination == currentNode
-					&& !nodeIncluded[origin]
-					&& metric < cheapestConnectionMetric[origin]) {
-				cheapestConnectionMetric[origin] = metric;
-				cheapestConnectionEdge[origin] = i;
+					&& !nodeIncluded.get(origin)
+					&& metric < cheapestConnectionMetric.get(origin)) {
+				cheapestConnectionMetric.set(origin, metric);
+				cheapestConnectionEdge.set(origin, i);
 			}
 		}
 		
 		int lowestMetric = std::numeric_limits<int>::max();
 		int lowestMetricNode = -1;
 		for (int i = 0; i < nodeCount; i++) {
-			if (!nodeIncluded[i] && cheapestConnectionMetric[i] < lowestMetric) {
-				lowestMetric = cheapestConnectionMetric[i];
+			if (!nodeIncluded.get(i) && cheapestConnectionMetric.get(i) < lowestMetric) {
+				lowestMetric = cheapestConnectionMetric.get(i);
 				lowestMetricNode = i;
 			}
 		}
@@ -173,12 +172,12 @@ Graph* IncidenceMatrixGraph::findMstPrim() {
 
 Graph* IncidenceMatrixGraph::findMstKruskal() {
 	Graph* result = new IncidenceMatrixGraph(nodeCount);
-	int treeId[nodeCount];
+	ArrayList<int> treeId(nodeCount);
 	for (int i = 0; i < nodeCount; i++) {
-		treeId[i] = i;
+		treeId.set(i, i);
 	}
 	int trees = nodeCount;
-	bool edgeConsidered[edgeCount] = {}; // { false ... }
+	ArrayList<bool> edgeConsidered(edgeCount, false);
 	bool edgesRemain = true;
 	
 	while (trees > 1 && edgesRemain) {
@@ -188,7 +187,7 @@ Graph* IncidenceMatrixGraph::findMstKruskal() {
 		int lowestMetricEdgeDestination = -1;
 		
 		for (int i = 0; i < edgeCount; i++) {
-			if (!edgeConsidered[i]) {
+			if (!edgeConsidered.get(i)) {
 				int origin = -1;
 				int destination = -1;
 				int metric = 0;
@@ -203,13 +202,13 @@ Graph* IncidenceMatrixGraph::findMstKruskal() {
 		}
 		
 		if (lowestMetricEdge != -1) {
-			edgeConsidered[lowestMetricEdge] = true;
-			if (treeId[lowestMetricEdgeOrigin] != treeId[lowestMetricEdgeDestination]) {
+			edgeConsidered.set(lowestMetricEdge, true);
+			if (treeId.get(lowestMetricEdgeOrigin) != treeId.get(lowestMetricEdgeDestination)) {
 				result->addEdge(lowestMetricEdgeOrigin, lowestMetricEdgeDestination, lowestMetric);
-				int mergedTreeId = treeId[lowestMetricEdgeDestination];
+				int mergedTreeId = treeId.get(lowestMetricEdgeDestination);
 				for (int i = 0; i < nodeCount; i++) {
-					if (treeId[i] == mergedTreeId) {
-						treeId[i] = treeId[lowestMetricEdgeOrigin];
+					if (treeId.get(i) == mergedTreeId) {
+						treeId.set(i, treeId.get(lowestMetricEdgeOrigin));
 					}
 				}
 				--trees;
@@ -225,16 +224,14 @@ Graph* IncidenceMatrixGraph::findMstKruskal() {
 bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNode, int& distance, List<int>& path) {
 	if (startingNode < nodeCount && destinationNode < nodeCount
 	        && startingNode >= 0 && destinationNode >= 0) {
-		bool visited[nodeCount] = {}; // { false ... }
-		int tentativeDistance[nodeCount];
-		std::fill_n(tentativeDistance, nodeCount, std::numeric_limits<int>::max());
-		int previousHop[nodeCount];
-		std::fill_n(previousHop, nodeCount, -1);
+		ArrayList<bool> visited(nodeCount, false);
+		ArrayList<int> tentativeDistance(nodeCount, std::numeric_limits<int>::max());
+		ArrayList<int> previousHop(nodeCount, -1);
 		
-		tentativeDistance[startingNode] = 0;
+		tentativeDistance.set(startingNode, 0);
 		int currentNode = startingNode;
 		
-		while (currentNode != destinationNode && !visited[destinationNode]
+		while (currentNode != destinationNode && !visited.get(destinationNode)
 		       && currentNode != -1) {
 			for (int i = 0; i < edgeCount; i++) {
 				if (incidenceMatrix[index(currentNode, i)] > 0) {
@@ -244,36 +241,36 @@ bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNod
 							currentNeighbor = k;
 						}
 					}
-					if (!visited[currentNeighbor]) {
-						if (tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)]
-							    < tentativeDistance[currentNeighbor]) {
-							tentativeDistance[currentNeighbor] =
-									tentativeDistance[currentNode] + incidenceMatrix[index(currentNode, i)];
-							previousHop[currentNeighbor] = currentNode;
+					if (!visited.get(currentNeighbor)) {
+						if (tentativeDistance.get(currentNode) + incidenceMatrix[index(currentNode, i)]
+							    < tentativeDistance.get(currentNeighbor)) {
+							tentativeDistance.set(currentNeighbor,
+									tentativeDistance.get(currentNode) + incidenceMatrix[index(currentNode, i)]);
+							previousHop.set(currentNeighbor, currentNode);
 							// TODO This somehow creates infinite loops NOT ANY MORE
 						}
 					}
 				}
 			}
-			visited[currentNode] = true;
+			visited.set(currentNode, true);
 			
 			int smallestTentativeDistance = std::numeric_limits<int>::max();
 			int nodeWithSmallestDistance = -1;
 			for (int i = 0; i < nodeCount; i++) {
-				if (!visited[i] && tentativeDistance[i] < smallestTentativeDistance) {
-					smallestTentativeDistance = tentativeDistance[i];
+				if (!visited.get(i) && tentativeDistance.get(i) < smallestTentativeDistance) {
+					smallestTentativeDistance = tentativeDistance.get(i);
 					nodeWithSmallestDistance = i;
 				}
 			}
 			currentNode = nodeWithSmallestDistance;
 		}
 		
-		distance = tentativeDistance[destinationNode];
+		distance = tentativeDistance.get(destinationNode);
 		if (currentNode != -1) {
 			currentNode = destinationNode;
 			while (currentNode != -1) {
 				path.addStart(currentNode);
-				currentNode = previousHop[currentNode];
+				currentNode = previousHop.get(currentNode);
 			}
 			return true;
 		}
@@ -284,12 +281,10 @@ bool IncidenceMatrixGraph::findPathDijkstra(int startingNode, int destinationNod
 bool IncidenceMatrixGraph::findPathBellman(int startingNode, int destinationNode, int& distance, List<int>& path) {
 	if (startingNode < nodeCount && destinationNode < nodeCount
 		    && startingNode >= 0 && destinationNode >= 0) {
-		int tentativeDistance[nodeCount];
-		std::fill_n(tentativeDistance, nodeCount, std::numeric_limits<int>::max());
-		int previousHop[nodeCount];
-		std::fill_n(previousHop, nodeCount, -1);
+		ArrayList<int> tentativeDistance(nodeCount, std::numeric_limits<int>::max());
+		ArrayList<int> previousHop(nodeCount, -1);
 		
-		tentativeDistance[startingNode] = 0;
+		tentativeDistance.set(startingNode, 0);
 		
 		for (int i = 0; i < nodeCount - 1; i++) {
 			for (int k = 0; k < edgeCount; k++) {
@@ -297,10 +292,10 @@ bool IncidenceMatrixGraph::findPathBellman(int startingNode, int destinationNode
 				int destination = -1;
 				int metric = 0;
 				getEdgeProperties(k, origin, destination, metric);
-				if (tentativeDistance[origin] < std::numeric_limits<int>::max()) {
-					if (tentativeDistance[origin] + metric < tentativeDistance[destination]) {
-						tentativeDistance[destination] = tentativeDistance[origin] + metric;
-						previousHop[destination] = origin;
+				if (tentativeDistance.get(origin) < std::numeric_limits<int>::max()) {
+					if (tentativeDistance.get(origin) + metric < tentativeDistance.get(destination)) {
+						tentativeDistance.set(destination, tentativeDistance.get(origin) + metric);
+						previousHop.set(destination, origin);
 					}
 				}
 			}
@@ -311,19 +306,19 @@ bool IncidenceMatrixGraph::findPathBellman(int startingNode, int destinationNode
 			int destination = -1;
 			int metric = 0;
 			getEdgeProperties(k, origin, destination, metric);
-			if (tentativeDistance[origin] < std::numeric_limits<int>::max()) {
-				if (tentativeDistance[origin] + metric < tentativeDistance[destination]) {
+			if (tentativeDistance.get(origin) < std::numeric_limits<int>::max()) {
+				if (tentativeDistance.get(origin) + metric < tentativeDistance.get(destination)) {
 					return false; // TODO Handle problems better maybe™?
 				}
 			}
 		}
 		
-		distance = tentativeDistance[destinationNode];
-		if (tentativeDistance[destinationNode] < std::numeric_limits<int>::max()) {
+		distance = tentativeDistance.get(destinationNode);
+		if (tentativeDistance.get(destinationNode) < std::numeric_limits<int>::max()) {
 			int currentNode = destinationNode;
 			while (currentNode != -1) {
 				path.addStart(currentNode);
-				currentNode = previousHop[currentNode];
+				currentNode = previousHop.get(currentNode);
 			}
 			return true;
 		}
