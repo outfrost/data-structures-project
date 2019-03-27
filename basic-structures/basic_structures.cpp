@@ -397,14 +397,35 @@ namespace basic_structures {
 				}
 			} else if (choice == 'F' || choice == 'f') {
 				std::ofstream* resultStream = openStreamForWriting();
-				*resultStream
-						<< "structure_size,arraylist_add,arraylist_remove,arraylist_add_start,arraylist_remove_start,arraylist_add_end,arraylist_remove_end,arraylist_find,linkedlist_add,linkedlist_remove,linkedlist_add_start,linkedlist_remove_start,linkedlist_add_end,linkedlist_remove_end,linkedlist_find,binaryheap_add,binaryheap_remove,binaryheap_find\n";
+				*resultStream << "structure_size,"
+				                 "arraylist_add,"
+				                 "arraylist_remove,"
+				                 "arraylist_add_start,"
+				                 "arraylist_remove_start,"
+				                 "arraylist_add_end,"
+				                 "arraylist_remove_end,"
+				                 "arraylist_find,"
+				                 "linkedlist_add,"
+				                 "linkedlist_remove,"
+				                 "linkedlist_add_start,"
+				                 "linkedlist_remove_start,"
+				                 "linkedlist_add_end,"
+				                 "linkedlist_remove_end,"
+				                 "linkedlist_find,"
+				                 "binaryheap_add,"
+				                 "binaryheap_remove,"
+				                 "binaryheap_find,"
+				                 "bst_add,"
+				                 "bst_remove,"
+				                 "bst_find\n";
+				
 				int count = MAX_GENERATED_DATA;
 				for (int i = 0; i < 5 && count > 0; i++) {
 					for (int i = 0; i < MEASUREMENT_PASSES; i++) {
 						List<int>* arrayList = new ArrayList<int>();
 						List<int>* linkedList = new LinkedList<int>();
 						BinaryHeap<void*>* binaryHeap = new BinaryHeap<void*>();
+						BinarySearchTree<std::nullptr_t> bst;
 						
 						std::cout << STR_LANG_GENERATING_PRE << count << STR_LANG_GENERATING_AFT;
 						std::random_device randomDevice;
@@ -416,6 +437,7 @@ namespace basic_structures {
 							arrayList->add(number);
 							linkedList->add(number);
 							binaryHeap->add(number, nullptr);
+							bst.add(number, nullptr);
 						}
 						
 						std::cout << STR_LANG_MEASURING_PRE << i + 1 << STR_LANG_MEASUGING_AFT;
@@ -516,6 +538,22 @@ namespace basic_structures {
 						// binaryheap_find
 						timeBefore = std::chrono::high_resolution_clock::now();
 						binaryHeap->contains(numberToFind);
+						timeAfter = std::chrono::high_resolution_clock::now();
+						*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+						
+						// bst_add
+						timeBefore = std::chrono::high_resolution_clock::now();
+						bst.add(numberToAdd, nullptr);
+						timeAfter = std::chrono::high_resolution_clock::now();
+						*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+						// bst_remove
+						timeBefore = std::chrono::high_resolution_clock::now();
+						bst.remove(numberToRemove);
+						timeAfter = std::chrono::high_resolution_clock::now();
+						*resultStream << nanoseconds(timeBefore, timeAfter) << ",";
+						// bst_find
+						timeBefore = std::chrono::high_resolution_clock::now();
+						bst.contains(numberToFind);
 						timeAfter = std::chrono::high_resolution_clock::now();
 						*resultStream << nanoseconds(timeBefore, timeAfter) << "\n";
 						

@@ -7,7 +7,7 @@
 #include <chrono>
 
 #define MAX_GENERATED_DATA 1 << 8
-#define MEASUREMENT_PASSES 128
+#define MEASUREMENT_PASSES 2
 
 namespace basic_structures {
 	
