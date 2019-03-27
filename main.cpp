@@ -1,5 +1,6 @@
-#include "graphs/graphs.h"
+/*#include "graphs/graphs.h"*/
+#include "basic-structures/basic_structures.h"
 
 int main(int argc, char** argv) {
-	graphs::program();
+	basic_structures::program();
 }

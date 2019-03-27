@@ -6,6 +6,7 @@
         <option name="SMART_TABS" value="true" />
       </value>
     </option>
+    <option name="RIGHT_MARGIN" value="80" />
     <Objective-C>
       <option name="SHIFT_OPERATION_ALIGN_MULTILINE" value="false" />
       <option name="SPACE_BEFORE_POINTER_IN_DECLARATION" value="false" />

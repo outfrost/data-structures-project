@@ -2,6 +2,7 @@
 #include "ArrayList.cpp"
 #include "LinkedList.cpp"
 #include "BinaryHeap.cpp"
+#include "BinarySearchTree.cpp"
 #include "../common/getValueFromString.h"
 #include "../common/time_measurement.h"
 #include "basic_structures.h"
@@ -18,6 +19,7 @@ namespace basic_structures {
 			std::cout << "1. " << STR_LANG_ARRAYLIST << "\n";
 			std::cout << "2. " << STR_LANG_LINKEDLIST << "\n";
 			std::cout << "3. " << STR_LANG_BINARYHEAP << "\n";
+			std::cout << "4. " << STR_LANG_BINARYSEARCHTREE << "\n";
 			std::cout << "---\n";
 			std::cout << "F. " << STR_LANG_TIME_MEASUREMENT << "\n";
 			std::cout << "---\n";
@@ -317,6 +319,81 @@ namespace basic_structures {
 					/*else if (choice == '7') {
 						std::cout << STR_LANG_CANNOT_BALANCE << "\n";
 					}*/
+				}
+			} else if (choice == '4') {
+				BinarySearchTree<std::nullptr_t> bst;
+				
+				char choice = '\0';
+				while (choice != '0') {
+					readStructureMenuChoice(&choice, STR_LANG_BINARYSEARCHTREE);
+					if (choice == '1') {
+						unsigned int size = 0u;
+						
+						std::ifstream* file = openStreamForReading();
+						std::string word;
+						
+						bool success = true;
+						*file >> word;
+						success = success && getValueFromString<unsigned int>(word, size);
+						if (success) {
+							bst = BinarySearchTree<std::nullptr_t>();
+							for (unsigned int i = 0u; i < size; i++) {
+								int key = 0;
+								*file >> word;
+								success = success && getValueFromString<int>(word, key);
+								if (success)
+									bst.add(key, nullptr);
+								else
+									std::cerr << STR_LANG_ERR_ADDING_ELEMENT << " " << i << "\n";
+							}
+							bst.print();
+						} else
+							std::cerr << STR_LANG_ERR_BUILDING_FROM_FILE << "\n";
+						
+						file->close();
+					} else if (choice == '2') {
+						std::cout << STR_LANG_ENTER_KEY << ": ";
+						int key = 0;
+						std::scanf("%d", &key);
+						bst.add(key, nullptr);
+						bst.print();
+					} else if (choice == '3') {
+						std::cout << STR_LANG_ENTER_KEY << ": ";
+						int key = 0;
+						std::scanf("%u", &key);
+						try {
+							bst.remove(key);
+						} catch (std::out_of_range& e) {
+							std::cerr << e.what() << "\n";
+						}
+						bst.print();
+					} else if (choice == '4' || choice == '5' || choice == '6' || choice == '7') {
+						std::cout << STR_LANG_NOT_APPLICABLE << "\n";
+					} else if (choice == '8') {
+						std::cout << STR_LANG_ENTER_KEY << ": ";
+						int key = 0;
+						std::scanf("%d", &key);
+						if (bst.contains(key))
+							std::cout << STR_LANG_DOES_CONTAIN << "\n";
+						else
+							std::cout << STR_LANG_DOES_NOT_CONTAIN << "\n";
+					} else if (choice == '9') {
+						std::cout << STR_LANG_ENTER_SIZE << ": ";
+						unsigned int size = 0u;
+						std::scanf("%u", &size);
+						if (size > 0u) {
+							bst = BinarySearchTree<std::nullptr_t>();
+							std::random_device randomDevice;
+							std::mt19937 mt(randomDevice());
+							std::uniform_int_distribution<int> distribution(std::numeric_limits<int>::min());
+							for (unsigned int i = 0u; i < size; i++)
+								bst.add(distribution(mt), nullptr);
+							bst.print();
+						} else
+							std::cout << STR_LANG_GEN_RAND_ZERO_SIZE << "\n";
+					} else if (choice == 'A' || choice == 'a') {
+						bst.print();
+					}
 				}
 			} else if (choice == 'F' || choice == 'f') {
 				std::ofstream* resultStream = openStreamForWriting();
